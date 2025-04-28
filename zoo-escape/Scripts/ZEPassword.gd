@@ -18,60 +18,26 @@ extends Node2D
 
 @onready var selector := $Selector
 @onready var code := $Code
-@export var inGameMode : bool = false ## used to determine behavior in-game
-var windowOpenFlag : bool = false ## flag for checking if window is open
-var inputBufferActive : bool = true ## hold input until window fades in
-
-
-## materials for shader changes on password entry
-const correctShader = preload("res://Assets/Shaders/wobbly_material.tres")
-const failShader = preload("res://Assets/Shaders/error_shake_x.tres")
-const empty = "----"
-
 
 func _ready() -> void:
 	selector.position = buttonMatrix[cursorPos.y][cursorPos.x]
 	code.text = "----"
-	if !inGameMode:
-		$Animator.play("fade_in")
-		$BufferTimer.start()
-
 
 func _input(_event: InputEvent) -> void:
-	if !inGameMode and !inputBufferActive:
-		fetchInput()
-	
-	if inGameMode:
-		if Input.is_action_just_pressed("ui_cancel") and !inputBufferActive:
-			if windowOpenFlag == false:
-				get_tree().paused = true
-				windowOpenFlag = true
-				$Animator.play("fade_in")
-			else:
-				$Animator.play_backwards("fade_in")
-				windowOpenFlag = false
-				get_tree().paused = false
-
-
-	if inGameMode and windowOpenFlag == true:
-		fetchInput()
-
-
-func fetchInput():
 	var _variant = randf_range(-0.7,0.7) ## random blips
 	SoundControl.playCue(SoundControl.blip,(3.0+_variant))
 	if Input.is_action_just_pressed("ui_cancel"):
 		SoundControl.playCue(SoundControl.down,2.0)
-		if !inGameMode:
-			SceneManager.GoToNewSceneString(self, Scenes.ZETitle)
-
+		SceneManager.GoToNewSceneString(self, Scenes.ZETitle)
 		
 	if Input.is_action_just_pressed("ActionButton"):
 		if selector.position == PosClear:
 			code.text = "----"
 			codeTextPos = 0
 		elif selector.position == PosEnter:
-			answerCheck()
+			if !code.text.contains("-") and Globals.Game_Globals.has(code.text):
+				SoundControl.playCue(SoundControl.success,2.5)
+				SceneManager.call_deferred("GoToNewSceneString",self, Globals.Game_Globals[code.text])
 		else:
 			if code.text.contains("-"):
 				SetNum()
@@ -107,31 +73,6 @@ func fetchInput():
 	
 	selector.position = buttonMatrix[cursorPos.y][cursorPos.x]
 
-	if Input.is_action_just_released("ActionButton") and Globals.Game_Globals.has(code.text):
-		SoundControl.playCue(SoundControl.success,2.5)
-		$Code.material = correctShader
-		$Code.modulate = Color.GREEN_YELLOW
-
-
-	if Input.is_action_just_released("ActionButton"):
-		if codeTextPos == 4:
-			selector.position = PosEnter
-
-
-func answerCheck():
-	selector.position = PosEnter
-	if !code.text.contains("-") and Globals.Game_Globals.has(code.text):
-		SceneManager.call_deferred("GoToNewSceneString",self, Globals.Game_Globals[code.text])
-	else:
-		selector.position = Pos0
-		codeTextPos = 0
-		$Code.text = "XXXX"
-		$Code.material = failShader
-		$Code.modulate = Color.CRIMSON
-		SoundControl.playCue(SoundControl.down,1.5)
-		$EffectTimer.start(0.5)
-
-## if there are dashes, accept input
 func SetNum():
 	var num := ""
 	match buttonMatrix[cursorPos.y][cursorPos.x]:
@@ -158,16 +99,3 @@ func SetNum():
 	
 	code.text[codeTextPos] = num
 	codeTextPos += 1
-
-
-## this effect resets the password box to default material and style
-func _on_effect_timer_timeout() -> void:
-	codeTextPos = 0
-	$Code.modulate = Color.WHITE
-	$Code.material = null
-	$Code.text = empty
-
-
-## turns off input buffer, timer runs on window open
-func _on_buffer_timer_timeout() -> void:
-	inputBufferActive = false

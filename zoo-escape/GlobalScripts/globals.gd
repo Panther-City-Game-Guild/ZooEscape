@@ -11,12 +11,6 @@ var Current_Volume_Settings: Dictionary = {
 	"fx_volume": null
 }
 
-## this will store global values for transferring level data to hud
-var Current_Level_Data: Dictionary = {
-	"time_limit" : 60,
-	"warning_threshold" : 15
-}
-
 # Globally available settings that can be used to store different settings
 # Used to hold additional settings for your game, as needed
 var Current_Settings : Dictionary = { }

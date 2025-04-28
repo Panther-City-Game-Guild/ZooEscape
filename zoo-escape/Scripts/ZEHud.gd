@@ -20,7 +20,6 @@ enum FOCUS_STATES {
 	EXIT}
 
 
-
 func _ready() -> void: ## reset animations at ready, fetch start values
 	self.add_to_group("hud")
 	$HUDAnimation.play("RESET")
@@ -90,10 +89,10 @@ func levelTimerStart():
 	if $HudWindow.scale.x < 1: ## window bug fixing
 		$HudWindow.scale.x = 1
 
-	if !moveMonitoring:
-		$HUDAnimationAlt.play("timer_start") ## play timer ping on separate animator
-		moveMonitoring = true ## moves now monitored
-		$LevelTimer.start(1) ## timer starts on first input
+
+	$HUDAnimationAlt.play("timer_start") ## play timer ping on separate animator
+	moveMonitoring = true ## moves now monitored
+	$LevelTimer.start(1) ## timer starts on first input
 
 
 ## update label values with strings
@@ -103,11 +102,10 @@ func valueMonitoring():
 		$HudWindow/SteaksValue.text = str(steakValue)+"x"
 	else:
 		$HudWindow/SteaksValue.text = "GOAL!!" ## if all captured, goal text
-	
 	$HudWindow/MovesValue.text = str(movesValue)+"m"
 	
 	## update timer as it counts down
-	if timerValue < timeLimit and moveMonitoring:
+	if timerValue < timeLimit:
 		$HudWindow/TimerValue.text = str(timerValue)+"s"
 	if timerValue == 0: ## last second warning
 		$HudWindow/TimerValue.modulate = Color.RED
