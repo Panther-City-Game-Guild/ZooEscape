@@ -1,6 +1,8 @@
 class_name ZELevelManager extends Node2D
 
-@export var LevelCode: String = ""
+@export var LevelCode: String = "" ## stores as password
+@export var LevelTime: int = 60  ## level time limit relayed to hud
+@export var WarningTime : int = 15 ## time out warning threshold
 @onready var player := $Player
 @onready var resetTime := 0.0
 var localHud = null ## pointer for hud
@@ -9,6 +11,8 @@ var timeUp : bool = false ## to monitor local hud timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Globals.Current_Level_Data.set("time_limit",LevelTime)
+	Globals.Current_Level_Data.set("warning_threshold",WarningTime) 
 	## check to ensure bgm fade level is consistent
 	## if bgm fade level not normal, reset fade state so it fades in
 	if SoundControl.fadeState != SoundControl.FADE_STATES.PEAK_VOLUME:
@@ -18,6 +22,9 @@ func _ready() -> void:
 	localHud = get_node("Player/ZEHud")
 	localHud.restart_room.connect(restartRoom)
 	localHud.exit_game.connect(exitGame)
+	localHud.timeLimit = Globals.Current_Level_Data.get("time_limit")
+	localHud.warningTime = Globals.Current_Level_Data.get("warning_threshold")
+	localHud.timerValue = localHud.timeLimit
 
 
 

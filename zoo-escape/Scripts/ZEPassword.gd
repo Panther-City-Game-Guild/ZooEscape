@@ -1,16 +1,28 @@
 extends Control
 
 
-<<<<<<< Updated upstream
+
 @onready var selector := $Selector
 @onready var code := $Code
+@export var inGameMode : bool = false ## used to determine behavior in-game
+var windowOpenFlag : bool = false ## flag for checking if window is open
+var inputBufferActive : bool = true ## hold input until window fades in
+
+
+## materials for shader changes on password entry
+const correctShader = preload("res://Assets/Shaders/wobbly_material.tres")
+const failShader = preload("res://Assets/Shaders/error_shake_x.tres")
+const empty = "----"
+
 
 func _ready() -> void:
 	selector.position = buttonMatrix[cursorPos.y][cursorPos.x]
 	code.text = "----"
+	if !inGameMode:
+		$Animator.play("fade_in")
+		$BufferTimer.start()
 
-func _input(_event: InputEvent) -> void:
-=======
+
 ## numbers to hone focus
 var numberFocusState : int = 1
 enum NUMBER_FOCUS_STATES {
@@ -64,41 +76,41 @@ func _input(_event: InputEvent) -> void:
 			if windowOpenFlag == false:
 				Globals.Game_Globals["IsPasswordInterfaceOpen"] = true
 				$BufferTimer.start(0.5)
+
+	if !inGameMode and !inputBufferActive:
+		fetchInput()
+	
+	if inGameMode:
+		if Input.is_action_just_pressed("ui_cancel") and !inputBufferActive:
+			if windowOpenFlag == false:
 				get_tree().paused = true
 				windowOpenFlag = true
 				$Animator.play("fade_in")
 			else:
+
 				Globals.Game_Globals["IsPasswordInterfaceOpen"] = false
 				batchButtonDisabled(true)
-				$Animator.play_backwards("fade_in")
-				windowOpenFlag = false
-				get_tree().paused = false
+
 
 
 	if inGameMode and windowOpenFlag == true:
+
 		fetch_UI_Input() ## listen for UI changes in password window if open
 
 
 func randomInputSoundCue(): ## for randomizing sound cues
->>>>>>> Stashed changes
-	var _variant = randf_range(-0.7,0.7) ## random blips
-	SoundControl.playCue(SoundControl.blip,(3.0+_variant))
 
 
-func fetch_UI_Input(): ## listen for cancel and answer commands
-	if Input.is_action_just_pressed("ui_cancel"):
-		SoundControl.playCue(SoundControl.down,2.0)
-<<<<<<< Updated upstream
 		SceneManager.GoToNewSceneString(self, Scenes.ZETitle)
+
+
 		
 	if Input.is_action_just_pressed("ActionButton"):
 		if selector.position == PosClear:
 			code.text = "----"
 			codeTextPos = 0
 		elif selector.position == PosEnter:
-			if !code.text.contains("-") and Globals.Game_Globals.has(code.text):
-				SoundControl.playCue(SoundControl.success,2.5)
-				SceneManager.call_deferred("GoToNewSceneString",self, Globals.Game_Globals[code.text])
+			answerCheck()
 		else:
 			if code.text.contains("-"):
 				SetNum()
@@ -134,7 +146,7 @@ func fetch_UI_Input(): ## listen for cancel and answer commands
 	
 	selector.position = buttonMatrix[cursorPos.y][cursorPos.x]
 
-=======
+
 		if !inGameMode:
 			SceneManager.GoToNewSceneString(self, Scenes.ZETitle)
 		else:
@@ -171,7 +183,7 @@ func failFeedback(): ## shortcut for fail visual feedback
 
 
 ## if there are dashes, accept input
->>>>>>> Stashed changes
+
 func SetNum():
 	randomInputSoundCue()
 	var num := ""
@@ -197,10 +209,10 @@ func SetNum():
 		NUMBER_FOCUS_STATES.NINE:
 			num = "9"
 	
-<<<<<<< Updated upstream
+
 	code.text[codeTextPos] = num
 	codeTextPos += 1
-=======
+
 	if codeTextPos < 4: ## progress digit for entry if not at end
 		code.text[codeTextPos] = num
 		codeTextPos += 1
@@ -217,6 +229,8 @@ func _on_effect_timer_timeout() -> void:
 		$Code.modulate = Color.WHITE
 		$Code.material = null
 		$Code.text = empty
+
+
 
 
 ## turns off input buffer, timer runs on window open
@@ -448,4 +462,4 @@ func _on_button_c_focus_entered() -> void:
 
 func _on_button_e_focus_entered() -> void:
 	numberFocusState = 11
->>>>>>> Stashed changes
+
