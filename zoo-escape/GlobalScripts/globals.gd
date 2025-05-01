@@ -21,4 +21,6 @@ var Current_Settings : Dictionary = { }
 # Use Globals.Game_Globals.varName to retrieve the value
 # 	Alternatively, use Globals.Game_Globals.get("varName") to retrieve the value
 # TODO: Clean up when someone leaves a game (performed by the SceneManager)
-var Game_Globals: Dictionary = {}
+var Game_Globals: Dictionary = {
+	IsPasswordInterfaceOpen = false
+}

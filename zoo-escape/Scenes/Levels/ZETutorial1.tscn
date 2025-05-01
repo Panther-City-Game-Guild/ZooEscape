@@ -46,3 +46,5 @@ position = Vector2(104, 136)
 [connection signal="InWater" from="Player" to="." method="_on_player_in_water"]
 
 [editable path="Player"]
+[editable path="Player/ZEPassword"]
+[editable path="Player/ZEHud"]

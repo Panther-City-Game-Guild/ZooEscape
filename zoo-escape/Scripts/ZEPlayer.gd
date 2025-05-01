@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const stepNoise = "res://Assets/Sound/deep_thump.ogg"
 const slipNoise = "res://Assets/Sound/squelch.ogg"
+var inputBuffer : bool = true
 
 enum PlayerState {
 	Idle,
@@ -31,13 +32,16 @@ signal InWater
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	randomize()
+	### FIX CAMERA POSITION when reloading (center to player sprite)
+	$Camera2D.make_current()
+	$BufferTimer.start() ## start buffer for player input to open
+	randomize() ## rng call
 	$StepCue.volume_db = SoundControl.sfxLevel-stepMuffleLevel ## default player footsteps to low volume
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if currentState == PlayerState.Idle:
+	if currentState == PlayerState.Idle and !inputBuffer: ## input buffer prevents early input
 		if Input.is_action_just_pressed("DigitalUp"):
 			MovePlayer(Vector2.UP)
 		elif Input.is_action_just_pressed("DigitalRight"):
@@ -53,7 +57,7 @@ func _process(delta: float) -> void:
 		if Input.is_action_just_released("DigitalUp") || Input.is_action_just_released("DigitalRight") || Input.is_action_just_released("DigitalDown") || Input.is_action_just_released("DigitalLeft"):
 			moveTimer = 0
 			
-		if moveTimer >= moveSpeed:
+		if moveTimer >= moveSpeed and !inputBuffer:
 			if Input.is_action_pressed("DigitalUp"):
 				MovePlayer(Vector2.UP)
 			elif Input.is_action_pressed("DigitalRight"):
@@ -127,5 +131,9 @@ func _on_ground_check_area_entered(area: Area2D) -> void:
 
 
 func _on_ground_check_area_exited(_area: Area2D) -> void:
-	currentState = PlayerState.Idle
 	$StepCue.stream = load(stepNoise)
+
+
+### input buffer autostarts on load, expires flag on own by autostart
+func _on_buffer_timer_timeout() -> void:
+	inputBuffer = false

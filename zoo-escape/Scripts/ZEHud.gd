@@ -10,6 +10,7 @@ var allSteaksCollected : bool = false ## shows goal is open
 var resetBarVisible : bool = false ## reset bar flag for external reference
 var resetGauge : float = 0.0 ## to compare with level manager
 var password : String = "ABCD" ## abstraction for password
+var passwordCancelState = Globals.Game_Globals["IsPasswordInterfaceOpen"]
 @export var warningTime : int = 10 ## value when warning cues
 @export var timeLimit : int = 30 # value to change for each level
 signal restart_room ## reload signal
@@ -32,15 +33,16 @@ func _ready() -> void: ## reset animations at ready, fetch start values
 
 func _process(_delta: float) -> void:
 	## fetch password from level manager and update
+	passwordCancelState = Globals.Game_Globals["IsPasswordInterfaceOpen"]
 	$TimeOutCurtain/PasswordBox/PasswordLabel.text = "PASSWORD: "+str(password)
-	if !timesUp: ## if timer not out, update values and monitor inputs
+	if !timesUp and !passwordCancelState: ## if timer not out, update values and monitor inputs
 		steakValueFetch()
 		valueMonitoring()
 		inputWatch()
 
 
 	## level timer does not start until first input
-	if !moveMonitoring and !timesUp:
+	if !moveMonitoring and !timesUp and !passwordCancelState:
 		if Input.is_action_just_pressed("DigitalDown"):
 			levelTimerStart()
 		if Input.is_action_just_pressed("DigitalLeft"):
@@ -63,6 +65,11 @@ func _process(_delta: float) -> void:
 			buttonFocusGrab()
 		if Input.is_action_just_pressed("DigitalUp"):
 			buttonFocusGrab()
+
+	if passwordCancelState:
+		$LevelTimer.paused = true
+	else:
+		$LevelTimer.paused = false
 
 
 ## button to grab focus from keyboard for timeout buttons
