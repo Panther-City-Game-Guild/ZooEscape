@@ -1,10 +1,9 @@
-[gd_scene load_steps=25 format=3 uid="uid://3ah88dbq7yi4"]
+[gd_scene load_steps=24 format=3 uid="uid://3ah88dbq7yi4"]
 
 [ext_resource type="Script" uid="uid://dbcs0mgpcg3be" path="res://Scripts/ZEPlayer.gd" id="1_wtpaa"]
 [ext_resource type="Texture2D" uid="uid://cbcuw7wsx26tw" path="res://Assets/CATSPRITESHEET_Gray.png" id="2_cu3mk"]
 [ext_resource type="PackedScene" uid="uid://nheh2k2bhpjo" path="res://Scenes/ZEHud.tscn" id="3_h00wl"]
 [ext_resource type="AudioStream" uid="uid://b3v6myl26lgyv" path="res://Assets/Sound/deep_thump.ogg" id="3_vdxma"]
-[ext_resource type="PackedScene" uid="uid://10h8qxtfap0i" path="res://Scenes/ZEPassword.tscn" id="4_hr5vr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_44cu1"]
 atlas = ExtResource("2_cu3mk")
@@ -152,7 +151,6 @@ process_mode = 1
 script = ExtResource("1_wtpaa")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-process_mode = 1
 position = Vector2(0, -4)
 sprite_frames = SubResource("SpriteFrames_w2ove")
 animation = &"IdleDown"
@@ -160,165 +158,19 @@ animation = &"IdleDown"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_72fhx")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-process_mode = 3
-
-[node name="ZEPassword" parent="." instance=ExtResource("4_hr5vr")]
-offset_left = -320.0
-offset_top = -180.0
-offset_right = -320.0
-offset_bottom = -180.0
-inGameMode = true
-
-[node name="WindowBorder" parent="ZEPassword/PasswordWindow" index="0"]
-z_index = 1
-
-[node name="Button1" parent="ZEPassword/ButtonBox" index="0"]
-anchor_left = 0.428125
-anchor_top = 0.408333
-anchor_right = 0.465625
-anchor_bottom = 0.475
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-metadata/_edit_use_anchors_ = true
-
-[node name="Button2" parent="ZEPassword/ButtonBox" index="1"]
-anchor_left = 0.478125
-anchor_top = 0.408333
-anchor_right = 0.515625
-anchor_bottom = 0.475
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-metadata/_edit_use_anchors_ = true
-
-[node name="Button3" parent="ZEPassword/ButtonBox" index="2"]
-anchor_left = 0.528125
-anchor_top = 0.408333
-anchor_right = 0.565625
-anchor_bottom = 0.475
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-metadata/_edit_use_anchors_ = true
-
-[node name="Button4" parent="ZEPassword/ButtonBox" index="3"]
-anchor_left = 0.428125
-anchor_top = 0.477778
-anchor_right = 0.465625
-anchor_bottom = 0.544444
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-metadata/_edit_use_anchors_ = true
-
-[node name="Button5" parent="ZEPassword/ButtonBox" index="4"]
-anchor_left = 0.478125
-anchor_top = 0.477778
-anchor_right = 0.515625
-anchor_bottom = 0.544444
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-metadata/_edit_use_anchors_ = true
-
-[node name="Button6" parent="ZEPassword/ButtonBox" index="5"]
-anchor_left = 0.528125
-anchor_top = 0.477778
-anchor_right = 0.565625
-anchor_bottom = 0.544444
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-metadata/_edit_use_anchors_ = true
-
-[node name="Button7" parent="ZEPassword/ButtonBox" index="6"]
-anchor_left = 0.428125
-anchor_top = 0.547222
-anchor_right = 0.465625
-anchor_bottom = 0.613889
-offset_left = 0.0
-offset_top = 1.52588e-05
-offset_right = 0.0
-offset_bottom = 1.52588e-05
-metadata/_edit_use_anchors_ = true
-
-[node name="Button8" parent="ZEPassword/ButtonBox" index="7"]
-anchor_left = 0.478125
-anchor_top = 0.547222
-anchor_right = 0.515625
-anchor_bottom = 0.613889
-offset_left = 0.0
-offset_top = 1.52588e-05
-offset_right = 0.0
-offset_bottom = 1.52588e-05
-metadata/_edit_use_anchors_ = true
-
-[node name="Button9" parent="ZEPassword/ButtonBox" index="8"]
-anchor_left = 0.528125
-anchor_top = 0.547222
-anchor_right = 0.565625
-anchor_bottom = 0.613889
-offset_left = 0.0
-offset_top = 1.52588e-05
-offset_right = 0.0
-offset_bottom = 1.52588e-05
-metadata/_edit_use_anchors_ = true
-
-[node name="ButtonC" parent="ZEPassword/ButtonBox" index="9"]
-anchor_left = 0.428125
-anchor_top = 0.616667
-anchor_right = 0.465625
-anchor_bottom = 0.683333
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-metadata/_edit_use_anchors_ = true
-
-[node name="Button0" parent="ZEPassword/ButtonBox" index="10"]
-anchor_left = 0.478125
-anchor_top = 0.616667
-anchor_right = 0.515625
-anchor_bottom = 0.683333
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-metadata/_edit_use_anchors_ = true
-
-[node name="ButtonE" parent="ZEPassword/ButtonBox" index="11"]
-anchor_left = 0.528125
-anchor_top = 0.616667
-anchor_right = 0.565625
-anchor_bottom = 0.683333
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-metadata/_edit_use_anchors_ = true
-
 [node name="ZEHud" parent="." instance=ExtResource("3_h00wl")]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+
 [node name="RayCast2D" type="RayCast2D" parent="."]
-process_mode = 1
 target_position = Vector2(0, 16)
 collide_with_areas = true
 
 [node name="GroundCheck" type="Area2D" parent="."]
-process_mode = 1
 collision_layer = 0
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GroundCheck"]
-process_mode = 1
 shape = SubResource("RectangleShape2D_dmbf3")
 debug_color = Color(0.981801, 0, 0.367869, 0.42)
 
@@ -327,13 +179,5 @@ stream = ExtResource("3_vdxma")
 volume_db = -18.0
 pitch_scale = 6.0
 
-[node name="BufferTimer" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
-
 [connection signal="area_entered" from="GroundCheck" to="." method="_on_ground_check_area_entered"]
 [connection signal="area_exited" from="GroundCheck" to="." method="_on_ground_check_area_exited"]
-[connection signal="timeout" from="BufferTimer" to="." method="_on_buffer_timer_timeout"]
-
-[editable path="ZEPassword"]
-[editable path="ZEHud"]

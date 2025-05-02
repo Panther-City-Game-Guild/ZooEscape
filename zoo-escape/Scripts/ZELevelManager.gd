@@ -72,5 +72,4 @@ func exitGame() -> void: ## game exit function, refers to gameroot function
 
 
 func _on_player_in_water() -> void:
-	localHud.closeHud()
-	SceneManager.call_deferred("GoToNewSceneString",self, Globals.Game_Globals[LevelCode])
+	restartRoom()
