@@ -79,7 +79,7 @@ func _on_exit_tile_player_exits() -> void:
 func nextRoom(): ## load next level
 	nextLevel = $ExitTile.NextLevelCode
 	player.currentState = player.PlayerState.OnExit
-	if nextLevel != str(SceneManager.gameRoot.title):
+	if nextLevel != "9990":
 		SceneManager.call_deferred("GoToNewSceneString", Globals.Game_Globals[nextLevel])
 	else:
 		Globals.Game_Globals.set("player_score",0)

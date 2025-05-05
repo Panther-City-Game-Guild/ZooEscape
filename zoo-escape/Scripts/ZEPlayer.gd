@@ -97,6 +97,7 @@ func MovePlayer(dir: Vector2) -> void:
 			if collidingObj.Move(dir):
 				position += dir * Globals.ZETileSize
 	elif !ray.is_colliding():
+		$ZEHud.movesValue+=1
 		position += dir * Globals.ZETileSize
 		lastMoveDir = dir
 

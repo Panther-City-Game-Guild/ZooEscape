@@ -47,7 +47,6 @@ func _process(_delta: float) -> void:
 	if !timesUp and passwordState == false: ## if timer not out, update values and monitor inputs
 		steakValueFetch()
 		valueMonitoring()
-		inputWatch()
 
 
 	## level timer does not start until first input
@@ -77,6 +76,7 @@ func _process(_delta: float) -> void:
 
 
 	if scoreProcessFlag:
+		scoreProcessFlag = false
 		scoreProcessing()
 		get_tree().paused = true
 
@@ -141,17 +141,6 @@ func passwordReport(data:String): ## function for updating password, referenced 
 func steakValueFetch(): ## count amount of steaks in scene
 	var steakCount = get_tree().get_node_count_in_group("steaks")
 	steakValue = steakCount
-
-
-func inputWatch(): ## listen for moves and update total
-	if Input.is_action_just_pressed("DigitalDown"):
-		movesValue+=1
-	if Input.is_action_just_pressed("DigitalUp"):
-		movesValue+=1
-	if Input.is_action_just_pressed("DigitalLeft"):
-		movesValue+=1
-	if Input.is_action_just_pressed("DigitalRight"):
-		movesValue+=1
 
 ## time functionality
 func _on_level_timer_timeout() -> void:
@@ -236,14 +225,24 @@ func resetPrompt():
 
 
 func scoreProcessing():
-	if timerValue > 0:
+	var timer := Timer.new()
+	add_child(timer)
+	for time in timerValue:
+		if timerValue == 0:
+			break
 		timerValue-=1
 		var _old = Globals.Game_Globals.get("player_score")
 		Globals.Game_Globals.set("player_score",(_old+secondBonus))
-	else:
-		if movesValue > 0:
-			movesValue-=1
-			var _old2 = Globals.Game_Globals.get("player_score")
-			Globals.Game_Globals.set("player_score",(_old2-movePenalty))
-		else:
-			score_processed.emit()
+		timer.start(.01)
+		await timer.timeout
+		
+	for move in movesValue:
+		if movesValue== 0:
+			break
+		movesValue-=1
+		var _old2 = Globals.Game_Globals.get("player_score")
+		Globals.Game_Globals.set("player_score",(_old2-movePenalty))
+		timer.start(.01)
+		await timer.timeout
+	
+	score_processed.emit()
