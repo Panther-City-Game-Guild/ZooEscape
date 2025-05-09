@@ -141,28 +141,32 @@ func randomBlipCue(): ## sound cue for input sounds
 func fetchInput(): ## grabbing global input
 	if Input.is_action_just_pressed("PasswordButton"):
 		SoundControl.playCue(SoundControl.down,2.0)
+		if inGameMode and !windowOpenFlag:
+			get_tree().paused = true
+			$Animator.play_backwards("fade_in")
+			code.text = empty
+			codeTextPos = 0
+			inputBufferActive = true
+			windowOpenFlag = true
+		else:
+			get_tree().paused = false
+		
+		
 		if !inGameMode:
 			returnToTitle()
-		else:
-			if !windowOpenFlag:
-				get_tree().paused = true
-				$Animator.play_backwards("fade_in")
-				code.text = empty
-				codeTextPos = 0
-				inputBufferActive = true
-				windowOpenFlag = true
-			else:
-				get_tree().paused = false
 				
 		
 	if Input.is_action_just_pressed("ActionButton"):
 		if numberFocusState == NUMBER_FOCUS_STATES.ENTER:
 			answerCheck() ## check answers if on answer button
+			if codeTextPos == 4:
+				$ButtonBox/ButtonEnter.grab_focus()
 			
 		if Globals.Game_Globals.has(code.text): ## if level code correct, show feedback
 			SoundControl.playCue(SoundControl.success,2.5)
 			$Code.material = correctShader
 			$Code.modulate = Color.GREEN_YELLOW
+			Globals.Game_Globals["player_score"] = 0
 			$LoadSceneBuffer.start(loadSceneBufferTime) ## begin buffer to load
 
 
@@ -421,3 +425,8 @@ func _on_button_enter_focus_entered() -> void:
 
 func _on_button_enter_mouse_entered() -> void:
 	numberFocusState = 11
+
+
+## alpha of blur backdrop changes each frame with parent (self)
+func _process(_delta: float) -> void:
+	$Backdrop.material.set_shader_parameter("parentAlpha",self.modulate.a)

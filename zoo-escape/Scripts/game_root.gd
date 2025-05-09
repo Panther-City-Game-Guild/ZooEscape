@@ -7,6 +7,7 @@ func _ready() -> void:
 	SceneManager.gameRoot = self
 	aniPlayer.play("RESET")
 	SoundControl.resetMusicFade() ## reset music state
+	Globals.Game_Globals["player_score"] = 0
 
 
 func _process(_delta: float) -> void:
@@ -37,7 +38,6 @@ func ReturnToTitle() -> void:
 	await aniPlayer.animation_finished
 
 
-	## free current child and reload title
 	get_tree().reload_current_scene()
 
 	aniPlayer.play("FadeIn") ## restore processing on animation end

@@ -13,9 +13,6 @@ func _ready() -> void:
 
 # Called when an InputEvent is detected
 func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("ui_cancel"):
-		get_tree().quit()
-	
 	# TODO: Tell player that the "ActionButton" is <Z>, etc.
 	# NOTE: Had to re-add the "ui_accept" action to allow keyboard use, as <Enter> and <Space> do not work with "ActionButton"
 	if event.is_action_pressed("ActionButton"):

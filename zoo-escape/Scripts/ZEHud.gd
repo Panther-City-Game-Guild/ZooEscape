@@ -13,8 +13,8 @@ var allSteaksCollected : bool = false ## shows goal is open
 var resetBarVisible : bool = false ## reset bar flag for external reference
 var resetGauge : float = 0.0 ## to compare with level manager
 var password : String = "ABCD" ## abstraction for password
-@export var warningTime : int = 10 ## value when warning cues
-@export var timeLimit : int = 30 # value to change for each level
+var warningTime : int = 10 ## value when warning cues
+var timeLimit : int = 30 # value to change for each level
 signal restart_room ## reload signal
 signal exit_game ## exit to title signal
 signal score_processed ## score processing signal for process score
@@ -254,7 +254,7 @@ func scoreProcessing(): ## score processing state machine
 				var _old = Globals.Game_Globals.get("player_score")
 				Globals.Game_Globals.set("player_score",(_old+secondBonus))
 			else:
-				scoreProcessState+=1 ## then state flips
+				scoreProcessState = SCORE_PROCESS_STATES.MOVE_PROCESS ## then state flips
 		SCORE_PROCESS_STATES.MOVE_PROCESS:
 			if movesValue > 0: ## moves subtract penalty until zero
 				movesValue-=1
@@ -263,6 +263,6 @@ func scoreProcessing(): ## score processing state machine
 			else: ## then state flips back to off
 				print("Score processed!")
 				score_processed.emit() ## after emitting one signal
-				scoreProcessState+=1
+				scoreProcessState = SCORE_PROCESS_STATES.POST
 		SCORE_PROCESS_STATES.POST:
 			pass
