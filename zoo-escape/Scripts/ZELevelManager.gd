@@ -71,7 +71,7 @@ func _process(delta: float) -> void:
 func _on_exit_tile_player_exits() -> void:
 	SoundControl.playCue(SoundControl.success,2.0) ## sound trigger
 	if !TutorialScoreBypass: ## process score before exit
-		localHud.scoreProcessFlag = true
+		localHud.scoreProcessState = 1
 	else: ## if tutorial, do not apply score bonuses/penalties
 		nextRoom()
 

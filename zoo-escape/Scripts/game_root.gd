@@ -35,12 +35,10 @@ func ReturnToTitle() -> void:
 	set_physics_process(false)
 	aniPlayer.play("FadeOut")
 	await aniPlayer.animation_finished
-	
+
+
 	## free current child and reload title
-	for child in get_children(): ## free current scene
-		if child is ZELevelManager:
-			child.queue_free()
-	add_child(title.instantiate()) ## load new scene
+	get_tree().reload_current_scene()
 
 	aniPlayer.play("FadeIn") ## restore processing on animation end
 	await aniPlayer.animation_finished

@@ -19,7 +19,7 @@ var numberFocusState : int = 1 ## current focus
 @onready var code := $Code ## text ref for code
 var codeTextPos : int = 0 ## position in code
 
-@export var inGameMode : bool = false ## used to determine behavior in-game
+@export var inGameMode : bool = false ## used to determine behavior in and out of frontend
 var windowOpenFlag : bool = false ## flag for checking if window is open
 var inputBufferActive : bool = true ## hold input until window fades in
 @export var loadSceneBufferTime : int = 1 ## buffer until password scene loads
@@ -48,6 +48,7 @@ func _ready() -> void:
 func _input(_event: InputEvent) -> void:
 	if !inGameMode and !inputBufferActive:
 		fetchInput() ## listen for input outside game from frontend
+		numberInputGrab()
 	
 	if inGameMode: ## listen for password button (escape)
 		if Input.is_action_just_pressed("PasswordButton"):
@@ -66,6 +67,56 @@ func _input(_event: InputEvent) -> void:
 
 	if inGameMode and windowOpenFlag == true:
 		fetchInput()
+		numberInputGrab()
+
+
+## for grabbing numeric input and updating number state
+func numberInputGrab():
+	if Input.is_action_just_pressed("Numeric_0"):
+		numberFocusState = 0
+		_on_button_0_pressed()
+		_numericFocusCheck()
+	if Input.is_action_just_pressed("Numeric_1"):
+		numberFocusState = 1
+		_on_button_1_pressed()
+		_numericFocusCheck()
+	if Input.is_action_just_pressed("Numeric_2"):
+		numberFocusState = 2
+		_on_button_2_pressed()
+		_numericFocusCheck()
+	if Input.is_action_just_pressed("Numeric_3"):
+		numberFocusState = 3
+		_on_button_3_pressed()
+		_numericFocusCheck()
+	if Input.is_action_just_pressed("Numeric_4"):
+		numberFocusState = 4
+		_on_button_4_pressed()
+		_numericFocusCheck()
+	if Input.is_action_just_pressed("Numeric_5"):
+		numberFocusState = 5
+		_on_button_5_pressed()
+		_numericFocusCheck()
+	if Input.is_action_just_pressed("Numeric_6"):
+		numberFocusState = 6
+		_on_button_6_pressed()
+		_numericFocusCheck()
+	if Input.is_action_just_pressed("Numeric_7"):
+		numberFocusState = 7
+		_on_button_7_pressed()
+		_numericFocusCheck()
+	if Input.is_action_just_pressed("Numeric_8"):
+		numberFocusState = 8
+		_on_button_8_pressed()
+		_numericFocusCheck()
+	if Input.is_action_just_pressed("Numeric_9"):
+		numberFocusState = 9
+		_on_button_9_pressed()
+		_numericFocusCheck()
+
+
+func _numericFocusCheck():
+	if codeTextPos == 4:
+		$ButtonBox/ButtonEnter.grab_focus()
 
 
 func allStatesFlywheel(logic:bool,animate:bool):

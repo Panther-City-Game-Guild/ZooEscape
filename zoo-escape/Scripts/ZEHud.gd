@@ -18,7 +18,13 @@ var password : String = "ABCD" ## abstraction for password
 signal restart_room ## reload signal
 signal exit_game ## exit to title signal
 signal score_processed ## score processing signal for process score
-var scoreProcessFlag : bool = false
+var post_score : bool = false ## post score process flag, prevents overloading buffer
+var scoreProcessState : SCORE_PROCESS_STATES = SCORE_PROCESS_STATES.IDLE
+enum SCORE_PROCESS_STATES {
+	IDLE,
+	TIME_PROCESS,
+	MOVE_PROCESS,
+	POST}
 var focusState : int = 0
 var passwordState = Globals.Current_Settings["passwordWindowOpen"]
 enum FOCUS_STATES {
@@ -76,7 +82,7 @@ func _process(_delta: float) -> void:
 			buttonFocusGrab()
 
 
-	if scoreProcessFlag:
+	if scoreProcessState != SCORE_PROCESS_STATES.IDLE:
 		scoreProcessing()
 		get_tree().paused = true
 
@@ -97,6 +103,9 @@ func buttonFocusGrab():
 			$ExitButton.grab_focus()
 		FOCUS_STATES.EXIT:
 			$RestartButton.grab_focus()
+
+
+
 
 
 ## input start function and flip flop state
@@ -155,7 +164,7 @@ func inputWatch(): ## listen for moves and update total
 
 ## time functionality
 func _on_level_timer_timeout() -> void:
-	if !scoreProcessFlag: ## do not log timeouts during score processing
+	if scoreProcessState == SCORE_PROCESS_STATES.IDLE: ## do not log timeouts during score processing
 		if timerValue >= 1 and !timesUp: ## if time not up, clock counts down
 			timerValue-=1
 			$LevelTimer.start(1)
@@ -225,25 +234,35 @@ func resetBarReveal(): ## functions to hide and reveal reset bar
 	$HUDAnimationAlt.play("reset_fader")
 
 
-func resetBarFade():
+func resetBarFade(): ## remote function to fade out reset bar on release
 	resetBarVisible = false
 	$HUDAnimationAlt.play_backwards("reset_fader")
 
 
-func resetPrompt():
+func resetPrompt(): ## remote function to show reload message on full reset bar
 	$HUDAnimationAlt.play("close")
 	$ResetBar/ResetLabel.text = "RELOADING..."
 
 
-func scoreProcessing():
-	if timerValue > 0:
-		timerValue-=1
-		var _old = Globals.Game_Globals.get("player_score")
-		Globals.Game_Globals.set("player_score",(_old+secondBonus))
-	else:
-		if movesValue > 0:
-			movesValue-=1
-			var _old2 = Globals.Game_Globals.get("player_score")
-			Globals.Game_Globals.set("player_score",(_old2-movePenalty))
-		else:
-			score_processed.emit()
+func scoreProcessing(): ## score processing state machine
+	match scoreProcessState:
+		SCORE_PROCESS_STATES.IDLE:
+			pass ## don't process
+		SCORE_PROCESS_STATES.TIME_PROCESS:
+			if timerValue > 0: ## timer adds bonus until zero
+				timerValue-=1
+				var _old = Globals.Game_Globals.get("player_score")
+				Globals.Game_Globals.set("player_score",(_old+secondBonus))
+			else:
+				scoreProcessState+=1 ## then state flips
+		SCORE_PROCESS_STATES.MOVE_PROCESS:
+			if movesValue > 0: ## moves subtract penalty until zero
+				movesValue-=1
+				var _old2 = Globals.Game_Globals.get("player_score")
+				Globals.Game_Globals.set("player_score",(_old2-movePenalty))
+			else: ## then state flips back to off
+				print("Score processed!")
+				score_processed.emit() ## after emitting one signal
+				scoreProcessState+=1
+		SCORE_PROCESS_STATES.POST:
+			pass
