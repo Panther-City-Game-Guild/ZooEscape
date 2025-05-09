@@ -20,7 +20,9 @@ func GoToNextScene(OldScene: Node, NewScene: PackedScene) -> void:
 	await aniPlayer.animation_finished ## wait until animation finish before change
 	
 	OldScene.queue_free() # free old scene
-	add_child(NewScene.instantiate()) # add new scene
+	var newCurrentScene := NewScene.instantiate()
+	add_child(newCurrentScene) # add new scene
+	SceneManager.currentScene = newCurrentScene
 	
 	aniPlayer.play("FadeIn") ## start animation
 	await aniPlayer.animation_finished ## and when it finishes

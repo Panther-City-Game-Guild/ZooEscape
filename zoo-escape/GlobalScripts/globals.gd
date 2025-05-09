@@ -19,7 +19,9 @@ var Current_Level_Data: Dictionary = {
 
 # Globally available settings that can be used to store different settings
 # Used to hold additional settings for your game, as needed
-var Current_Settings : Dictionary = { }
+var Current_Settings : Dictionary = {
+	"passwordWindowOpen" : false ## global hud control flag
+}
 
 # A global variable playground for your game
 # Add these programatically when your game loads
@@ -27,4 +29,15 @@ var Current_Settings : Dictionary = { }
 # Use Globals.Game_Globals.varName to retrieve the value
 # 	Alternatively, use Globals.Game_Globals.get("varName") to retrieve the value
 # TODO: Clean up when someone leaves a game (performed by the SceneManager)
-var Game_Globals: Dictionary = {}
+var Game_Globals: Dictionary = {
+	"player_score" = 0 ## player score total
+}
+
+
+var High_Scoreboard : Dictionary = {
+	"ZAP" : 20000,
+	"MKW" : 19000,
+	"GUS" : 18000,
+	"FTW" : 17000,
+	"ZOO" : 16000
+}

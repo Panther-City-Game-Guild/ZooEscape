@@ -76,7 +76,10 @@ func _process(delta: float) -> void:
 		if moveTimer >= moveSpeed:
 			MovePlayer(lastMoveDir)
 			moveTimer = 0
-		
+	
+	if Globals.Current_Settings["passwordWindowOpen"] == true:
+		get_tree().paused = true
+
 
 # Called to move the player
 func MovePlayer(dir: Vector2) -> void:

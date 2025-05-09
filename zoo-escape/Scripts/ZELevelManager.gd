@@ -3,8 +3,14 @@ class_name ZELevelManager extends Node2D
 @export var LevelCode: String = "" ## stores as password
 @export var LevelTime: int = 60  ## level time limit relayed to hud
 @export var WarningTime : int = 15 ## time out warning threshold
+@export var ExitScoreBonus : int = 500 ## local editor variables to effect bonuses
+@export var PerSecondBonus : int = 100
+@export var PerMovePenalty : int = 25
+@export var TutorialScoreBypass : bool = false
 @onready var player := $Player
 @onready var resetTime := 0.0
+var loadingScore = Globals.Game_Globals.get("player_score") ## compare score for reloads
+var nextLevel = null ## pointer for next scene string
 var localHud = null ## pointer for hud
 var timeUp : bool = false ## to monitor local hud timer
 
@@ -18,13 +24,19 @@ func _ready() -> void:
 	if SoundControl.fadeState != SoundControl.FADE_STATES.PEAK_VOLUME:
 		SoundControl.fadeState = SoundControl.FADE_STATES.IN_TRIGGER
 
-	## connect hud to scene change functions
+	## connect hud to scene change and score process functions
+	nextLevel = $ExitTile.NextLevelCode
 	localHud = get_node("Player/ZEHud")
 	localHud.restart_room.connect(restartRoom)
 	localHud.exit_game.connect(exitGame)
+	localHud.score_processed.connect(nextRoom)
+	## update global data report and local UI feedback
 	localHud.timeLimit = Globals.Current_Level_Data.get("time_limit")
 	localHud.warningTime = Globals.Current_Level_Data.get("warning_threshold")
 	localHud.timerValue = localHud.timeLimit
+	localHud.secondBonus = PerSecondBonus
+	localHud.movePenalty = PerMovePenalty
+	localHud.passwordReport(str(LevelCode))
 
 
 
@@ -56,24 +68,40 @@ func _process(delta: float) -> void:
 	
 	
 
-
-func _on_exit_tile_player_exits(LevelToGoTo: String) -> void:
-	localHud.closeHud() ## close hud
+func _on_exit_tile_player_exits() -> void:
 	SoundControl.playCue(SoundControl.success,2.0) ## sound trigger
+	if !TutorialScoreBypass: ## process score before exit
+		localHud.scoreProcessFlag = true
+	else: ## if tutorial, do not apply score bonuses/penalties
+		nextRoom()
+
+
+func nextRoom(): ## load next level
+	nextLevel = $ExitTile.NextLevelCode
 	player.currentState = player.PlayerState.OnExit
-	SceneManager.call_deferred("GoToNewSceneString",self, Globals.Game_Globals[LevelToGoTo])
+	if nextLevel != str(SceneManager.gameRoot.title):
+		SceneManager.call_deferred("GoToNewSceneString", Globals.Game_Globals[nextLevel])
+	else:
+		Globals.Game_Globals.set("player_score",0)
+		exitGame()
 
 
 func _on_steak_manager_all_steak_collected() -> void:
-	$ExitTile.ActavateExit()
+	$ExitTile.ActavateExit() ## update score and apply exit score open bonus
+	var _old = Globals.Game_Globals.get("player_score")
+	Globals.Game_Globals.set("player_score",(_old+ExitScoreBonus))
 
 
 func restartRoom() -> void:
-	localHud.closeHud()
-	SceneManager.call_deferred("GoToNewSceneString",self, Globals.Game_Globals[LevelCode])
+	localHud.closeHud() ## close hud and compare original score before reload
+	var _score = Globals.Game_Globals.get("player_score")
+	if _score != loadingScore:
+		Globals.Game_Globals.set("player_score",loadingScore)
+	SceneManager.call_deferred("GoToNewSceneString", Globals.Game_Globals[LevelCode])
 
 
 func exitGame() -> void: ## game exit function, refers to gameroot function
+	Globals.Game_Globals.set("player_score",0) ## reset score to zero on exit
 	var _root = get_parent()
 	_root.ReturnToTitle()
 

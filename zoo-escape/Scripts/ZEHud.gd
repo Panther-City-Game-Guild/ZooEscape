@@ -4,6 +4,9 @@ extends Control
 var steakValue : int = 1 ## live monitor of steak total
 var timerValue : int = 1 ## live monitor of timer
 var movesValue : int = 0 ## live monitor of moves
+var scoreCurrent : int = Globals.Game_Globals.get("player_score") ## player score
+var secondBonus : int = 50 ## values for abstraction from parent to apply
+var movePenalty : int = 25
 var moveMonitoring : bool = false ## shows timer has started
 var timesUp : bool = false ## shows time is out
 var allSteaksCollected : bool = false ## shows goal is open
@@ -14,7 +17,10 @@ var password : String = "ABCD" ## abstraction for password
 @export var timeLimit : int = 30 # value to change for each level
 signal restart_room ## reload signal
 signal exit_game ## exit to title signal
+signal score_processed ## score processing signal for process score
+var scoreProcessFlag : bool = false
 var focusState : int = 0
+var passwordState = Globals.Current_Settings["passwordWindowOpen"]
 enum FOCUS_STATES {
 	RESTART,
 	EXIT}
@@ -32,16 +38,20 @@ func _ready() -> void: ## reset animations at ready, fetch start values
 	
 
 func _process(_delta: float) -> void:
+	## monitor password state to hold hud move monitoring
+	passwordState = Globals.Current_Settings["passwordWindowOpen"]
+	scoreCurrent = Globals.Game_Globals.get("player_score")
+	$HudWindow/ScoreValue.text = str(scoreCurrent)
 	## fetch password from level manager and update
 	$TimeOutCurtain/PasswordBox/PasswordLabel.text = "PASSWORD: "+str(password)
-	if !timesUp: ## if timer not out, update values and monitor inputs
+	if !timesUp and passwordState == false: ## if timer not out, update values and monitor inputs
 		steakValueFetch()
 		valueMonitoring()
 		inputWatch()
 
 
 	## level timer does not start until first input
-	if !moveMonitoring and !timesUp:
+	if !moveMonitoring and !timesUp and passwordState == false:
 		if Input.is_action_just_pressed("DigitalDown"):
 			levelTimerStart()
 		if Input.is_action_just_pressed("DigitalLeft"):
@@ -64,6 +74,11 @@ func _process(_delta: float) -> void:
 			buttonFocusGrab()
 		if Input.is_action_just_pressed("DigitalUp"):
 			buttonFocusGrab()
+
+
+	if scoreProcessFlag:
+		scoreProcessing()
+		get_tree().paused = true
 
 
 ## button to grab focus from keyboard for timeout buttons
@@ -119,6 +134,10 @@ func valueMonitoring():
 		$HUDAnimationAlt.play("goal") ## play on alt to prevent conflicts
 
 
+func passwordReport(data:String): ## function for updating password, referenced by manager/ui
+	$HudWindow/PasswordValue.text = data
+
+
 func steakValueFetch(): ## count amount of steaks in scene
 	var steakCount = get_tree().get_node_count_in_group("steaks")
 	steakValue = steakCount
@@ -136,27 +155,28 @@ func inputWatch(): ## listen for moves and update total
 
 ## time functionality
 func _on_level_timer_timeout() -> void:
-	if timerValue >= 1 and !timesUp: ## if time not up, clock counts down
-		timerValue-=1
-		$LevelTimer.start(1)
+	if !scoreProcessFlag: ## do not log timeouts during score processing
+		if timerValue >= 1 and !timesUp: ## if time not up, clock counts down
+			timerValue-=1
+			$LevelTimer.start(1)
 
-	if timerValue == 0: ## on time up, flip state, stop non-system noises and trigger feedback
-		$HUDAnimationAlt.play("close")
-		SoundControl.stopSounds()
-		get_tree().paused = true
-		moveMonitoring = false
-		$LevelTimer.stop()
-		SoundControl.playCue(SoundControl.fail,3.0)
-		$HUDAnimation.play("time_out")
-		timesUp = true
-		$AlertCue.pitch_scale = 0.5 ## alert noise
-		$AlertCue.play()
+		if timerValue == 0: ## on time up, flip state, stop non-system noises and trigger feedback
+			$HUDAnimationAlt.play("close")
+			SoundControl.stopSounds()
+			get_tree().paused = true
+			moveMonitoring = false
+			$LevelTimer.stop()
+			SoundControl.playCue(SoundControl.fail,3.0)
+			$HUDAnimation.play("time_out")
+			timesUp = true
+			$AlertCue.pitch_scale = 0.5 ## alert noise
+			$AlertCue.play()
 
 
-	## warnings during period of time before time out (variable)
-	if timerValue < warningTime and timerValue > 0:
-		$HUDAnimation.play("warning")
-		$OpenCue.play() ## additional warning cue every even second for dynamics
+		## warnings during period of time before time out (variable)
+		if timerValue < warningTime and timerValue > 0:
+			$HUDAnimation.play("warning")
+			$OpenCue.play() ## additional warning cue every even second for dynamics
 
 
 
@@ -213,3 +233,17 @@ func resetBarFade():
 func resetPrompt():
 	$HUDAnimationAlt.play("close")
 	$ResetBar/ResetLabel.text = "RELOADING..."
+
+
+func scoreProcessing():
+	if timerValue > 0:
+		timerValue-=1
+		var _old = Globals.Game_Globals.get("player_score")
+		Globals.Game_Globals.set("player_score",(_old+secondBonus))
+	else:
+		if movesValue > 0:
+			movesValue-=1
+			var _old2 = Globals.Game_Globals.get("player_score")
+			Globals.Game_Globals.set("player_score",(_old2-movePenalty))
+		else:
+			score_processed.emit()

@@ -21,4 +21,4 @@ func ActavateExit() -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if animation == "Active" && body.is_in_group("ZEPlayer"):
-		PlayerExits.emit(NextLevelCode)
+		PlayerExits.emit() ## emit signal no longer needs level data
