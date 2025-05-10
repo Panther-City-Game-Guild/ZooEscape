@@ -27,17 +27,20 @@ func _ready() -> void:
 	## connect hud to scene change and score process functions
 	nextLevel = $ExitTile.NextLevelCode
 	localHud = get_node("Player/ZEHud")
-	localHud.restart_room.connect(restartRoom)
-	localHud.exit_game.connect(exitGame)
-	localHud.score_processed.connect(nextRoom)
-	## update global data report and local UI feedback
-	localHud.timeLimit = Globals.Current_Level_Data.get("time_limit")
-	localHud.warningTime = Globals.Current_Level_Data.get("warning_threshold")
-	localHud.timerValue = localHud.timeLimit
-	localHud.secondBonus = PerSecondBonus
-	localHud.movePenalty = PerMovePenalty
-	localHud.passwordReport(str(LevelCode))
-
+	if localHud != null:
+		localHud.restart_room.connect(restartRoom)
+		localHud.exit_game.connect(exitGame)
+		localHud.score_processed.connect(nextRoom)
+		## update global data report and local UI feedback
+		localHud.timeLimit = Globals.Current_Level_Data.get("time_limit")
+		localHud.warningTime = Globals.Current_Level_Data.get("warning_threshold")
+		localHud.timerValue = localHud.timeLimit
+		localHud.secondBonus = PerSecondBonus
+		localHud.movePenalty = PerMovePenalty
+		localHud.passwordReport(str(LevelCode))
+	else:
+		var _settings = get_node("ZESettings")
+		_settings.escapePressed.connect(exitGame)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

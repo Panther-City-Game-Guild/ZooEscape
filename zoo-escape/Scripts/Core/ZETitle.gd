@@ -1,39 +1,19 @@
 extends Node2D
 
-@onready var newGamePos := Vector2(272, 240)
-@onready var passwordPos := Vector2(272, 264)
-@onready var selector := $Selector
+var menuState = MENU_STATES.NEW_GAME
+enum MENU_STATES {
+	NEW_GAME,
+	PASSWORD,
+	SETTINGS,
+	EXIT}
+var areYouSure : bool = false
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
-	selector.position = newGamePos
+	$NewGameButton.grab_focus()
 	setLevelGlobals()
 	SoundControl.resetMusicFade() ## reset music state
 	SceneManager.currentScene = self
-
-# Called when an InputEvent is detected
-func _input(event: InputEvent) -> void:
-	# TODO: Tell player that the "ActionButton" is <Z>, etc.
-	# NOTE: Had to re-add the "ui_accept" action to allow keyboard use, as <Enter> and <Space> do not work with "ActionButton"
-	if event.is_action_pressed("ActionButton"):
-		if selector.position == newGamePos:
-			SoundControl.playCue(SoundControl.start,1.0)
-			SceneManager.GoToNewSceneString(Scenes.ZETutorial1)
-			Globals.Game_Globals.set("player_score",0)
-			### change bgm and fade on out
-			SoundControl.levelChangeSoundCall(1.0,SoundControl.defaultBgm)
-		elif selector.position == passwordPos:
-			SceneManager.GoToNewSceneString(Scenes.ZEPassword)
-			
-	if Input.is_action_just_pressed("DigitalDown") || Input.is_action_just_pressed("DigitalUp"):
-		swapSelectorPos()
-
-
-func swapSelectorPos() -> void:
-	if selector.position == newGamePos:
-		selector.position = passwordPos
-	else: 
-		selector.position = newGamePos
 
 
 func setLevelGlobals() -> void:
@@ -68,3 +48,90 @@ func setLevelGlobals() -> void:
 	# Globals.Game_Globals["0195"] = 
 	# Globals.Game_Globals["5473"] = 
 	# Globals.Game_Globals["3706"] = 
+
+
+func _on_new_game_button_pressed() -> void:
+	SoundControl.playCue(SoundControl.start,1.0)
+	SceneManager.GoToNewSceneString(Scenes.ZETutorial1)
+	Globals.Game_Globals.set("player_score",0)
+	### change bgm and fade on out
+	SoundControl.levelChangeSoundCall(1.0,SoundControl.defaultBgm)
+
+
+func _on_password_button_pressed() -> void:
+	SceneManager.GoToNewSceneString(Scenes.ZEPassword)
+
+
+func _on_settings_button_pressed() -> void:
+	SceneManager.GoToNewSceneString(Scenes.ZESettings)
+
+
+func _on_exit_button_pressed() -> void:
+	if !areYouSure:
+		$ExitButton/RollText.speed_scale = 1.0
+		areYouSure = true
+		$ExitButton/RollText.play("roll_in")
+	else:
+		get_tree().quit()
+
+
+func areYouSureReset():
+	areYouSure = false
+	$ExitButton/RollText.speed_scale = 2.0
+	$ExitButton/RollText.play_backwards("roll_in")
+
+
+func focusEntered(_focusSelect:Button):
+	_focusSelect.grab_click_focus()
+
+
+func mouseEntered(_mouseSelect:Button):
+	_mouseSelect.grab_focus()
+
+
+func _on_new_game_button_focus_entered() -> void:
+	focusEntered($NewGameButton)
+
+
+func _on_new_game_button_mouse_entered() -> void:
+	mouseEntered($NewGameButton)
+
+
+func _on_password_button_focus_entered() -> void:
+	focusEntered($PasswordButton)
+
+
+func _on_password_button_mouse_entered() -> void:
+	mouseEntered($PasswordButton)
+
+
+func _on_settings_button_focus_entered() -> void:
+	focusEntered($SettingsButton)
+	if areYouSure:
+		areYouSureReset()
+
+
+func _on_settings_button_mouse_entered() -> void:
+	mouseEntered($SettingsButton)
+	if areYouSure:
+		areYouSureReset()
+
+
+func _on_exit_button_focus_entered() -> void:
+	if areYouSure: ## are you sure warning
+		focusEntered($ExitButton)
+
+
+func _on_exit_button_mouse_entered() -> void:
+	if areYouSure:
+		focusEntered($ExitButton)
+
+
+func _on_exit_button_focus_exited() -> void:
+	if areYouSure: ## if are you sure visible, reset
+		areYouSureReset()
+
+
+func _on_exit_button_mouse_exited() -> void:
+	if areYouSure:
+		areYouSureReset()

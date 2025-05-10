@@ -7,19 +7,20 @@ extends Node2D
 
 
 ## export for testing purposes, const to set boundaries and ease debugging
-const DEFAULT_VOLUME = -24
+const DEFAULT_VOLUME = -15
 const SILENCE = -80
 const defaultBgm = "res://Assets/Sound/theme.ogg"
 const testBgm = "res://Assets/Sound/tutorial.ogg"
 var currentBgm : String
 
 ## references to global volume levels (we can have options for this to adjust)
-var volumeReference : float = DEFAULT_VOLUME ## monitored by players and updates
-@export var bgmLevel : int = DEFAULT_VOLUME
-@export var sfxLevel : int = DEFAULT_VOLUME
-@export var cueLevel : int = DEFAULT_VOLUME
+var masterLevel : int = Globals.Current_Options_Settings['master_volume']
+var bgmLevel : int = Globals.Current_Options_Settings['music_volume']
+var sfxLevel : int = Globals.Current_Options_Settings['sfx_volume']
+var cueLevel : int = Globals.Current_Options_Settings['cue_volume']
+var volumeReference : float = bgmLevel
 @export var fadeRate : float = 0.2 ## default fade rate, can be updated in code
-var max_volume = -24 ## reference for maximum
+
 
 ## fade state machine for audio fading
 var fadeState : int = 0
@@ -53,20 +54,22 @@ const start = "res://Assets/Sound/flourish_up.ogg"
 
 
 func _ready() -> void: ## sound preferences retrieved at ready
-	setSoundPreferences(SILENCE,sfxLevel,cueLevel) ## set levels
-	## TODO: make options screen for user-determined levels
+	setSoundPreferences(masterLevel,SILENCE,sfxLevel,cueLevel) ## set levels
 	currentBgm = testBgm ## default title music
 
 
 func _process(delta: float) -> void: ## listen for fade states and update volumes
-	bgmFadingMachine(delta,fadeRate)
+	if fadeState != FADE_STATES.PEAK_VOLUME:
+		bgmFadingMachine(delta,fadeRate)
 
 
 ## values set for sound levels
-func setSoundPreferences(_bgm:int, _sfx:int, _cue:int):
+func setSoundPreferences(_master:int,_bgm:int, _sfx:int, _cue:int):
+	AudioServer.set_bus_volume_db(0,_master)
 	$BGM.volume_db = _bgm ## default to silence for fade in
 	$SFX.volume_db = _sfx
 	$Cue.volume_db = _cue
+
 
 
 ## call bgm file and play (state machine handles stop and start automatically)
@@ -123,14 +126,14 @@ func bgmFadingMachine(_delta:float,_rate:float):
 			playBgm() ## start play
 			fadeState+=1 ## move to next
 		FADE_STATES.IN_CURVE:
-			if volumeReference < max_volume: ## increase volume while below target
+			if volumeReference < masterLevel: ## increase volume while below target
 				volumeReference+=(_delta+_rate)
 			else: ## then update state
 				fadeState+=1
 		FADE_STATES.PEAK_VOLUME: # hold volume steady when not fading
-			volumeReference = max_volume
+			volumeReference = masterLevel
 		FADE_STATES.OUT_TRIGGER: # start volume decrease (one-shot)
-			if volumeReference >= max_volume:
+			if volumeReference >= masterLevel:
 				volumeReference-=(_delta+_rate)
 				fadeState+=1
 		FADE_STATES.OUT_CURVE: ## if not silence, reduce rate

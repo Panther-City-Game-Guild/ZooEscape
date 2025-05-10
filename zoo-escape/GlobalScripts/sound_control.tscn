@@ -6,7 +6,6 @@
 
 [node name="sound_control" type="Node2D"]
 script = ExtResource("1_wp1sj")
-bgmLevel = -80
 
 [node name="BGM" type="AudioStreamPlayer" parent="."]
 process_mode = 4

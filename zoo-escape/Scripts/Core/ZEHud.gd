@@ -41,6 +41,8 @@ func _ready() -> void: ## reset animations at ready, fetch start values
 	steakValueFetch()
 	timerValue = timeLimit
 	## to avoid queueing error on prompt
+	$OpenCue.volume_db = SoundControl.cueLevel
+	$AlertCue.volume_db = SoundControl.cueLevel
 	
 
 func _process(_delta: float) -> void:
@@ -133,7 +135,7 @@ func valueMonitoring():
 	## update timer as it counts down
 	if timerValue < timeLimit and moveMonitoring:
 		$HudWindow/TimerValue.text = str(timerValue)+"s"
-	if timerValue == 0: ## last second warning
+	if timerValue == 0 and scoreProcessState == SCORE_PROCESS_STATES.IDLE: ## last second warning
 		$HudWindow/TimerValue.modulate = Color.RED
 		$HudWindow/TimerText.modulate = Color.RED
 

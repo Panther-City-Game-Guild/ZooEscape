@@ -10,3 +10,4 @@ extends Node
 @onready var ZEDebug2 := "res://Scenes/Levels/ZEDebug2.tscn"
 @onready var ZETutorial1 := "res://Scenes/Levels/ZETutorial1.tscn"
 @onready var ZELevel1 := "res://Scenes/Levels/ZELevel1.tscn"
+@onready var ZESettings := "res://Scenes/Core/ZESettings.tscn"
