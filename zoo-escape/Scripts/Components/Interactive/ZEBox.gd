@@ -8,7 +8,12 @@ enum states {
 @onready var currentState := states.Movable
 @onready var ray := $RayCast2D
 
-func Move(dir: Vector2) -> bool:
+# set up signals
+func _ready() -> void:
+	$WaterCheck.area_entered.connect(waterCheckAreaEnter)
+
+# if possable moves the box and reports back to caller
+func move(dir: Vector2) -> bool:
 	ray.target_position = dir * Globals.ZETileSize
 	ray.force_raycast_update()
 	
@@ -20,8 +25,8 @@ func Move(dir: Vector2) -> bool:
 		SoundControl.playSfx(SoundControl.scuff)
 		return false
 
-
-func _on_water_check_area_entered(area: Area2D) -> void:
+# when the area see water update the state of the box
+func waterCheckAreaEnter(area: Area2D) -> void:
 		SoundControl.playSfx(SoundControl.splorch)
 		area.queue_free()
 		

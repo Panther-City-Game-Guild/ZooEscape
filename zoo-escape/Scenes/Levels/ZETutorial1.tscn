@@ -43,9 +43,5 @@ NextLevelCode = "0387"
 [node name="Player" parent="." instance=ExtResource("2_4b3dj")]
 position = Vector2(104, 136)
 
-[connection signal="AllSteakCollected" from="SteakManager" to="." method="_on_steak_manager_all_steak_collected"]
-[connection signal="PlayerExits" from="ExitTile" to="." method="_on_exit_tile_player_exits"]
-[connection signal="inWater" from="Player" to="." method="_on_player_in_water"]
-
 [editable path="Player"]
 [editable path="Player/ZEPassword"]

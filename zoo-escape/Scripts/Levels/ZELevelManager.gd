@@ -8,6 +8,8 @@ class_name ZELevelManager extends Node2D
 @export var PerMovePenalty := 25
 @export var TutorialScoreBypass := false
 @onready var player := $Player
+@onready var exitTile := $ExitTile
+@onready var steakManager := $SteakManager
 @onready var resetTime := 0.0
 @onready var nextLevel: String = $ExitTile.NextLevelCode ## pointer for next scene string
 var loadingScore = Globals.Game_Globals.get("player_score") ## compare score for reloads
@@ -17,6 +19,9 @@ var timeUp := false ## to monitor local hud timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	player.InWater.connect(restartRoom)
+	exitTile.PlayerExits.connect(exitLevel)
+	steakManager.AllSteaksCollected.connect(allSteaksCollected)
 	Globals.Current_Level_Data.set("time_limit", LevelTime)
 	Globals.Current_Level_Data.set("warning_threshold", WarningTime)
 	## check to ensure bgm fade level is consistent
@@ -69,7 +74,8 @@ func _process(delta: float) -> void:
 		restartRoom()
 	
 	
-func _on_exit_tile_player_exits() -> void:
+func exitLevel() -> void:
+	player.currentState = player.playerState.ONEXIT
 	SoundControl.playCue(SoundControl.success, 2.0) ## sound trigger
 	if !TutorialScoreBypass: ## process score before exit
 		localHud.scoreProcessState = 1
@@ -78,15 +84,14 @@ func _on_exit_tile_player_exits() -> void:
 
 
 func nextRoom(): ## load next level
-	player.currentState = player.playerState.ONEXIT
 	if nextLevel != str(SceneManager.gameRoot.title):
 		SceneManager.call_deferred("GoToNewSceneString", Globals.Game_Globals[nextLevel])
 	else:
 		Globals.Game_Globals.set("player_score", 0)
 		exitGame()
 
-func _on_steak_manager_all_steak_collected() -> void:
-	$ExitTile.ActavateExit() ## update score and apply exit score open bonus
+func allSteaksCollected() -> void:
+	exitTile.activateExit() ## update score and apply exit score open bonus
 	var _old = Globals.Game_Globals.get("player_score")
 	Globals.Game_Globals.set("player_score", (_old + ExitScoreBonus))
 
@@ -103,7 +108,4 @@ func exitGame() -> void: ## game exit function, refers to gameroot function
 	Globals.Game_Globals.set("player_score", 0) ## reset score to zero on exit
 	var _root = get_parent()
 	_root.ReturnToTitle()
-
-
-func _on_player_in_water() -> void:
-	restartRoom()
+	
