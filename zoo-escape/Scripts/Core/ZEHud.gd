@@ -30,7 +30,7 @@ var passwordState = Globals.Current_Settings["passwordWindowOpen"]
 enum FOCUS_STATES {
 	RESTART,
 	EXIT}
-var moveLog = []
+var moveLog = Vector2.ZERO ## for logging current position on move counting
 
 
 func _ready() -> void: ## reset animations at ready, fetch start values
@@ -152,7 +152,7 @@ func steakValueFetch(): ## count amount of steaks in scene
 	steakValue = steakCount
 
 
-func inputWatch(): ## listen for moves and update total
+func inputWatch(): ## listen for moves and update move tracking
 	if Input.is_action_just_pressed("DigitalDown"):
 		moveLogging()
 	if Input.is_action_just_pressed("DigitalUp"):
@@ -163,13 +163,12 @@ func inputWatch(): ## listen for moves and update total
 		moveLogging()
 
 
-func moveLogging():
-	if !moveLog.has(global_position):
-		var refValue = movesValue
+func moveLogging(): ## if in a new position, log the move
+	if moveLog == global_position:
+		var refValue = movesValue ## check total before logging (avoids double counting)
 		if movesValue != refValue:
 			movesValue+=1
-		moveLog.clear()
-		moveLog.append(global_position)
+		moveLog = global_position ## update current position log
 		
 
 ## time functionality
