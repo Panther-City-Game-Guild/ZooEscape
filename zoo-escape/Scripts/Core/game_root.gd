@@ -1,7 +1,7 @@
 class_name GameRoot extends Node2D
 
 @onready var aniPlayer: AnimationPlayer = $AnimationPlayer
-var title = load("res://Scenes/ZETitle.tscn")
+var title = load("res://Scenes/Core/ZETitle.tscn")
 
 func _ready() -> void:
 	SceneManager.gameRoot = self

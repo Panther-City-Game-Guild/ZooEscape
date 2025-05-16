@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dbcs0mgpcg3be" path="res://Scripts/Player/ZEPlayer.gd" id="1_fxagb"]
 [ext_resource type="Texture2D" uid="uid://cbcuw7wsx26tw" path="res://Assets/Images/CATSPRITESHEET_Gray.png" id="2_mim3m"]
 [ext_resource type="PackedScene" uid="uid://nheh2k2bhpjo" path="res://Scenes/Core/ZEHud.tscn" id="3_anyud"]
-[ext_resource type="PackedScene" uid="uid://10h8qxtfap0i" path="res://Scenes/Core/ZEPassword.tscn" id="4_6pkit"]
+[ext_resource type="PackedScene" uid="uid://10h8qxtfap0i" path="res://Scenes/ZEPassword.tscn" id="4_6pkit"]
 [ext_resource type="AudioStream" uid="uid://b3v6myl26lgyv" path="res://Assets/Sound/deep_thump.ogg" id="5_gxbec"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_44cu1"]

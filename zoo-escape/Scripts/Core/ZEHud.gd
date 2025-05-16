@@ -15,9 +15,9 @@ var resetGauge : float = 0.0 ## to compare with level manager
 var password : String = "ABCD" ## abstraction for password
 var warningTime : int = 10 ## value when warning cues
 var timeLimit : int = 30 # value to change for each level
-signal restart_room ## reload signal
-signal exit_game ## exit to title signal
-signal score_processed ## score processing signal for process score
+signal RestartRoom ## reload signal
+signal ExitGame ## exit to title signal
+signal ScoreProcessed ## score processing signal for process score
 var post_score : bool = false ## post score process flag, prevents overloading buffer
 var scoreProcessState : SCORE_PROCESS_STATES = SCORE_PROCESS_STATES.IDLE
 enum SCORE_PROCESS_STATES {
@@ -30,7 +30,7 @@ var passwordState = Globals.Current_Settings["passwordWindowOpen"]
 enum FOCUS_STATES {
 	RESTART,
 	EXIT}
-
+var moveLog = []
 
 
 func _ready() -> void: ## reset animations at ready, fetch start values
@@ -154,13 +154,23 @@ func steakValueFetch(): ## count amount of steaks in scene
 
 func inputWatch(): ## listen for moves and update total
 	if Input.is_action_just_pressed("DigitalDown"):
-		movesValue+=1
+		moveLogging()
 	if Input.is_action_just_pressed("DigitalUp"):
-		movesValue+=1
+		moveLogging()
 	if Input.is_action_just_pressed("DigitalLeft"):
-		movesValue+=1
+		moveLogging()
 	if Input.is_action_just_pressed("DigitalRight"):
-		movesValue+=1
+		moveLogging()
+
+
+func moveLogging():
+	if !moveLog.has(global_position):
+		var refValue = movesValue
+		if movesValue != refValue:
+			movesValue+=1
+		moveLog.clear()
+		moveLog.append(global_position)
+		
 
 ## time functionality
 func _on_level_timer_timeout() -> void:
@@ -209,7 +219,7 @@ func _on_restart_button_pressed() -> void:
 	SoundControl.playCue(SoundControl.flutter,3.0)
 	buttonsDisabled()
 	SoundControl.resetMusicFade()
-	restart_room.emit() ## signal to levelManager to reload
+	RestartRoom.emit() ## signal to levelManager to reload
 
 
 func _on_exit_button_pressed() -> void:
@@ -217,7 +227,7 @@ func _on_exit_button_pressed() -> void:
 	SoundControl.playCue(SoundControl.ruined,0.5)
 	buttonsDisabled()
 	SoundControl.resetMusicFade()
-	exit_game.emit() ## signal to levelManager to exit to title
+	ExitGame.emit() ## signal to levelManager to exit to title
 
 
 func buttonsDisabled(): ## function to close buttons on input
@@ -262,7 +272,7 @@ func scoreProcessing(): ## score processing state machine
 				Globals.Game_Globals.set("player_score",(_old2-movePenalty))
 			else: ## then state flips back to off
 				print("Score processed!")
-				score_processed.emit() ## after emitting one signal
+				ScoreProcessed.emit() ## after emitting one signal
 				scoreProcessState = SCORE_PROCESS_STATES.POST
 		SCORE_PROCESS_STATES.POST:
-			pass
+			get_tree().paused = false

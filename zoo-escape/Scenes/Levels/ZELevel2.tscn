@@ -147,3 +147,6 @@ position = Vector2(72, 152)
 
 [node name="Player" parent="." instance=ExtResource("10_uxmkr")]
 position = Vector2(72, 40)
+
+[editable path="Player"]
+[editable path="Player/ZEPassword"]

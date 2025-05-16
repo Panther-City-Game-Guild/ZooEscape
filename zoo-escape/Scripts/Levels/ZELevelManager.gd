@@ -33,9 +33,9 @@ func _ready() -> void:
 
 	localHud = get_node("Player/ZEHud")
 	if localHud != null:
-		localHud.restart_room.connect(restartRoom)
-		localHud.exit_game.connect(exitGame)
-		localHud.score_processed.connect(nextRoom)
+		localHud.RestartRoom.connect(restartRoom)
+		localHud.ExitGame.connect(exitGame)
+		localHud.ScoreProcessed.connect(nextRoom)
 		## update global data report and local UI feedback
 		localHud.timeLimit = Globals.Current_Level_Data.get("time_limit")
 		localHud.warningTime = Globals.Current_Level_Data.get("warning_threshold")
