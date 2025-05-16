@@ -1,28 +1,28 @@
 extends Node2D
 
-
 @onready var bgm = $BGM ## music (pauses position on pause)
 @onready var sfx = $SFX ## in-game sound effects (pauses position on pause)
 @onready var cue = $Cue ## ui sound effects (ignores pause)
 
-
 ## export for testing purposes, const to set boundaries and ease debugging
-const DEFAULT_VOLUME = -24
-const SILENCE = -80
+const MAX_VOLUME = 0
+const DEFAULT_VOLUME = -6
+const SILENCE = -20
 const defaultBgm = "res://Assets/Sound/theme.ogg"
 const testBgm = "res://Assets/Sound/tutorial.ogg"
 var currentBgm : String
 
 ## references to global volume levels (we can have options for this to adjust)
-var volumeReference : float = DEFAULT_VOLUME ## monitored by players and updates
-@export var bgmLevel : int = DEFAULT_VOLUME
-@export var sfxLevel : int = DEFAULT_VOLUME
-@export var cueLevel : int = DEFAULT_VOLUME
-@export var fadeRate : float = 0.2 ## default fade rate, can be updated in code
-var max_volume = -24 ## reference for maximum
+var masterLevel: float = Globals.Current_Options_Settings['master_volume']
+var bgmLevel: float = Globals.Current_Options_Settings['music_volume']
+var sfxLevel: float = Globals.Current_Options_Settings['sfx_volume']
+var cueLevel: float = Globals.Current_Options_Settings['cue_volume']
+var volumeReference := bgmLevel
+@export var fadeRate := 0.2 ## default fade rate, can be updated in code
+
 
 ## fade state machine for audio fading
-var fadeState : int = 0
+var fadeState := 0
 enum FADE_STATES {
 	SILENCE, ## no audio
 	IN_TRIGGER, ## audio starts increase (one-shot)
@@ -33,49 +33,45 @@ enum FADE_STATES {
 
 
 ## global audio references for easy access
-const alert = "res://Assets/Sound/alert.ogg"
-const blip = "res://Assets/Sound/blip.ogg"
-const chomp = "res://Assets/Sound/chompy.ogg"
-const down = "res://Assets/Sound/flourish_down.ogg"
-const pickup = "res://Assets/Sound/pickup.ogg"
-const flutter = "res://Assets/Sound/flutter.ogg"
-const fail = "res://Assets/Sound/game_over.ogg"
-const ruined = "res://Assets/Sound/crumble_noise.ogg"
-const scratch = "res://Assets/Sound/scratch_delay.ogg"
-const scuff = "res://Assets/Sound/scuff_noise.ogg"
-const splorch = "res://Assets/Sound/splorch.ogg"
-const success = "res://Assets/Sound/success.ogg"
-const thump = "res://Assets/Sound/thump.ogg"
-const zap = "res://Assets/Sound/zap_delayed.ogg"
-const start = "res://Assets/Sound/flourish_up.ogg"
-
-
+const alert := "res://Assets/Sound/alert.ogg"
+const blip := "res://Assets/Sound/blip.ogg"
+const chomp := "res://Assets/Sound/chompy.ogg"
+const down := "res://Assets/Sound/flourish_down.ogg"
+const pickup := "res://Assets/Sound/pickup.ogg"
+const flutter := "res://Assets/Sound/flutter.ogg"
+const fail := "res://Assets/Sound/game_over.ogg"
+const ruined := "res://Assets/Sound/crumble_noise.ogg"
+const scratch := "res://Assets/Sound/scratch_delay.ogg"
+const scuff := "res://Assets/Sound/scuff_noise.ogg"
+const splorch := "res://Assets/Sound/splorch.ogg"
+const success := "res://Assets/Sound/success.ogg"
+const thump := "res://Assets/Sound/thump.ogg"
+const zap := "res://Assets/Sound/zap_delayed.ogg"
+const start := "res://Assets/Sound/flourish_up.ogg"
 
 
 func _ready() -> void: ## sound preferences retrieved at ready
-	setSoundPreferences(SILENCE,sfxLevel,cueLevel) ## set levels
-	## TODO: make options screen for user-determined levels
+	setSoundPreferences(masterLevel,SILENCE,sfxLevel,cueLevel) ## set levels
 	currentBgm = testBgm ## default title music
 
 
 func _process(delta: float) -> void: ## listen for fade states and update volumes
-	bgmFadingMachine(delta,fadeRate)
-
+	if fadeState != FADE_STATES.PEAK_VOLUME:
+		bgmFadingMachine(delta,fadeRate)
 
 ## values set for sound levels
-func setSoundPreferences(_bgm:int, _sfx:int, _cue:int):
-	$BGM.volume_db = _bgm ## default to silence for fade in
-	$SFX.volume_db = _sfx
-	$Cue.volume_db = _cue
-
+func setSoundPreferences(_master:float,_bgm:float, _sfx:float, _cue:float):
+	AudioServer.set_bus_volume_db(0,_master)
+	AudioServer.set_bus_volume_db(1,_cue)
+	AudioServer.set_bus_volume_db(2,_sfx)
+	AudioServer.set_bus_volume_db(3,_bgm)
 
 ## call bgm file and play (state machine handles stop and start automatically)
-func playBgm():
+func playBgm() -> void:
 	var _loadBgm = load(currentBgm)
 	bgm.volume_db = bgmLevel
 	bgm.stream = _loadBgm
 	bgm.play()
-
 
 ## to update fade value
 func fadeRateUpdate(_newValue:float):
@@ -90,10 +86,9 @@ func levelChangeSoundCall(_value:float, _music:String):
 
 
 # hard stop function
-func stopSounds():
+func stopSounds() -> void:
 	bgm.stop()
 	sfx.stop()
-
 
 ## call sfx file and play
 func playSfx(_sfxFile:String):
@@ -123,14 +118,14 @@ func bgmFadingMachine(_delta:float,_rate:float):
 			playBgm() ## start play
 			fadeState+=1 ## move to next
 		FADE_STATES.IN_CURVE:
-			if volumeReference < max_volume: ## increase volume while below target
+			if volumeReference < bgmLevel: ## increase volume while below target
 				volumeReference+=(_delta+_rate)
 			else: ## then update state
 				fadeState+=1
 		FADE_STATES.PEAK_VOLUME: # hold volume steady when not fading
-			volumeReference = max_volume
+			volumeReference = bgmLevel
 		FADE_STATES.OUT_TRIGGER: # start volume decrease (one-shot)
-			if volumeReference >= max_volume:
+			if volumeReference >= bgmLevel:
 				volumeReference-=(_delta+_rate)
 				fadeState+=1
 		FADE_STATES.OUT_CURVE: ## if not silence, reduce rate
@@ -143,5 +138,32 @@ func bgmFadingMachine(_delta:float,_rate:float):
 			fadeState+=1
 
 
-func resetMusicFade():
+func resetMusicFade() -> void:
 	fadeState = FADE_STATES.SILENCE
+	$BGM.volume_db = SILENCE
+
+
+## external function for checking mute state
+func muteAudioBusCheck() -> void:
+	if AudioServer.get_bus_volume_db(0) < -19:
+		AudioServer.set_bus_mute(0,true)
+	else:
+		AudioServer.set_bus_mute(0,false)
+
+
+	if AudioServer.get_bus_volume_db(3) < -19:
+		AudioServer.set_bus_mute(3,true)
+	else:
+		AudioServer.set_bus_mute(3,false)
+
+
+	if AudioServer.get_bus_volume_db(2) < -19:
+		AudioServer.set_bus_mute(2,true)
+	else:
+		AudioServer.set_bus_mute(2,false)
+
+
+	if AudioServer.get_bus_volume_db(1) < -19:
+		AudioServer.set_bus_mute(1,true)
+	else:
+		AudioServer.set_bus_mute(1,false)

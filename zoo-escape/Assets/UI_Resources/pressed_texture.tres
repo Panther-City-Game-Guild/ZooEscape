@@ -1,6 +1,6 @@
 [gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://b6pmunfpdsdix"]
 
-[ext_resource type="Texture2D" uid="uid://bux0jend2lpdp" path="res://Assets/ui_focus_gradient.png" id="1_lc2us"]
+[ext_resource type="Texture2D" uid="uid://bux0jend2lpdp" path="res://Assets/Images/ui_focus_gradient.png" id="1_lc2us"]
 
 [resource]
 texture = ExtResource("1_lc2us")

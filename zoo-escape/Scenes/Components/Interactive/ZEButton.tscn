@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://64cp455l5y64"]
+
+[ext_resource type="Texture2D" uid="uid://bgm3y4noolbcg" path="res://Assets/Images/ZEButton.png" id="1_xmseu"]
+[ext_resource type="Script" uid="uid://dvcael4e4y3vr" path="res://Scripts/Components/Interactive/ZEButton.gd" id="2_13oxr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qsivu"]
+atlas = ExtResource("1_xmseu")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lqqk5"]
+atlas = ExtResource("1_xmseu")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l1f6s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qsivu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lqqk5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1wmwe"]
+size = Vector2(14, 14)
+
+[node name="Button" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_l1f6s")
+script = ExtResource("2_13oxr")
+
+[node name="ButtonArea" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ButtonArea"]
+shape = SubResource("RectangleShape2D_1wmwe")
+
+[connection signal="area_entered" from="ButtonArea" to="." method="_on_button_area_area_entered"]
+[connection signal="area_exited" from="ButtonArea" to="." method="_on_button_area_area_exited"]
+[connection signal="body_entered" from="ButtonArea" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="ButtonArea" to="." method="_on_area_2d_body_exited"]

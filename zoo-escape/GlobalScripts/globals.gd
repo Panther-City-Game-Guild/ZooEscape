@@ -5,22 +5,24 @@ extends Node
 
 # Volume settings are included by default and changed by the SettingsManager
 # Do not alter this variable within your game; use the SettingsManager
-var Current_Volume_Settings: Dictionary = {
-	"master_volume": null,
-	"music_volume": null,
-	"fx_volume": null
+var Current_Options_Settings := {
+	"master_volume": -6,
+	"music_volume": -6,
+	"sfx_volume": -6,
+	"cue_volume": -6,
+	"analog_deadzone": 0.50
 }
 
 ## this will store global values for transferring level data to hud
-var Current_Level_Data: Dictionary = {
-	"time_limit" : 60,
-	"warning_threshold" : 15
+@onready var Current_Level_Data := {
+	"time_limit": 60,
+	"warning_threshold": 15
 }
 
 # Globally available settings that can be used to store different settings
 # Used to hold additional settings for your game, as needed
-var Current_Settings : Dictionary = {
-	"passwordWindowOpen" : false ## global hud control flag
+@onready var Current_Settings := {
+	"passwordWindowOpen": false ## global hud control flag
 }
 
 # A global variable playground for your game
@@ -29,15 +31,46 @@ var Current_Settings : Dictionary = {
 # Use Globals.Game_Globals.varName to retrieve the value
 # 	Alternatively, use Globals.Game_Globals.get("varName") to retrieve the value
 # TODO: Clean up when someone leaves a game (performed by the SceneManager)
-var Game_Globals: Dictionary = {
-	"player_score" = 0 ## player score total
+@onready var Game_Globals := {
+	"player_score": 0, ## player score total
+	# debug levels
+	"9990": Scenes.TITLE,
+	"9991": Scenes.DEBUG,
+	"9992": Scenes.DEBUG2,
+	
+	# Real Levels
+	"0001": Scenes.TUTORIAL1,
+	
+	"0387": Scenes.LEVEL1,
+	"9102": Scenes.LEVEL2
+	# "1476": 
+	# "5829": 
+	# "0053": 
+	
+	# "7618": 
+	# "2940": 
+	# "8365": 
+	# "0721": 
+	# "6594": 
+	
+	# "3082": 
+	# "9817": 
+	# "4250": 
+	# "1639": 
+	# "7048": 
+	
+	# "2561": 
+	# "8934": 
+	# "0195": 
+	# "5473": 
+	# "3706": 
 }
 
 
-var High_Scoreboard : Dictionary = {
-	"ZAP" : 20000,
-	"MKW" : 19000,
-	"GUS" : 18000,
-	"FTW" : 17000,
-	"ZOO" : 16000
+@onready var High_Scoreboard := {
+	"ZAP": 20000,
+	"MKW": 19000,
+	"GUS": 18000,
+	"FTW": 17000,
+	"ZOO": 16000
 }

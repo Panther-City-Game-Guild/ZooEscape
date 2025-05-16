@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://cuh4bgpegyhgw"]
+
+[ext_resource type="Script" uid="uid://ccilquqj852o" path="res://Scripts/Components/Interactive/ZESwitch.gd" id="1_74ffm"]
+[ext_resource type="Texture2D" uid="uid://ca5necjstkbt8" path="res://Assets/Images/ZESwitch.png" id="2_2gdec"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jil8d"]
+size = Vector2(16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ec8ha"]
+atlas = ExtResource("2_2gdec")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1kr0e"]
+atlas = ExtResource("2_2gdec")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_egu81"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ec8ha")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1kr0e")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Switch" type="Area2D" groups=["ZESwitches"]]
+script = ExtResource("1_74ffm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_jil8d")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_egu81")
