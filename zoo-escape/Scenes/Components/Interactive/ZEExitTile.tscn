@@ -100,3 +100,6 @@ shape = SubResource("RectangleShape2D_2ruav")
 stream = ExtResource("3_qqk7d")
 volume_db = -24.0
 pitch_scale = 2.3
+bus = &"Reverb"
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

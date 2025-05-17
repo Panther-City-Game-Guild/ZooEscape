@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+
 const stepNoise = "res://Assets/Sound/deep_thump.ogg"
 const slipNoise = "res://Assets/Sound/squelch.ogg"
 
@@ -18,22 +19,20 @@ enum playerState {
 }
 
 @export var moveSpeed := 0.3
-@export var stepMuffleLevel := 9 ## value to muffle footsteps
-@onready var currentDir := Vector2.DOWN
+@export var stepMuffleLevel : int = 9 ## value to muffle footsteps
+@onready var currentDir: Vector2 = Vector2.DOWN
 @onready var sprite := $AnimatedSprite2D
 @onready var ray := $RayCast2D
-@onready var currentState := playerState.IDLE
+@onready var currentState: playerState = playerState.IDLE
 @onready var moveTimer := 0.0
 @onready var lastMoveDir := Vector2.DOWN
 
-signal InWater
+signal inWater
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
 	$StepCue.volume_db = SoundControl.sfxLevel-stepMuffleLevel ## default player footsteps to low volume
-	$GroundCheck.area_entered.connect(areaEnter)
-	$GroundCheck.area_exited.connect(areaExit)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -99,7 +98,7 @@ func movePlayer(dir: Vector2) -> void:
 		var collidingObj: Object = ray.get_collider()
 		if collidingObj is ZEBoxArea or collidingObj is ZEBall:
 		# If the collider is a Box, try to move the Box and the Player
-			if collidingObj.move(dir):
+			if collidingObj.Move(dir):
 				$ZEHud.movesValue += 1
 				position += dir * Globals.ZETileSize
 	
@@ -117,8 +116,8 @@ func interactWithRayCollider(collidingObj: Object) -> void:
 	if collidingObj is ZESwitchArea: # Is the object a Switch?
 		collidingObj.flipSwitch()
 
-# do stuff depending on what you step on. 
-func areaEnter(area: Area2D) -> void:
+
+func _on_ground_check_area_entered(area: Area2D) -> void:
 	var layer := area.collision_layer
 	
 	if(layer == 2):
@@ -127,7 +126,7 @@ func areaEnter(area: Area2D) -> void:
 		currentState = playerState.INWATER
 	
 		# tell the level to restart
-		InWater.emit()
+		inWater.emit()
 	elif(layer == 4):
 		if(!ray.is_colliding()):
 			currentState = playerState.SLIDING
@@ -135,7 +134,7 @@ func areaEnter(area: Area2D) -> void:
 		else:
 			currentState = playerState.IDLE
 
-# go back to idle when exiting area
-func areaExit(_area: Area2D) -> void:
+
+func _on_ground_check_area_exited(_area: Area2D) -> void:
 	currentState = playerState.IDLE
 	$StepCue.stream = load(stepNoise)

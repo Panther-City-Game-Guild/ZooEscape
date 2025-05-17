@@ -147,6 +147,24 @@ position = Vector2(72, 152)
 
 [node name="Player" parent="." instance=ExtResource("10_uxmkr")]
 position = Vector2(72, 40)
+<<<<<<< HEAD
+=======
+metadata/_edit_lock_ = true
+
+[node name="Backdrop" parent="Player/ZEPassword" index="0"]
+metadata/_edit_lock_ = true
+
+[node name="ButtonBox" parent="Player/ZEPassword" index="2"]
+offset_left = 51.4781
+offset_top = -27.5416
+offset_right = 91.4781
+offset_bottom = 12.4584
+metadata/_edit_lock_ = true
+
+[connection signal="PlayerExits" from="ExitTile" to="." method="_on_exit_tile_player_exits"]
+[connection signal="AllSteakCollected" from="SteakManager" to="." method="_on_steak_manager_all_steak_collected"]
+[connection signal="inWater" from="Player" to="." method="_on_player_in_water"]
+>>>>>>> parent of 57d067a (Merge remote-tracking branch 'upstream/main')
 
 [editable path="Player"]
 [editable path="Player/ZEPassword"]

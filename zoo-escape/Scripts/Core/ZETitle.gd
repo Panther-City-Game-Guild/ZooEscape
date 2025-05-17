@@ -10,7 +10,7 @@ func _ready() -> void:
 
 
 ## listen for exit call from escape button
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("CancelButton") or Input.is_action_just_pressed("PasswordButton"):
 		if !areYouSure: ## if not on warning, move focus to exit button
 			$ExitButton.grab_focus()

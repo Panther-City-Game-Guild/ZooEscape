@@ -224,4 +224,7 @@ stream = ExtResource("5_gxbec")
 volume_db = -18.0
 pitch_scale = 6.0
 
+[connection signal="area_entered" from="GroundCheck" to="." method="_on_ground_check_area_entered"]
+[connection signal="area_exited" from="GroundCheck" to="." method="_on_ground_check_area_exited"]
+
 [editable path="ZEPassword"]
