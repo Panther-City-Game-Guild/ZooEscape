@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://cuh4bgpegyhgw"]
 
 [ext_resource type="Script" uid="uid://ccilquqj852o" path="res://Scripts/Components/Interactive/ZESwitch.gd" id="1_74ffm"]
-[ext_resource type="Texture2D" uid="uid://ca5necjstkbt8" path="res://Assets/Images/ZESwitch.png" id="2_2gdec"]
 [ext_resource type="Texture2D" uid="uid://bx2l5v7cw366k" path="res://Assets/Images/SwitchButtons.png" id="2_f5w4f"]
+[ext_resource type="Texture2D" uid="uid://b68x7is6tsuiq" path="res://Assets/Images/SwitchLever.png" id="3_f5w4f"]
 [ext_resource type="Texture2D" uid="uid://biuxipmjc71h2" path="res://Assets/Images/SwitchToggle.png" id="4_8075i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jil8d"]
@@ -16,12 +16,12 @@ region = Rect2(16, 0, 16, 16)
 atlas = ExtResource("2_f5w4f")
 region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ec8ha"]
-atlas = ExtResource("2_2gdec")
+[sub_resource type="AtlasTexture" id="AtlasTexture_8075i"]
+atlas = ExtResource("3_f5w4f")
 region = Rect2(16, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1kr0e"]
-atlas = ExtResource("2_2gdec")
+[sub_resource type="AtlasTexture" id="AtlasTexture_68d0d"]
+atlas = ExtResource("3_f5w4f")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y85rk"]
@@ -47,10 +47,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ec8ha")
+"texture": SubResource("AtlasTexture_8075i")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1kr0e")
+"texture": SubResource("AtlasTexture_68d0d")
 }],
 "loop": true,
 "name": &"SwitchLever",
@@ -76,5 +76,5 @@ shape = SubResource("RectangleShape2D_jil8d")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_egu81")
-animation = &"SwitchButtons"
+animation = &"SwitchLever"
 autoplay = "SwitchLever"
