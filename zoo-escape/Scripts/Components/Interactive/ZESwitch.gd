@@ -1,15 +1,20 @@
 class_name ZESwitchArea extends Area2D
 
-@export_enum("OFF:0", "ON:1") var switchState: int = 0 # The Switch's state; Off = 0 or On = 1
-@export var autoRevert := false # Does this switch revert to the previous state automatically?
-@export var autoRevertTime := 5.0 # Time elapse before autoRevert
-var recentlySwitched := false # Was this Switch recently switched?
-var controlledChildren: Array[Node] = [] # Array to store handles to controlled children
-@onready var sprite := $AnimatedSprite2D # Handle to the Switch's sprite
+@export_category("Default State")
+@export_enum("OFF:0", "ON:1") var switchState: int = 0 ## The Switch's state; Off = 0 or On = 1
+@export_category("Auto-Revert Settings")
+@export var autoRevert := false ## Does this switch revert to the previous state automatically?
+@export_enum("Buttons:0", "Toggle:2") var switchStyle: int = 0 ## If auto-revert is enabled, style of the auto-reverting switch
+@export var autoRevertTime := 5.0 ## Time elapse before autoRevert
+var recentlySwitched := false ## Was this Switch recently switched?
+var controlledChildren: Array[Node] = [] ## Array to store handles to controlled children
+@onready var sprite := $AnimatedSprite2D ## Handle to the Switch's sprite
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if autoRevert:
+		sprite.animation = switchStyle
 	sprite.frame = switchState
 	for child in get_children():
 		if child != $CollisionShape2D && child != $AnimatedSprite2D:

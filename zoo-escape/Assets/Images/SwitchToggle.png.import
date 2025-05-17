@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ca5necjstkbt8"
-path="res://.godot/imported/ZESwitch.png-b6c8c9b446057a9769dc27713cc01db6.ctex"
+uid="uid://biuxipmjc71h2"
+path="res://.godot/imported/SwitchToggle.png-2c352b961328374b6f9a9588e323adfb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/ZESwitch.png"
-dest_files=["res://.godot/imported/ZESwitch.png-b6c8c9b446057a9769dc27713cc01db6.ctex"]
+source_file="res://Assets/Images/SwitchToggle.png"
+dest_files=["res://.godot/imported/SwitchToggle.png-2c352b961328374b6f9a9588e323adfb.ctex"]
 
 [params]
 
