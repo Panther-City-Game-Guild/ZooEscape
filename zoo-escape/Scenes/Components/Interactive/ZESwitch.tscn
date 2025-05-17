@@ -1,10 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://cuh4bgpegyhgw"]
+[gd_scene load_steps=13 format=3 uid="uid://cuh4bgpegyhgw"]
 
 [ext_resource type="Script" uid="uid://ccilquqj852o" path="res://Scripts/Components/Interactive/ZESwitch.gd" id="1_74ffm"]
 [ext_resource type="Texture2D" uid="uid://ca5necjstkbt8" path="res://Assets/Images/ZESwitch.png" id="2_2gdec"]
+[ext_resource type="Texture2D" uid="uid://bx2l5v7cw366k" path="res://Assets/Images/SwitchButtons.png" id="2_f5w4f"]
+[ext_resource type="Texture2D" uid="uid://biuxipmjc71h2" path="res://Assets/Images/SwitchToggle.png" id="4_8075i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jil8d"]
 size = Vector2(16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jpsq8"]
+atlas = ExtResource("2_f5w4f")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4hrsc"]
+atlas = ExtResource("2_f5w4f")
+region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ec8ha"]
 atlas = ExtResource("2_2gdec")
@@ -14,8 +24,27 @@ region = Rect2(16, 0, 16, 16)
 atlas = ExtResource("2_2gdec")
 region = Rect2(0, 0, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_y85rk"]
+atlas = ExtResource("4_8075i")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_81tf3"]
+atlas = ExtResource("4_8075i")
+region = Rect2(0, 0, 16, 16)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_egu81"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jpsq8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4hrsc")
+}],
+"loop": true,
+"name": &"SwitchButtons",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ec8ha")
@@ -24,7 +53,18 @@ animations = [{
 "texture": SubResource("AtlasTexture_1kr0e")
 }],
 "loop": true,
-"name": &"default",
+"name": &"SwitchLever",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y85rk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_81tf3")
+}],
+"loop": true,
+"name": &"SwitchToggle",
 "speed": 5.0
 }]
 
@@ -36,3 +76,5 @@ shape = SubResource("RectangleShape2D_jil8d")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_egu81")
+animation = &"SwitchButtons"
+autoplay = "SwitchLever"
