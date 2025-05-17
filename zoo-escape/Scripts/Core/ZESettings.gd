@@ -9,10 +9,10 @@ extends Control
 @export_multiline var exitInfo : String
 
 ## grab global value references
-var masterVolume : int = Globals.Current_Options_Settings.get("master_volume")
-var bgmVolume : int = Globals.Current_Options_Settings.get("music_volume")
-var sfxVolume : int = Globals.Current_Options_Settings.get("sfx_volume")
-var cueVolume : int = Globals.Current_Options_Settings.get("cue_volume")
+var masterVolume : float = Globals.Current_Options_Settings.get("master_volume")
+var bgmVolume : float = Globals.Current_Options_Settings.get("music_volume")
+var sfxVolume : float = Globals.Current_Options_Settings.get("sfx_volume")
+var cueVolume : float = Globals.Current_Options_Settings.get("cue_volume")
 var analogDeadzone : float = Globals.Current_Options_Settings.get("analog_deadzone")
 
 ## holders for percentage values
@@ -38,11 +38,33 @@ enum FOCUS_GROUPS {
 
 func _ready() -> void:
 	## update text and set first button on master bgm down
+	## update all text and values with globals from load data
+	ZeData.loadData()
+	
+	## update percents
+	masterPercent = percentageConversion(masterVolume)
+	bgmPercent = percentageConversion(bgmVolume)
+	sfxPercent = percentageConversion(sfxVolume)
+	cuePercent = percentageConversion(cueVolume)
+	
+	## update slider positions
+	$MasterGroup/MasterSlider.value = masterVolume
+	$BGMGroup/BGMSlider.value = bgmVolume
+	$SFXGroup/SFXSlider.value = sfxVolume
+	$CueGroup/CueSlider.value = cueVolume
+	
+	## update percent texts
+	$MasterGroup/MasterValue.text = str(masterPercent)+"%"
+	$BGMGroup/BGMValue.text = str(bgmPercent)+"%"
+	$SFXGroup/SFXValue.text = str(sfxPercent)+"%"
+	$CueGroup/CueValue.text = str(cuePercent)+"%"
+	$DeadzoneGroup/DeadzoneValue.text = str(analogDeadzone)
+	
+	## grab first focus and roll in info text
 	$MasterGroup/MasterSlider.grab_focus()
 	focusInfoRelay("MASTER",masterInfo)
 	$Description.text = masterInfo
 	$Animator.play("roll_info")
-	
 
 
 func _process(_delta: float) -> void: ## single button fast value scroll in deadzone
@@ -100,13 +122,19 @@ func percentageConversion(_volumeLevel):
 	return _percentage ## return value and display in scene
 
 
+
 func _on_master_slider_value_changed(value: float) -> void:
 	if !bufferState: ## if no buffer, change levels
-		masterVolume = $MasterGroup/MasterSlider.value
-		masterPercent = abs(percentageConversion(masterVolume))
+		masterTextUpdate()
 		$MasterGroup/MasterValue.text = str(masterPercent)+"%"
 		globalSettingsUpdate()
 		SoundControl.muteAudioBusCheck()
+
+
+func masterTextUpdate() -> void:
+	masterVolume = $MasterGroup/MasterSlider.value
+	masterPercent = abs(percentageConversion(masterVolume))
+	$MasterGroup/MasterValue.text = str(masterPercent)+"%"
 
 
 func _on_master_slider_focus_entered() -> void:
@@ -119,12 +147,15 @@ func _on_master_slider_mouse_entered() -> void:
 
 func _on_bgm_slider_value_changed(value: float) -> void:
 	if !bufferState:
-		bgmVolume = $BGMGroup/BGMSlider.value
-		bgmPercent = percentageConversion(bgmVolume)
-		$BGMGroup/BGMValue.text = str(bgmPercent)+"%"
+		bgmTextUpdate()
 		globalSettingsUpdate()
 		SoundControl.muteAudioBusCheck()
 
+
+func bgmTextUpdate() -> void:
+	bgmVolume = $BGMGroup/BGMSlider.value
+	bgmPercent = percentageConversion(bgmVolume)
+	$BGMGroup/BGMValue.text = str(bgmPercent)+"%"
 
 
 func _on_bgm_slider_focus_entered() -> void:
@@ -137,11 +168,15 @@ func _on_bgm_slider_mouse_entered() -> void:
 
 func _on_sfx_slider_value_changed(value: float) -> void:
 	if !bufferState:
-		sfxVolume = $SFXGroup/SFXSlider.value
-		sfxPercent = percentageConversion(sfxVolume)
-		$SFXGroup/SFXValue.text = str(sfxPercent)+"%"
+		sfxTextUpdate()
 		globalSettingsUpdate()
 		SoundControl.muteAudioBusCheck()
+
+
+func sfxTextUpdate() -> void:
+	sfxVolume = $SFXGroup/SFXSlider.value
+	sfxPercent = percentageConversion(sfxVolume)
+	$SFXGroup/SFXValue.text = str(sfxPercent)+"%"
 
 
 func _on_sfx_slider_focus_entered() -> void:
@@ -162,11 +197,15 @@ func _on_sfx_slider_drag_ended(_value_changed: bool) -> void:
 
 func _on_cue_slider_value_changed(value: float) -> void:
 	if !bufferState:
-		cueVolume = $CueGroup/CueSlider.value
-		cuePercent = percentageConversion(cueVolume)
-		$CueGroup/CueValue.text = str(cuePercent)+"%"
+		cueTextUpdate()
 		globalSettingsUpdate()
 		SoundControl.muteAudioBusCheck()
+
+
+func cueTextUpdate():
+	cueVolume = $CueGroup/CueSlider.value
+	cuePercent = percentageConversion(cueVolume)
+	$CueGroup/CueValue.text = str(cuePercent)+"%"
 
 
 func _on_cue_slider_focus_entered() -> void:
@@ -225,6 +264,7 @@ func _on_deadzone_up_mouse_entered() -> void:
 
 func _on_escape_button_pressed() -> void:
 	if !bufferState:
+		ZeData.saveGameData()
 		globalSettingsUpdate() ## update global settings
 		SceneManager.GoToTitle() ## go to title
 
@@ -237,5 +277,6 @@ func _on_escape_button_mouse_entered() -> void:
 	focusInfoRelay("ESCAPE", exitInfo)
 
 
+## input buffer added to avoid accidental input on load
 func _on_input_buffer_timeout() -> void:
 	bufferState = false

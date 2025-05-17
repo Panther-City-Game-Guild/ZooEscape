@@ -13,11 +13,11 @@ const testBgm = "res://Assets/Sound/tutorial.ogg"
 var currentBgm : String
 
 ## references to global volume levels (we can have options for this to adjust)
-var masterLevel: float = Globals.Current_Options_Settings['master_volume']
-var bgmLevel: float = Globals.Current_Options_Settings['music_volume']
-var sfxLevel: float = Globals.Current_Options_Settings['sfx_volume']
-var cueLevel: float = Globals.Current_Options_Settings['cue_volume']
-var volumeReference := bgmLevel
+@onready var masterLevel: float = Globals.Current_Options_Settings['master_volume']
+@onready var bgmLevel: float = Globals.Current_Options_Settings['music_volume']
+@onready var sfxLevel: float = Globals.Current_Options_Settings['sfx_volume']
+@onready var cueLevel: float = Globals.Current_Options_Settings['cue_volume']
+@onready var volumeReference := bgmLevel
 @export var fadeRate := 0.2 ## default fade rate, can be updated in code
 
 

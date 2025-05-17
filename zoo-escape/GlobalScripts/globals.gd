@@ -5,7 +5,7 @@ extends Node
 
 # Volume settings are included by default and changed by the SettingsManager
 # Do not alter this variable within your game; use the SettingsManager
-var Current_Options_Settings := {
+@onready var Current_Options_Settings := {
 	"master_volume": -6,
 	"music_volume": -6,
 	"sfx_volume": -6,
@@ -67,10 +67,18 @@ var Current_Options_Settings := {
 }
 
 
-@onready var High_Scoreboard := {
-	"ZAP": 20000,
-	"MKW": 19000,
-	"GUS": 18000,
-	"FTW": 17000,
-	"ZOO": 16000
-}
+@onready var highScoreboardNames = [
+	"ZAP",
+	"MKV",
+	"GUS",
+	"FTW",
+	"ZOO"
+]
+
+@onready var highScoreboardValues = [
+	20000,
+	19000,
+	18000,
+	17000,
+	16000
+]

@@ -3,6 +3,7 @@ extends Node2D
 var areYouSure: bool = false
 
 func _ready() -> void:
+	ZeData.loadData()
 	$NewGameButton.grab_focus()
 	## set global sound
 	SoundControl.resetMusicFade() ## reset music state
@@ -20,6 +21,7 @@ func _process(_delta: float) -> void:
 
 
 func _on_new_game_button_pressed() -> void:
+	ZeData.saveGameData()
 	SoundControl.playCue(SoundControl.start, 1.0)
 	SceneManager.GoToNewSceneString(Scenes.TUTORIAL1)
 	Globals.Game_Globals.set("player_score", 0)
@@ -36,6 +38,7 @@ func _on_settings_button_pressed() -> void:
 
 
 func _on_exit_button_pressed() -> void: # listen for exit call
+	ZeData.saveGameData()
 	if !areYouSure: ## feedback and warning
 		$ExitButton/RollText.speed_scale = 1.0
 		areYouSure = true

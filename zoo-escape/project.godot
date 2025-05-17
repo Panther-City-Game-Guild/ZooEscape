@@ -26,6 +26,7 @@ Scenes="*res://GlobalScripts/scenes.gd"
 SceneManager="*res://GlobalScripts/scene_manager.gd"
 Globals="*res://GlobalScripts/globals.gd"
 SoundControl="*res://Scenes/Core/sound_control.tscn"
+ZeData="*res://Scenes/Core/ZEData.tscn"
 
 [display]
 
