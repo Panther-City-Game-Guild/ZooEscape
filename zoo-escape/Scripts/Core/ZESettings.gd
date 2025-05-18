@@ -25,8 +25,8 @@ var cuePercent : int
 const DEADZONE_MAX := 1.0
 const DEADZONE_MIN := 0.20
 
-var bufferState : bool = true ## hold player input until timer flips
-var focusGroup = FOCUS_GROUPS.MASTER ## shows which control area has focus
+var bufferState := true ## hold player input until timer flips
+var focusGroup := FOCUS_GROUPS.MASTER ## shows which control area has focus
 enum FOCUS_GROUPS {
 	ESCAPE,
 	MASTER,
