@@ -1,11 +1,11 @@
 extends Control
 
-const FILEPATH : String = "user://ZooEscapeSave.json" ## persistent filepath
-var saveData = {} ## save data dictionary
-var access = FileAccess ## file access call
+const FILEPATH := "user://ZooEscapeSave.json" ## persistent filepath
+var saveData : Dictionary ## save data dictionary
+var access : FileAccess ## file access call
 ## default values for external settings
-const DEFAULT_VOLUME = -6
-const DEFAULT_DZ = 0.5
+const DEFAULT_VOLUME := -6
+const DEFAULT_DZ := 0.5
 const DEFAULT_VALUES := [
 	20000,
 	19000,
@@ -21,7 +21,7 @@ const DEFAULT_NAMES := [
 
 
 ## grab game data and update dictionary for save
-func fetchGameData():
+func fetchGameData() -> Dictionary:
 	saveData = {
 		"master_volume" = Globals.Current_Options_Settings.get("master_volume"),
 		"music_volume" = Globals.Current_Options_Settings.get("music_volume"),
