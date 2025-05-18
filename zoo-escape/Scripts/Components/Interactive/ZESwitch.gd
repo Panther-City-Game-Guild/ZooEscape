@@ -13,7 +13,7 @@ class_name ZESwitchArea extends Area2D
 var recentlySwitched := false ## Was this Switch recently switched?
 var revertTimer := 0.0 ## Track the time until the switch auto-Reverts
 var controlledChildren: Array[Node] = [] ## Array to store handles to controlled children
-var frameCount : int = 0 ## Track how many frames are in the animation when using an autoRevert Switch
+var frameCount: int = 0 ## Track how many frames are in the animation when using an autoRevert Switch
 
 # Handles to child nodes
 @onready var collider := $CollisionShape2D ## Handle to the Switch's collisionshape
@@ -22,11 +22,11 @@ var frameCount : int = 0 ## Track how many frames are in the animation when usin
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# If not autoRevert, set animation according to switchStyle
+	# If not autoRevert, set animation according to switchStyle and switchState
 	if !autoRevert:
 		sprite.animation = switchStyle
 		sprite.frame = switchState
-	# If autoRevert, set animation according to switchState
+	# If autoRevert, build a String to set animation according to (switchStyle + switchState)
 	else:
 		var aniName := switchStyle
 		if switchState == 0:
@@ -44,6 +44,7 @@ func _ready() -> void:
 			controlledChildren.append(child)
 
 
+# Called every render frame
 func _process(delta: float) -> void:
 	# If not autoRevert, exit early
 	if !autoRevert:
@@ -73,7 +74,7 @@ func _process(delta: float) -> void:
 			sprite.frame = 0
 
 
-# Called to change the state of this switch
+# Called to change the state of the Switch
 func setSwitchState(newState: int) -> void:
 			switchState = newState
 			toggleChildren()
@@ -81,7 +82,7 @@ func setSwitchState(newState: int) -> void:
 				sprite.frame = switchState
 
 
-# Called to change the state of controlledChildren nodes
+# Called to change the state of nodes in the controlledChildren array
 func toggleChildren() -> void:
 	if controlledChildren:
 			for child: Node in controlledChildren:
@@ -94,7 +95,7 @@ func getSwitchState() -> int:
 	return switchState
 
 
-# Externally accessible function called by the player
+# Called by the Player script (typically) to tell the Switch to change its state
 func flipSwitch() -> void:
 	# If Switch is not autoRevert, change state
 	if !autoRevert:

@@ -17,7 +17,7 @@ func changeState() -> void:
 	setCollision()
 
 
-#Called to set the Gate's collision layer, which is what allows the player to pass through
+# Called to set the Gate's collision layer, which is what allows the player to pass through
 func setCollision() -> void:
 	if gateState == 1:
 		$Area2D.collision_layer = 0
