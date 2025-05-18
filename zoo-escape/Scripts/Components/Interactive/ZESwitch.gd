@@ -1,23 +1,37 @@
 class_name ZESwitchArea extends Area2D
 
-@export_category("Default State")
-@export_enum("OFF:0", "ON:1") var switchState: int = 0 ## The Switch's state; Off = 0 or On = 1
+# Constants
+const autoRevertSwitchStyle := ["TimerOff", "TimerOn"] ## Names of animations for auto-revert switches; DO NOT CHANGE TO CAPS
+
+# Exported Variables
+@export_category("Basic Switch Settings")
+@export_enum("Buttons", "Lever", "Toggle") var switchStyle: String = "Lever" ## The chosen switch style.  Defaults to "Lever."  If auto-revert is enabled, an appropriate switch style is used instead.
+@export_enum("Off:0", "On:1") var switchState: int = 0 ## The Switch's state; Off = 0 or On = 1.
 @export_category("Auto-Revert Settings")
-@export var autoRevert := false ## Does this switch revert to the previous state automatically?
-@export_enum("Buttons:0", "Toggle:2") var switchStyle: int = 0 ## If auto-revert is enabled, style of the auto-reverting switch
+@export var autoRevert := false ## Does this switch revert to the previous state automatically?  If auto-revert is enabled, an appropriate switch style is used automatically.
 @export var autoRevertTime := 5.0 ## Time elapse before autoRevert
+
+# Additional Variables
 var recentlySwitched := false ## Was this Switch recently switched?
 var controlledChildren: Array[Node] = [] ## Array to store handles to controlled children
+
+# Handles to child nodes
+@onready var collider := $CollisionShape2D ## Handle to the Switch's collisionshape
 @onready var sprite := $AnimatedSprite2D ## Handle to the Switch's sprite
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if autoRevert:
+	# If autoRevert is 'false,' set animation according to switchStyle
+	if !autoRevert:
 		sprite.animation = switchStyle
-	sprite.frame = switchState
+	# If autoRevert is 'true,' set animation according to switchState
+	else:
+		sprite.animation = autoRevertSwitchStyle[switchState]
+	
+	# Create an array of all objects controlled by this Switch
 	for child in get_children():
-		if child != $CollisionShape2D && child != $AnimatedSprite2D:
+		if child != collider && child != sprite:
 			controlledChildren.append(child)
 
 
