@@ -7,11 +7,13 @@ class_name ZESwitchArea extends Area2D
 @export_enum("Off:0", "On:1") var switchState: int = 0 ## The Switch's state; Off = 0 or On = 1.
 @export_category("Auto-Revert Settings")
 @export var autoRevert := false ## Does this switch revert to the previous state automatically?  If auto-revert is enabled, an appropriate switch style is used automatically.
-@export var autoRevertTime := 5.0 ## Time elapse before autoRevert
+@export_range(0.5, 60.0, 0.1) var autoRevertTime := 3.0 ## Time elapse before autoRevert; Minimum: 0.5, Maximum: 60.0
 
 # Additional Variables
 var recentlySwitched := false ## Was this Switch recently switched?
+var revertTimer := 0.0 ## Track the time until the switch auto-Reverts
 var controlledChildren: Array[Node] = [] ## Array to store handles to controlled children
+var frameCount : int = 0 ## Track how many frames are in the animation when using an autoRevert Switch
 
 # Handles to child nodes
 @onready var collider := $CollisionShape2D ## Handle to the Switch's collisionshape
@@ -20,11 +22,11 @@ var controlledChildren: Array[Node] = [] ## Array to store handles to controlled
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# If autoRevert is 'false,' set animation according to switchStyle
+	# If not autoRevert, set animation according to switchStyle
 	if !autoRevert:
 		sprite.animation = switchStyle
 		sprite.frame = switchState
-	# If autoRevert is 'true,' set animation according to switchState
+	# If autoRevert, set animation according to switchState
 	else:
 		var aniName := switchStyle
 		if switchState == 0:
@@ -32,6 +34,9 @@ func _ready() -> void:
 		elif switchState == 1:
 			aniName += "On"
 		sprite.animation = aniName
+		
+		# Determine how many frames are in the animation
+		frameCount = sprite.sprite_frames.get_frame_count(sprite.animation)
 	
 	# Create an array of all objects controlled by this Switch
 	for child in get_children():
@@ -39,15 +44,45 @@ func _ready() -> void:
 			controlledChildren.append(child)
 
 
+func _process(delta: float) -> void:
+	# If not autoRevert, exit early
+	if !autoRevert:
+		return
+	
+	# If autoRevert and recentlySwitched, do logic based on revertTimer as percentage of autoRevertTime
+	if autoRevert && recentlySwitched:
+		# If revertTimer is less than autoReverTime
+		if revertTimer < autoRevertTime:
+			# Add "delta" time to revertTime
+			revertTimer += delta
+			
+			# Calculate progress through autoRevertTime
+			var progress := revertTimer / autoRevertTime
+			
+			# Determine which frame index to display
+			var frameIdx := roundi(progress * (frameCount - 2)) + 1
+			
+			# Set the sprite's frame to the frame index
+			sprite.frame = frameIdx
+		
+		# If revertTimer greater than or equal to autoRevertTime, revert state and children
+		else:
+			setSwitchState(!switchState)
+			recentlySwitched = false
+			revertTimer = 0
+			sprite.frame = 0
+
+
 # Called to change the state of this switch
-func set_switch_state(newState: int) -> void:
+func setSwitchState(newState: int) -> void:
 			switchState = newState
-			sprite.frame = switchState
-			toggle_children()
+			toggleChildren()
+			if !autoRevert:
+				sprite.frame = switchState
 
 
 # Called to change the state of controlledChildren nodes
-func toggle_children() -> void:
+func toggleChildren() -> void:
 	if controlledChildren:
 			for child: Node in controlledChildren:
 				# Set some variable / property -- replace below as needed
@@ -55,22 +90,25 @@ func toggle_children() -> void:
 
 
 # Called to retrieve the state of this switch
-func get_switch_state() -> int:
+func getSwitchState() -> int:
 	return switchState
 
 
 # Externally accessible function called by the player
 func flipSwitch() -> void:
+	# If Switch is not autoRevert, change state
 	if !autoRevert:
-		set_switch_state(!switchState)
+		setSwitchState(!switchState)
+	
+	# If Switch is autoRevert, determine if recently used
 	else:
+		# If not recently used, change state
 		if !recentlySwitched:
 			# Prevent Switch from being toggled before revert timer
 			recentlySwitched = true
-			set_switch_state(!switchState)
-			# Set timer for auto reversion, then revert
-			await get_tree().create_timer(autoRevertTime, false, false, false).timeout
-			recentlySwitched = false
-			set_switch_state(!switchState)
+			setSwitchState(!switchState)
+		
+		# If reecently used, do nothing
 		else:
-			print("Cannot operate switch right now!")
+			# TODO: Play a type of "bzzzt" sound to indicate switch is busy
+			return
