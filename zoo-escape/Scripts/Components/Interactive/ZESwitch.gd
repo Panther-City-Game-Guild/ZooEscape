@@ -1,7 +1,5 @@
 class_name ZESwitchArea extends Area2D
 
-# Constants
-const autoRevertSwitchStyle := ["TimerOff", "TimerOn"] ## Names of animations for auto-revert switches; DO NOT CHANGE TO CAPS
 
 # Exported Variables
 @export_category("Basic Switch Settings")
@@ -25,9 +23,15 @@ func _ready() -> void:
 	# If autoRevert is 'false,' set animation according to switchStyle
 	if !autoRevert:
 		sprite.animation = switchStyle
+		sprite.frame = switchState
 	# If autoRevert is 'true,' set animation according to switchState
 	else:
-		sprite.animation = autoRevertSwitchStyle[switchState]
+		var aniName := switchStyle
+		if switchState == 0:
+			aniName += "Off"
+		elif switchState == 1:
+			aniName += "On"
+		sprite.animation = aniName
 	
 	# Create an array of all objects controlled by this Switch
 	for child in get_children():
