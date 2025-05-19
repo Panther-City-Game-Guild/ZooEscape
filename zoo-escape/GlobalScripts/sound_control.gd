@@ -11,6 +11,8 @@ const SILENCE := -20
 const defaultBgm := "res://Assets/Sound/theme.ogg"
 const testBgm := "res://Assets/Sound/tutorial.ogg"
 var currentBgm : String
+signal bgmTest
+
 
 ## references to global volume levels (we can have options for this to adjust)
 @onready var masterLevel: float = Globals.Current_Options_Settings['master_volume']
@@ -77,6 +79,12 @@ func playBgm() -> void:
 	bgm.stream = _loadBgm
 	bgm.play()
 
+
+## for stopping outside of node
+func stopBgm() -> void:
+	$BGM.stop()
+
+
 ## to update fade value
 func fadeRateUpdate(_newValue:float) -> void:
 	fadeRate = _newValue
@@ -120,34 +128,34 @@ func bgmFadingMachine(_delta:float,_rate:float) -> void:
 		FADE_STATES.IN_TRIGGER:
 			fadeRate = 0.25 ## default rate
 			playBgm() ## start play
-			fadeState+=1 ## move to next
+			fadeState = FADE_STATES.IN_CURVE
 		FADE_STATES.IN_CURVE:
 			if volumeReference < bgmLevel: ## increase volume while below target
 				volumeReference+=(_delta+_rate)
 			else: ## then update state
-				fadeState+=1
+				fadeState = FADE_STATES.PEAK_VOLUME
 		FADE_STATES.PEAK_VOLUME: # hold volume steady when not fading
 			volumeReference = bgmLevel
 		FADE_STATES.OUT_TRIGGER: # start volume decrease (one-shot)
 			if volumeReference >= bgmLevel:
 				volumeReference-=(_delta+_rate)
-				fadeState+=1
+				fadeState = FADE_STATES.OUT_CURVE
 		FADE_STATES.OUT_CURVE: ## if not silence, reduce rate
 			if volumeReference > SILENCE:
 				volumeReference-=(_delta+_rate*2)
 			else: ## then set to silence
-				fadeState = 0
+				fadeState = FADE_STATES.SILENCE
 		FADE_STATES.SILENCE: ## silence immediately begins next fade in
 			volumeReference = SILENCE
-			fadeState+=1
+			fadeState = FADE_STATES.IN_TRIGGER
 
 
-func resetMusicFade() -> void:
+func resetMusicFade() -> void: ## external function for resetting music volume
 	fadeState = FADE_STATES.SILENCE
 	$BGM.volume_db = SILENCE
 
 
-## external function for checking mute state
+## external function for checking mute state (-20), mute buses accordingly
 func muteAudioBusCheck() -> void:
 	if AudioServer.get_bus_volume_db(0) < -19:
 		AudioServer.set_bus_mute(0,true)
@@ -171,3 +179,9 @@ func muteAudioBusCheck() -> void:
 		AudioServer.set_bus_mute(1,true)
 	else:
 		AudioServer.set_bus_mute(1,false)
+
+
+## external bgm test (for settings)
+func _on_bgm_test() -> void:
+	if !$BGM.playing:
+		$BGM.play()

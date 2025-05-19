@@ -154,6 +154,11 @@ func _on_bgm_slider_value_changed(_value: float) -> void:
 		bgmTextUpdate()
 		globalSettingsUpdate()
 		SoundControl.muteAudioBusCheck()
+		
+		if bgmVolume < -19:
+			SoundControl.stopBgm()
+		else:
+			SoundControl.emit_signal("bgmTest")
 
 
 ## update text for bgm volume level
