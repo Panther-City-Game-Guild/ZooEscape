@@ -19,6 +19,8 @@ var timeUp := false ## to monitor local hud timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if !AudioServer.is_bus_mute(3) or SoundControl.bgmLevel > -20:
+		SoundControl.resetMusicFade() ## reset music state
 	player.InWater.connect(restartRoom)
 	exitTile.PlayerExits.connect(exitLevel)
 	steakManager.AllSteaksCollected.connect(allSteaksCollected)
