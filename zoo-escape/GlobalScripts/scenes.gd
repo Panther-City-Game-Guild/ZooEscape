@@ -11,6 +11,7 @@ const PASSWORD := "res://Scenes/Core/ZEPassword.tscn"
 # Zoo Escape Debug Level Scenes
 const DEBUG := "res://Scenes/Levels/ZEDebug.tscn"
 const DEBUG2 := "res://Scenes/Levels/ZEDebug2.tscn"
+const DEBUG3 := "res://Scenes/Levels/ZEDebug3.tscn"
 
 # Zoo Escape Production Level Scenes
 const TUTORIAL1 := "res://Scenes/Levels/ZETutorial1.tscn"

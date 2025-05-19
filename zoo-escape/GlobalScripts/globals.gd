@@ -7,7 +7,7 @@ extends Node
 # Do not alter this variable within your game; use the SettingsManager
 var Current_Options_Settings := {
 	"master_volume": -6,
-	"music_volume": -6,
+	"music_volume": -10, # -6 by default is too loud for this -DevMV
 	"sfx_volume": -6,
 	"cue_volume": -6,
 	"analog_deadzone": 0.50
@@ -37,6 +37,7 @@ var Current_Options_Settings := {
 	"9990": Scenes.TITLE,
 	"9991": Scenes.DEBUG,
 	"9992": Scenes.DEBUG2,
+	"9993": Scenes.DEBUG3,
 	
 	# Real Levels
 	"0001": Scenes.TUTORIAL1,
