@@ -154,11 +154,21 @@ func _on_bgm_slider_value_changed(_value: float) -> void:
 		bgmTextUpdate()
 		globalSettingsUpdate()
 		SoundControl.muteAudioBusCheck()
-		
-		if bgmVolume < -19:
-			SoundControl.stopBgm()
-		else:
-			SoundControl.emit_signal("bgmTest")
+
+
+## on drag grab and release, check values for mute
+func _on_bgm_slider_drag_ended(value_changed: bool) -> void:
+	if $BGMGroup/BGMSlider.value <= -20:
+		SoundControl.stopBgm()
+	else:
+		SoundControl.playBgm()
+
+## on drag grab and release, check values for mute
+func _on_bgm_slider_drag_started() -> void:
+	if $BGMGroup/BGMSlider.value <= -20:
+		SoundControl.stopBgm()
+	else:
+		SoundControl.playBgm()
 
 
 ## update text for bgm volume level

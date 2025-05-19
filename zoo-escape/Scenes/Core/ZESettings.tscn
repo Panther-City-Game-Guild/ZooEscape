@@ -411,6 +411,8 @@ autostart = true
 [connection signal="focus_entered" from="MasterGroup/MasterSlider" to="." method="_on_master_slider_focus_entered"]
 [connection signal="mouse_entered" from="MasterGroup/MasterSlider" to="." method="_on_master_slider_mouse_entered"]
 [connection signal="value_changed" from="MasterGroup/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="drag_ended" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_drag_ended"]
+[connection signal="drag_started" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_drag_started"]
 [connection signal="focus_entered" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_focus_entered"]
 [connection signal="mouse_entered" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_mouse_entered"]
 [connection signal="value_changed" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_value_changed"]

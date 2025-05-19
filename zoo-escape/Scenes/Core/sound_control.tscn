@@ -21,5 +21,3 @@ bus = &"Sfx"
 process_mode = 3
 stream = ExtResource("3_l54mi")
 bus = &"Cue"
-
-[connection signal="bgmTest" from="." to="." method="_on_bgm_test"]

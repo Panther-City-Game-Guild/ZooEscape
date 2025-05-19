@@ -11,7 +11,6 @@ const SILENCE := -20
 const defaultBgm := "res://Assets/Sound/theme.ogg"
 const testBgm := "res://Assets/Sound/tutorial.ogg"
 var currentBgm : String
-signal bgmTest
 
 
 ## references to global volume levels (we can have options for this to adjust)
@@ -182,9 +181,3 @@ func muteAudioBusCheck() -> void:
 		AudioServer.set_bus_mute(1,true)
 	else:
 		AudioServer.set_bus_mute(1,false)
-
-
-## external bgm test (for settings)
-func _on_bgm_test() -> void:
-	if !$BGM.playing:
-		$BGM.play()
