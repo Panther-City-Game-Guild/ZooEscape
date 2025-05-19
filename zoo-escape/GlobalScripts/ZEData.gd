@@ -1,6 +1,6 @@
 extends Control
 
-const FILEPATH := "user://ZooEscapeSave.json" ## persistent filepath
+const FILEPATH := "user://ZooEscapeSave.sv1" ## persistent filepath
 var saveData : Dictionary ## save data dictionary
 var access : FileAccess ## file access call
 ## default values for external settings
