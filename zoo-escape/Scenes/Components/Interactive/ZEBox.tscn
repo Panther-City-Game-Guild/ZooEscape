@@ -22,10 +22,10 @@ texture = ExtResource("1_6kiuv")
 target_position = Vector2(0, 16)
 collide_with_areas = true
 
-[node name="WaterCheck" type="Area2D" parent="."]
+[node name="GroundCheck" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterCheck"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundCheck"]
 shape = SubResource("RectangleShape2D_njlnj")
 debug_color = Color(0.981801, 0, 0.367869, 0.42)

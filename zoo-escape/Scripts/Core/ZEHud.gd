@@ -4,7 +4,7 @@ extends Control
 var steakValue := 1 ## live monitor of steak total
 var timerValue := 1 ## live monitor of timer
 var movesValue := 0 ## live monitor of moves
-var scoreCurrent: int = Globals.Game_Globals.get("player_score") ## player score
+@onready var scoreCurrent: int = Globals.Game_Globals.get("player_score") ## player score
 var secondBonus := 50 ## values for abstraction from parent to apply
 var movePenalty := 25
 var moveMonitoring := false ## shows timer has started
@@ -26,7 +26,7 @@ enum SCORE_PROCESS_STATES {
 	MOVE_PROCESS,
 	POST}
 var focusState := 0
-var passwordState = Globals.Current_Settings["passwordWindowOpen"]
+@onready var passwordState = Globals.Current_Settings["passwordWindowOpen"]
 enum FOCUS_STATES {
 	RESTART,
 	EXIT}
