@@ -1,10 +1,15 @@
 class_name ZESwitchArea extends Area2D
 
+# Enums
+enum switchStates {
+	OFF,
+	ON
+}
 
 # Exported Variables
 @export_category("Basic Switch Settings")
 @export_enum("Buttons", "Lever", "Toggle") var switchStyle := "Lever" ## The chosen switch style.  Defaults to "Lever."  If auto-revert is enabled, an appropriate switch style is used instead.
-@export_enum("Off:0", "On:1") var switchState := 0 ## The Switch's state; Off = 0 or On = 1.
+@export var switchState := switchStates.OFF ## The Switch's state; Off = 0 or On = 1.
 @export_category("Auto-Revert Settings")
 @export var autoRevert := false ## Does this switch revert to the previous state automatically?  If auto-revert is enabled, an appropriate switch style is used automatically.
 @export_range(0.5, 60.0, 0.1) var autoRevertTime := 3.0 ## Time elapse before autoRevert; Minimum: 0.5, Maximum: 60.0
@@ -22,20 +27,13 @@ var frameCount := 0 ## Track how many frames are in the animation when using an 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# If not autoRevert, set animation according to switchStyle and switchState
+	# If not autoRevert, set animation according to switchStyle
 	if !autoRevert:
 		sprite.animation = switchStyle
 		sprite.frame = switchState
 	# If autoRevert, build a String to set animation according to (switchStyle + switchState)
 	else:
-		# NOTE: The string built there is used to directly retrieve an animation in the AnimatedSprite2D.
-		# It was the simplest way I could think of to maintain readability for future work and simple code.
-		var aniName := switchStyle
-		if switchState == 0:
-			aniName += "Off"
-		elif switchState == 1:
-			aniName += "On"
-		sprite.animation = aniName
+		sprite.animation = switchStyle + str(switchStates.find_key(switchState))
 		
 		# Determine how many frames are in the animation
 		frameCount = sprite.sprite_frames.get_frame_count(sprite.animation)
@@ -78,10 +76,13 @@ func _process(delta: float) -> void:
 
 # Called to change the state of the Switch
 func setSwitchState(newState: int) -> void:
-			switchState = newState
-			toggleChildren()
-			if !autoRevert:
-				sprite.frame = switchState
+	if newState == 0:
+		switchState = switchStates.OFF
+	else:
+		switchState = switchStates.ON
+	toggleChildren()
+	if !autoRevert:
+		sprite.frame = switchState
 
 
 # Called to change the state of nodes in the controlledChildren array

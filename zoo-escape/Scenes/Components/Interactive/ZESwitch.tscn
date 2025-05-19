@@ -331,7 +331,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_vlihv")
 }],
 "loop": true,
-"name": &"ButtonsOff",
+"name": &"ButtonsOFF",
 "speed": 5.0
 }, {
 "frames": [{
@@ -366,7 +366,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_8goqx")
 }],
 "loop": true,
-"name": &"ButtonsOn",
+"name": &"ButtonsON",
 "speed": 5.0
 }, {
 "frames": [{
@@ -412,7 +412,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_pyw15")
 }],
 "loop": true,
-"name": &"LeverOff",
+"name": &"LeverOFF",
 "speed": 5.0
 }, {
 "frames": [{
@@ -447,7 +447,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_4t1y8")
 }],
 "loop": true,
-"name": &"LeverOn",
+"name": &"LeverON",
 "speed": 5.0
 }, {
 "frames": [{
@@ -493,7 +493,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_ba5nf")
 }],
 "loop": true,
-"name": &"ToggleOff",
+"name": &"ToggleOFF",
 "speed": 5.0
 }, {
 "frames": [{
@@ -528,7 +528,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_a16lq")
 }],
 "loop": true,
-"name": &"ToggleOn",
+"name": &"ToggleON",
 "speed": 5.0
 }, {
 "frames": [{
