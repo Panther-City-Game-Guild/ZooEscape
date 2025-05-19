@@ -76,10 +76,7 @@ func _process(delta: float) -> void:
 
 # Called to change the state of the Switch
 func setSwitchState(newState: int) -> void:
-	if newState == 0:
-		switchState = switchStates.OFF
-	else:
-		switchState = switchStates.ON
+	switchState = newState as switchStates # typecasting newState as an enum
 	toggleChildren()
 	if !autoRevert:
 		sprite.frame = switchState
