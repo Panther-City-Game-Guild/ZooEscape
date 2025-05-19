@@ -3,8 +3,8 @@ class_name ZESwitchArea extends Area2D
 
 # Exported Variables
 @export_category("Basic Switch Settings")
-@export_enum("Buttons", "Lever", "Toggle") var switchStyle: String = "Lever" ## The chosen switch style.  Defaults to "Lever."  If auto-revert is enabled, an appropriate switch style is used instead.
-@export_enum("Off:0", "On:1") var switchState: int = 0 ## The Switch's state; Off = 0 or On = 1.
+@export_enum("Buttons", "Lever", "Toggle") var switchStyle := "Lever" ## The chosen switch style.  Defaults to "Lever."  If auto-revert is enabled, an appropriate switch style is used instead.
+@export_enum("Off:0", "On:1") var switchState := 0 ## The Switch's state; Off = 0 or On = 1.
 @export_category("Auto-Revert Settings")
 @export var autoRevert := false ## Does this switch revert to the previous state automatically?  If auto-revert is enabled, an appropriate switch style is used automatically.
 @export_range(0.5, 60.0, 0.1) var autoRevertTime := 3.0 ## Time elapse before autoRevert; Minimum: 0.5, Maximum: 60.0
@@ -13,7 +13,7 @@ class_name ZESwitchArea extends Area2D
 var recentlySwitched := false ## Was this Switch recently switched?
 var revertTimer := 0.0 ## Track the time until the switch auto-Reverts
 var controlledChildren: Array[Node] = [] ## Array to store handles to controlled children
-var frameCount: int = 0 ## Track how many frames are in the animation when using an autoRevert Switch
+var frameCount := 0 ## Track how many frames are in the animation when using an autoRevert Switch
 
 # Handles to child nodes
 @onready var collider := $CollisionShape2D ## Handle to the Switch's collisionshape
@@ -28,6 +28,8 @@ func _ready() -> void:
 		sprite.frame = switchState
 	# If autoRevert, build a String to set animation according to (switchStyle + switchState)
 	else:
+		# NOTE: The string built there is used to directly retrieve an animation in the AnimatedSprite2D.
+		# It was the simplest way I could think of to maintain readability for future work and simple code.
 		var aniName := switchStyle
 		if switchState == 0:
 			aniName += "Off"
