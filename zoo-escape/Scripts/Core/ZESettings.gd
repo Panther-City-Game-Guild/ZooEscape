@@ -157,7 +157,7 @@ func _on_bgm_slider_value_changed(_value: float) -> void:
 
 
 ## on drag grab and release, check values for mute
-func _on_bgm_slider_drag_ended(value_changed: bool) -> void:
+func _on_bgm_slider_drag_ended(_value_changed: bool) -> void:
 	if $BGMGroup/BGMSlider.value <= -20:
 		SoundControl.stopBgm()
 	else:
