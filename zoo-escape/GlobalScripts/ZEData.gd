@@ -72,4 +72,4 @@ func loadData()-> void:
 		Globals.Current_Options_Settings["analog_deadzone"] = saveData.analog_deadzone
 		## copy high score arrays
 		Globals.highScoreboardValues = saveData.highScoreboardValues.duplicate()
-		Globals.highScoreboardNames = saveData.highScoreboardValues.duplicate()
+		Globals.highScoreboardNames = saveData.highScoreboardNames.duplicate()

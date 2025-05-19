@@ -40,6 +40,7 @@ func _ready() -> void:
 	## update text and set first button on master bgm down
 	## update all text and values with globals from load data
 	ZeData.loadData()
+	SoundControl.setSoundPreferences(masterVolume,bgmVolume,sfxVolume,cueVolume)
 	
 	## update percents
 	masterPercent = percentageConversion(masterVolume)

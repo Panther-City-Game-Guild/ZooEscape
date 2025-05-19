@@ -6,7 +6,8 @@ func _ready() -> void:
 	ZeData.loadData()
 	$NewGameButton.grab_focus()
 	## set global sound
-	SoundControl.resetMusicFade() ## reset music state
+	if !AudioServer.is_bus_mute(3) and SoundControl.bgmLevel > -20:
+		SoundControl.resetMusicFade() ## reset music state
 	SceneManager.currentScene = self
 
 
