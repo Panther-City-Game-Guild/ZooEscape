@@ -58,7 +58,7 @@ func _ready() -> void: ## sound preferences retrieved at ready
 
 
 func _process(delta: float) -> void: ## listen for fade states and update volumes
-	if !AudioServer.is_bus_mute(3) and volumeReference > -20: ## check volume reference/bgm bus
+	if !AudioServer.is_bus_mute(3): ## check volume reference/bgm bus
 		if fadeState != FADE_STATES.PEAK_VOLUME: ## fade trigger if bgm not muted
 			bgmFadingMachine(delta,fadeRate)
 
@@ -69,7 +69,6 @@ func setSoundPreferences(_master:float,_bgm:float, _sfx:float, _cue:float) -> vo
 	AudioServer.set_bus_volume_db(1,_cue)
 	AudioServer.set_bus_volume_db(2,_sfx)
 	AudioServer.set_bus_volume_db(3,_bgm)
-	SoundControl.muteAudioBusCheck()
 
 
 ## call bgm file and play (state machine handles stop and start automatically)
@@ -127,8 +126,11 @@ func bgmFadingMachine(_delta:float,_rate:float) -> void:
 	match fadeState:
 		FADE_STATES.IN_TRIGGER:
 			fadeRate = 0.25 ## default rate
-			playBgm() ## start play
-			fadeState = FADE_STATES.IN_CURVE
+			if bgmLevel != SILENCE: ## if not silent, start fade curve
+				playBgm() ## start play
+				fadeState = FADE_STATES.IN_CURVE
+			else:
+				fadeState = FADE_STATES.SILENCE
 		FADE_STATES.IN_CURVE:
 			if volumeReference < bgmLevel: ## increase volume while below target
 				volumeReference+=(_delta+_rate)
@@ -147,7 +149,8 @@ func bgmFadingMachine(_delta:float,_rate:float) -> void:
 				fadeState = FADE_STATES.SILENCE
 		FADE_STATES.SILENCE: ## silence immediately begins next fade in
 			volumeReference = SILENCE
-			fadeState = FADE_STATES.IN_TRIGGER
+			if bgmLevel != SILENCE: ## If bgm not silenced, start fade in
+				fadeState = FADE_STATES.IN_TRIGGER
 
 
 func resetMusicFade() -> void: ## external function for resetting music volume
