@@ -24,8 +24,8 @@ func _ready() -> void:
 	player.InWater.connect(restartRoom)
 	exitTile.PlayerExits.connect(exitLevel)
 	steakManager.AllSteaksCollected.connect(allSteaksCollected)
-	Globals.currentLevelData.set("time_limit", LevelTime)
-	Globals.currentLevelData.set("warning_threshold", WarningTime)
+	Globals.currentGameData.set("time_limit", LevelTime)
+	Globals.currentGameData.set("warning_threshold", WarningTime)
 	
 	# check to ensure bgm fade level is consistent
 	# if bgm fade level not normal, reset fade state so it fades in
@@ -38,7 +38,7 @@ func _ready() -> void:
 		localHud.restart_room.connect(restartRoom)
 		localHud.exit_game.connect(exitGame)
 		localHud.score_processed.connect(nextRoom)
-		## update global data report and local UI feedback
+		# update global data report and local UI feedback
 		localHud.timeLimit = Globals.currentGameData.get("time_limit")
 		localHud.warningTime = Globals.currentGameData.get("warning_threshold")
 		localHud.timerValue = localHud.timeLimit

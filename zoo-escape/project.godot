@@ -22,9 +22,9 @@ buses/default_bus_layout="uid://slak83a5uy2t"
 
 [autoload]
 
-Scenes="*res://GlobalScripts/Scenes.gd"
-SceneManager="*res://GlobalScripts/SceneManager.gd"
-Globals="*res://GlobalScripts/Globals.gd"
+Scenes="*res://Scripts/Core/Scenes.gd"
+SceneManager="*res://Scripts/Core/SceneManager.gd"
+Globals="*res://Scripts/Core/Globals.gd"
 SoundControl="*res://Scenes/Core/SoundControl.tscn"
 ZeData="*res://Scenes/Core/Data.tscn"
 
@@ -44,7 +44,6 @@ enabled=PackedStringArray("res://addons/script-ide/plugin.cfg")
 
 folder_colors={
 "res://Assets/": "yellow",
-"res://GlobalScripts/": "blue",
 "res://Scenes/": "pink",
 "res://Scripts/": "purple"
 }
