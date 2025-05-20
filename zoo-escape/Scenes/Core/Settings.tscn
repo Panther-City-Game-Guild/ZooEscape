@@ -1,0 +1,438 @@
+[gd_scene load_steps=12 format=3 uid="uid://dybggrx1korki"]
+
+[ext_resource type="Script" uid="uid://bojgpxsrs8s60" path="res://Scripts/Core/Settings.gd" id="1_i6roa"]
+[ext_resource type="FontFile" uid="uid://gxb8jc5bj3cd" path="res://Assets/Fonts/PressStart2P.ttf" id="2_jvrum"]
+[ext_resource type="StyleBox" uid="uid://bg1fatmttmcey" path="res://Assets/UI_Resources/focus_texture.tres" id="3_jnco8"]
+[ext_resource type="StyleBox" uid="uid://d4ddxd4fvdf4o" path="res://Assets/UI_Resources/hover_texture.tres" id="4_mow0n"]
+[ext_resource type="StyleBox" uid="uid://b6pmunfpdsdix" path="res://Assets/UI_Resources/pressed_texture.tres" id="5_bxk0w"]
+[ext_resource type="FontFile" uid="uid://d1u2twwcxxbjc" path="res://Assets/Fonts/PCSenior.ttf" id="6_7pssb"]
+[ext_resource type="Texture2D" uid="uid://dyhwvfgd74prv" path="res://Assets/Images/SelectorFlipH.png" id="6_bxk0w"]
+[ext_resource type="Texture2D" uid="uid://peiaj3fth0w5" path="res://Assets/Images/Selector.png" id="7_7pssb"]
+
+[sub_resource type="Animation" id="Animation_kbgmh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Description:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0188679]
+}
+
+[sub_resource type="Animation" id="Animation_sbfs6"]
+resource_name = "roll_info"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Description:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kv0sb"]
+_data = {
+&"RESET": SubResource("Animation_kbgmh"),
+&"roll_info": SubResource("Animation_sbfs6")
+}
+
+[node name="ZESettings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i6roa")
+masterInfo = "Controls total volume of 
+all sound."
+bgmInfo = "Controls volume level 
+of background music."
+sfxInfo = "Controls volume level of
+sound effects."
+cueInfo = "Controls volume of system
+cues like pause noises."
+deadzoneInfo = "Controls the level at which
+analog direction inputs trigger."
+exitInfo = "Escape to main menu."
+metadata/_edit_lock_ = true
+
+[node name="Header" type="Label" parent="."]
+layout_mode = 0
+offset_right = 640.0
+offset_bottom = 64.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 27
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="MasterGroup" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="MasterText" type="Label" parent="MasterGroup"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 80.0
+offset_right = 320.0
+offset_bottom = 112.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 16
+text = "MASTER VOLUME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MasterValue" type="Label" parent="MasterGroup"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 80.0
+offset_right = 384.0
+offset_bottom = 112.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 16
+text = "70%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MasterSlider" type="HSlider" parent="MasterGroup"]
+layout_mode = 0
+offset_left = 396.0
+offset_top = 83.0
+offset_right = 556.0
+offset_bottom = 107.0
+focus_neighbor_left = NodePath("../../EscapeButton")
+focus_neighbor_top = NodePath("../../EscapeButton")
+focus_neighbor_bottom = NodePath("../../BGMGroup/BGMSlider")
+focus_next = NodePath("../../BGMGroup/BGMSlider")
+focus_previous = NodePath("../../EscapeButton")
+min_value = -20.0
+max_value = 0.0
+step = 0.2
+value = -6.0
+
+[node name="BGMGroup" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 48.0
+offset_right = 40.0
+offset_bottom = 88.0
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="BGMText" type="Label" parent="BGMGroup"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 80.0
+offset_right = 320.0
+offset_bottom = 112.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 16
+text = "BGM VOLUME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BGMValue" type="Label" parent="BGMGroup"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 80.0
+offset_right = 384.0
+offset_bottom = 112.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 16
+text = "70%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BGMSlider" type="HSlider" parent="BGMGroup"]
+layout_mode = 0
+offset_left = 396.0
+offset_top = 83.0
+offset_right = 556.0
+offset_bottom = 107.0
+focus_neighbor_left = NodePath("../../EscapeButton")
+focus_neighbor_top = NodePath("../../MasterGroup/MasterSlider")
+focus_neighbor_bottom = NodePath("../../SFXGroup/SFXSlider")
+focus_next = NodePath("../../SFXGroup/SFXSlider")
+focus_previous = NodePath("../../MasterGroup/MasterSlider")
+min_value = -20.0
+max_value = 0.0
+step = 0.2
+value = -6.0
+
+[node name="SFXGroup" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 32.0
+offset_right = 40.0
+offset_bottom = 72.0
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="SFXText" type="Label" parent="SFXGroup"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 144.0
+offset_right = 320.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 16
+text = "SFX VOLUME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SFXValue" type="Label" parent="SFXGroup"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 144.0
+offset_right = 384.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 16
+text = "70%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SFXSlider" type="HSlider" parent="SFXGroup"]
+layout_mode = 0
+offset_left = 396.0
+offset_top = 144.0
+offset_right = 556.0
+offset_bottom = 168.0
+focus_neighbor_left = NodePath("../../EscapeButton")
+focus_neighbor_top = NodePath("../../BGMGroup/BGMSlider")
+focus_neighbor_bottom = NodePath("../../CueGroup/CueSlider")
+focus_next = NodePath("../../CueGroup/CueSlider")
+focus_previous = NodePath("../../BGMGroup/BGMSlider")
+min_value = -20.0
+max_value = 0.0
+step = 0.2
+value = -6.0
+
+[node name="CueGroup" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 16.0
+offset_right = 40.0
+offset_bottom = 56.0
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="CueText" type="Label" parent="CueGroup"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 208.0
+offset_right = 320.0
+offset_bottom = 240.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 16
+text = "CUE VOLUME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CueValue" type="Label" parent="CueGroup"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 208.0
+offset_right = 384.0
+offset_bottom = 240.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 16
+text = "70%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CueSlider" type="HSlider" parent="CueGroup"]
+layout_mode = 0
+offset_left = 396.0
+offset_top = 208.0
+offset_right = 556.0
+offset_bottom = 232.0
+focus_neighbor_left = NodePath("../../EscapeButton")
+focus_neighbor_top = NodePath("../../SFXGroup/SFXSlider")
+focus_neighbor_bottom = NodePath("../../DeadzoneGroup/DeadzoneDown")
+focus_next = NodePath("../../DeadzoneGroup/DeadzoneDown")
+focus_previous = NodePath("../../SFXGroup/SFXSlider")
+min_value = -20.0
+max_value = 0.0
+step = 0.2
+value = -6.0
+
+[node name="DeadzoneGroup" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="DeadzoneText" type="Label" parent="DeadzoneGroup"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 272.0
+offset_right = 320.0
+offset_bottom = 304.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 16
+text = "ANALOG DEADZONE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DeadzoneValue" type="Label" parent="DeadzoneGroup"]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 272.0
+offset_right = 512.0
+offset_bottom = 304.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
+theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 16
+text = "0.5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DeadzoneDown" type="Button" parent="DeadzoneGroup"]
+layout_mode = 0
+offset_left = 336.0
+offset_top = 272.0
+offset_right = 368.0
+offset_bottom = 304.0
+focus_neighbor_left = NodePath("../DeadzoneUp")
+focus_neighbor_top = NodePath("../../CueGroup/CueSlider")
+focus_neighbor_right = NodePath("../DeadzoneUp")
+focus_neighbor_bottom = NodePath("../../EscapeButton")
+focus_next = NodePath("../DeadzoneUp")
+focus_previous = NodePath("../../CueGroup/CueSlider")
+theme_override_styles/focus = ExtResource("3_jnco8")
+theme_override_styles/hover = ExtResource("4_mow0n")
+theme_override_styles/pressed = ExtResource("5_bxk0w")
+icon = ExtResource("6_bxk0w")
+
+[node name="DeadzoneUp" type="Button" parent="DeadzoneGroup"]
+layout_mode = 0
+offset_left = 528.0
+offset_top = 272.0
+offset_right = 560.0
+offset_bottom = 304.0
+focus_neighbor_left = NodePath("../DeadzoneDown")
+focus_neighbor_top = NodePath("../../CueGroup/CueSlider")
+focus_neighbor_right = NodePath("../DeadzoneDown")
+focus_neighbor_bottom = NodePath("../../EscapeButton")
+focus_next = NodePath("../../EscapeButton")
+focus_previous = NodePath("../DeadzoneDown")
+theme_override_styles/focus = ExtResource("3_jnco8")
+theme_override_styles/hover = ExtResource("4_mow0n")
+theme_override_styles/pressed = ExtResource("5_bxk0w")
+icon = ExtResource("7_7pssb")
+
+[node name="Description" type="Label" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 312.0
+offset_right = 632.0
+offset_bottom = 352.0
+theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_jvrum")
+theme_override_font_sizes/font_size = 15
+autowrap_mode = 2
+visible_characters = 0
+visible_ratio = 0.0188679
+metadata/_edit_lock_ = true
+
+[node name="EscapeButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 48.0
+offset_bottom = 48.0
+focus_neighbor_top = NodePath("../DeadzoneGroup/DeadzoneDown")
+focus_previous = NodePath("../DeadzoneGroup/DeadzoneUp")
+theme_override_fonts/font = ExtResource("6_7pssb")
+theme_override_font_sizes/font_size = 8
+theme_override_styles/focus = ExtResource("3_jnco8")
+theme_override_styles/hover = ExtResource("4_mow0n")
+theme_override_styles/pressed = ExtResource("5_bxk0w")
+text = "ESC"
+
+[node name="Animator" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_kv0sb")
+}
+
+[node name="InputBuffer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[connection signal="focus_entered" from="MasterGroup/MasterSlider" to="." method="_on_master_slider_focus_entered"]
+[connection signal="mouse_entered" from="MasterGroup/MasterSlider" to="." method="_on_master_slider_mouse_entered"]
+[connection signal="value_changed" from="MasterGroup/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="drag_ended" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_drag_ended"]
+[connection signal="drag_started" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_drag_started"]
+[connection signal="focus_entered" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_focus_entered"]
+[connection signal="mouse_entered" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_mouse_entered"]
+[connection signal="value_changed" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_value_changed"]
+[connection signal="drag_ended" from="SFXGroup/SFXSlider" to="." method="_on_sfx_slider_drag_ended"]
+[connection signal="drag_started" from="SFXGroup/SFXSlider" to="." method="_on_sfx_slider_drag_started"]
+[connection signal="focus_entered" from="SFXGroup/SFXSlider" to="." method="_on_sfx_slider_focus_entered"]
+[connection signal="mouse_entered" from="SFXGroup/SFXSlider" to="." method="_on_sfx_slider_mouse_entered"]
+[connection signal="value_changed" from="SFXGroup/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="drag_ended" from="CueGroup/CueSlider" to="." method="_on_cue_slider_drag_ended"]
+[connection signal="drag_started" from="CueGroup/CueSlider" to="." method="_on_cue_slider_drag_started"]
+[connection signal="focus_entered" from="CueGroup/CueSlider" to="." method="_on_cue_slider_focus_entered"]
+[connection signal="mouse_entered" from="CueGroup/CueSlider" to="." method="_on_cue_slider_mouse_entered"]
+[connection signal="value_changed" from="CueGroup/CueSlider" to="." method="_on_cue_slider_value_changed"]
+[connection signal="focus_entered" from="DeadzoneGroup/DeadzoneDown" to="." method="_on_deadzone_down_focus_entered"]
+[connection signal="mouse_entered" from="DeadzoneGroup/DeadzoneDown" to="." method="_on_deadzone_down_mouse_entered"]
+[connection signal="pressed" from="DeadzoneGroup/DeadzoneDown" to="." method="_on_deadzone_down_pressed"]
+[connection signal="focus_entered" from="DeadzoneGroup/DeadzoneUp" to="." method="_on_deadzone_up_focus_entered"]
+[connection signal="mouse_entered" from="DeadzoneGroup/DeadzoneUp" to="." method="_on_deadzone_up_mouse_entered"]
+[connection signal="pressed" from="DeadzoneGroup/DeadzoneUp" to="." method="_on_deadzone_up_pressed"]
+[connection signal="focus_entered" from="EscapeButton" to="." method="_on_escape_button_focus_entered"]
+[connection signal="mouse_entered" from="EscapeButton" to="." method="_on_escape_button_mouse_entered"]
+[connection signal="pressed" from="EscapeButton" to="." method="_on_escape_button_pressed"]
+[connection signal="timeout" from="InputBuffer" to="." method="_on_input_buffer_timeout"]
