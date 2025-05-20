@@ -1,9 +1,9 @@
 class_name ZELevelManager extends Node2D
 
-@export var LevelCode := "" ## stores as password
-@export var LevelTime := 60 ## level time limit relayed to hud
-@export var WarningTime := 15 ## time out warning threshold
-@export var ExitScoreBonus := 500 ## local editor variables to effect bonuses
+@export var LevelCode := "" # stores as password
+@export var LevelTime := 60 # level time limit relayed to hud
+@export var WarningTime := 15 # time out warning threshold
+@export var ExitScoreBonus := 500 # local editor variables to effect bonuses
 @export var PerSecondBonus := 100
 @export var PerMovePenalty := 25
 @export var TutorialScoreBypass := false

@@ -1,7 +1,7 @@
 extends Node2D
 
-# NOTE: A double hashtag comment next to exported variables provides the editor with hints
-@export_enum("CLOSED", "OPEN") var gateState: int = 0 ## The initial state of the Gate; Closed = 0 or Open = 1
+
+@export_enum("CLOSED", "OPEN") var gateState: int = 0 # The initial state of the Gate; Closed = 0 or Open = 1
 
 
 # Called when the Node enters the Scene Tree for the first time

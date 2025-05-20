@@ -1,5 +1,6 @@
 extends AnimatedSprite2D
 
+
 @export var nextLevelCode := "9990"
 signal PlayerExits()
 

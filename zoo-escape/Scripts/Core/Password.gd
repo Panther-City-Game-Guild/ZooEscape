@@ -23,8 +23,8 @@ enum NUMBER_FOCUS_STATES {
 	CLEAR,
 	ENTER}
 
-@export var inGameMode := false ## Determine behavior in and out of frontend
-@export var loadSceneBufferTime := 1 ## Buffer until password scene loads
+@export var inGameMode := false # Determine behavior in and out of frontend
+@export var loadSceneBufferTime := 1 # Buffer until password scene loads
 var numberFocusState := 1 # current focus
 var codeTextPos := 0 # position in code
 var windowOpenFlag := false # flag for checking if window is open
@@ -130,14 +130,14 @@ func allStatesFlywheel(logic: bool, animate: bool) -> void:
 	buttonBatchControl(logic)
 	if animate: # choose animation based on first bool or stay invisisble
 		if logic:
-			$Animator.play("fade_in") ## true
+			$Animator.play("fade_in") # true
 		else:
-			$Animator.play_backwards("fade_in") ## false
+			$Animator.play_backwards("fade_in") # false
 
 
 # sound cue for input sounds
 func randomBlipCue() -> void:
-	var _variant := randf_range(-0.7, 0.7) ## random blips
+	var _variant := randf_range(-0.7, 0.7) # random blips
 	SoundControl.playCue(SoundControl.blip, (3.0 + _variant))
 
 
@@ -164,11 +164,11 @@ func fetchInput() -> void:
 			if codeTextPos == 4:
 				$ButtonBox/ButtonEnter.grab_focus()
 			
-		if Globals.Game_Globals.has(code.text): # if level code correct, show feedback
+		if Globals.PASSWORDS.has(code.text): # if level code correct, show feedback
 			SoundControl.playCue(SoundControl.success,2.5)
 			code.material = correctShader
 			code.modulate = Color.GREEN_YELLOW
-			Globals.Game_Globals["player_score"] = 0
+			Globals.currentGameData["player_score"] = 0 # NOTE:  Why is this happening here instead of in the GameRoot or somewhere besides a menu?
 			$LoadSceneBuffer.start(loadSceneBufferTime) # begin buffer to load
 			
 		if !"-" in code.text: # if no blanks, go to enter button
@@ -176,7 +176,7 @@ func fetchInput() -> void:
 			$ButtonBox/ButtonEnter.grab_focus()
 		
 	if Input.is_action_just_pressed("CancelButton"): # if hitting backspace
-		if codeTextPos > -1: ## single delete
+		if codeTextPos > -1: # single delete
 			numberFocusState = NUMBER_FOCUS_STATES.CLEAR
 			$ButtonBox/ButtonClear.grab_focus()
 			codeRemoval()
@@ -280,6 +280,8 @@ func _on_buffer_timer_timeout() -> void:
 	buttonBatchControl(true)
 
 
+# TODO:  Let's consider connecting these different button events programmatically in _ready() to a function for each event type that can take the button number or name as a parameter, to reduce the number of functions in code.
+
 # number functions
 # Called when button 1 pressed
 func _on_button_1_pressed() -> void:
@@ -293,7 +295,7 @@ func _on_button_1_focus_entered() -> void:
 
 # Called when mouse hovers button 1
 func _on_button_1_mouse_entered() -> void:
-	numberFocusState = 1 ## grab state
+	numberFocusState = 1 # grab state
 
 
 # Called when button 2 pressed
@@ -434,7 +436,7 @@ func _on_button_0_mouse_entered() -> void:
 # Called when Clear button pressed
 func _on_button_clear_pressed() -> void:
 	if codeTextPos > 0:
-		codeRemoval() ## delete one unit
+		codeRemoval() # delete one unit
 	else:
 		if !inGameMode:
 			returnToTitle()
@@ -454,7 +456,7 @@ func _on_button_clear_mouse_entered() -> void:
 
 # Called when Enter button pressed
 func _on_button_enter_pressed() -> void:
-	answerCheck() ## always check on enter button
+	answerCheck() # always check on enter button
 
 
 # Called when Enter button focused

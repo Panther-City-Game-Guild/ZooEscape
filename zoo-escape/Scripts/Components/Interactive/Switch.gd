@@ -6,14 +6,13 @@ enum switchStates {
 	ON
 }
 
-# NOTE: A comment with double hashtags next to an exported variable provides the editor with hints.
 # Exported Variables
 @export_category("Basic Switch Settings")
-@export_enum("Buttons", "Lever", "Toggle") var switchStyle := "Lever" ## The chosen switch style.  Defaults to "Lever."  If auto-revert is enabled, an appropriate switch style is used instead.
-@export var switchState := switchStates.OFF ## The Switch's state; Off = 0 or On = 1.
+@export_enum("Buttons", "Lever", "Toggle") var switchStyle := "Lever" # The chosen switch style.  Defaults to "Lever."  If auto-revert is enabled, an appropriate switch style is used instead.
+@export var switchState := switchStates.OFF # The Switch's state; Off = 0 or On = 1.
 @export_category("Auto-Revert Settings")
-@export var autoRevert := false ## Does this switch revert to the previous state automatically?  If auto-revert is enabled, an appropriate switch style is used automatically.
-@export_range(0.5, 60.0, 0.1) var autoRevertTime := 3.0 ## Time elapse before autoRevert; Minimum: 0.5, Maximum: 60.0
+@export var autoRevert := false # Does this switch revert to the previous state automatically?  If auto-revert is enabled, an appropriate switch style is used automatically.
+@export_range(0.5, 60.0, 0.1) var autoRevertTime := 3.0 # Time elapse before autoRevert; Minimum: 0.5, Maximum: 60.0
 
 # Additional Variables
 var recentlySwitched := false # Was this Switch recently switched?
@@ -22,8 +21,8 @@ var controlledChildren: Array[Node] = [] # Array to store handles to controlled 
 var frameCount := 0 # Track how many frames are in the animation when using an autoRevert Switch
 
 # Handles to child nodes
-@onready var collider := $CollisionShape2D ## Handle to the Switch's collisionshape
-@onready var sprite := $AnimatedSprite2D ## Handle to the Switch's sprite
+@onready var collider := $CollisionShape2D # Handle to the Switch's collisionshape
+@onready var sprite := $AnimatedSprite2D # Handle to the Switch's sprite
 
 
 # Called when the node enters the scene tree for the first time.

@@ -1,17 +1,18 @@
 class_name ZEBall extends Area2D
 
+
 enum STATES {
 	IDLE,
 	MOVING
 }
 
+@export var moveWidthTime := 0.75
 var currentState := STATES.IDLE
 var moveDistance := Globals.TILESIZE
 var dirCheck := Vector2.ZERO
+var skidTime := moveWidthTime * 2
 @onready var raycast := $RayCast2D
 @onready var checkSpace := $EnvironmentCheck
-@export var moveWidthTime := 0.75
-var skidTime := moveWidthTime * 2 
 
 
 # Called to move the ball if possible

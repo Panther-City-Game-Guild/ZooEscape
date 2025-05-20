@@ -59,7 +59,7 @@ func areYouSureReset(): # closes warning state for exit
 	$ExitButton/RollText.play_backwards("roll_in")
 
 
-## functions to grab focus
+# functions to grab focus
 func focusEntered(_focusSelect: Button):
 	_focusSelect.grab_click_focus()
 

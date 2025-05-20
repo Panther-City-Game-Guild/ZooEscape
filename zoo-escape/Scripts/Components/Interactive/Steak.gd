@@ -1,7 +1,7 @@
 extends AnimatedSprite2D
 
 
-@export var bonus : int = 50  ## The bonus points for collecting a steak
+@export var bonus : int = 50  # The points for collecting a steak
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
