@@ -1,39 +1,11 @@
 extends Node
 
-# This file will store Global var that can be read from anywhere in the game
-@onready var ZETileSize := 16
+# Global constant that tells the game the sizes of our tiles
+const TILESIZE := 16
 
-# Volume settings are included by default and changed by the SettingsManager
-# Do not alter this variable within your game; use the SettingsManager
-@onready var Current_Options_Settings := {
-	"master_volume": -6,
-	"music_volume": -10, # -6 by default is too loud for this -DevMV
-	"sfx_volume": -6,
-	"cue_volume": -6,
-	"analog_deadzone": 0.50
-}
-
-## this will store global values for transferring level data to hud
-@onready var Current_Level_Data := {
-	"time_limit": 60,
-	"warning_threshold": 15
-}
-
-# Globally available settings that can be used to store different settings
-# Used to hold additional settings for your game, as needed
-@onready var Current_Settings := {
-	"passwordWindowOpen": false ## global hud control flag
-}
-
-# A global variable playground for your game
-# Add these programatically when your game loads
-# Use Globals.Game_Globals.get_or_add(varName, varValue) to create a dictionary entry
-# Use Globals.Game_Globals.varName to retrieve the value
-# 	Alternatively, use Globals.Game_Globals.get("varName") to retrieve the value
-# TODO: Clean up when someone leaves a game (performed by the SceneManager)
-@onready var Game_Globals := {
-	"player_score": 0, ## player score total
-	# debug levels
+# Globally accessible list of passwords and corresponding scenes
+const PASSWORDS := {
+	# Debug Levels
 	"9990": Scenes.TITLE,
 	"9991": Scenes.DEBUG,
 	"9992": Scenes.DEBUG2,
@@ -67,8 +39,37 @@ extends Node
 	# "3706": 
 }
 
+# Globally accessible storage locker for the user's settings
+var currentSettings := {
+	"master_volume": -6,
+	"music_volume": -6, # -6 by default is too loud for this -DevMV
+	"sfx_volume": -6,
+	"cue_volume": -6,
+	"analog_deadzone": 0.50,
+}
 
-@onready var highScoreboardNames = [
+# Globally accessible data related to the currently active game
+var currentGameData := {
+	"time_limit": 60,
+	"warning_threshold": 15,
+	"player_score": 0, # player score total
+}
+
+# Globally accessible data related to the state of the application
+var currentAppState := {
+	"passwordWindowOpen": false # global hud control flag
+}
+
+# TODO: Try combining highScoreboardNames with highScoreBoardValues into one Dictionary.
+# var highScores := {
+# 	"ZAP": 20000,
+# 	"MKV": 19000,
+# 	"ZAP": 18000,
+# }
+
+# Global storage space for player names in the high scores list
+# NOTE: See the above TODO.
+var highScoreboardNames = [
 	"ZAP",
 	"MKV",
 	"GUS",
@@ -76,7 +77,9 @@ extends Node
 	"ZOO"
 ]
 
-@onready var highScoreboardValues = [
+# Global storage space for scores in the high scores list
+# NOTE: See the above TODO.
+var highScoreboardValues = [
 	20000,
 	19000,
 	18000,

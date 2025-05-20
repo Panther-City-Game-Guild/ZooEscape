@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bq8h4mq117i5a"]
 
-[ext_resource type="Script" uid="uid://b42attwhyi8mb" path="res://Scripts/Core/game_root.gd" id="1_rqi4g"]
-[ext_resource type="PackedScene" uid="uid://bnah6d37dam5s" path="res://Scenes/Core/ZETitle.tscn" id="2_hyb4l"]
+[ext_resource type="Script" uid="uid://b42attwhyi8mb" path="res://Scripts/Core/GameRoot.gd" id="1_rqi4g"]
+[ext_resource type="PackedScene" uid="uid://bnah6d37dam5s" path="res://Scenes/Core/Title.tscn" id="2_hyb4l"]
 
 [sub_resource type="Animation" id="Animation_hyb4l"]
 resource_name = "FadeIn"

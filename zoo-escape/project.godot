@@ -14,7 +14,7 @@ config/name="Zoo Escape"
 run/main_scene="uid://bq8h4mq117i5a"
 config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/bg_color=Color(0.180392, 0.172549, 0.231373, 1)
-config/icon="res://Assets/Images/Icons/icon.svg"
+config/icon="res://Assets/Images/Icons/Icon.svg"
 
 [audio]
 
@@ -22,11 +22,11 @@ buses/default_bus_layout="uid://slak83a5uy2t"
 
 [autoload]
 
-Scenes="*res://GlobalScripts/scenes.gd"
-SceneManager="*res://GlobalScripts/scene_manager.gd"
-Globals="*res://GlobalScripts/globals.gd"
-SoundControl="*res://Scenes/Core/sound_control.tscn"
-ZeData="*res://Scenes/Core/ZEData.tscn"
+Scenes="*res://GlobalScripts/Scenes.gd"
+SceneManager="*res://GlobalScripts/SceneManager.gd"
+Globals="*res://GlobalScripts/Globals.gd"
+SoundControl="*res://Scenes/Core/SoundControl.tscn"
+ZeData="*res://Scenes/Core/Data.tscn"
 
 [display]
 
