@@ -26,7 +26,7 @@ enum SCORE_PROCESS_STATES {
 	MOVE_PROCESS,
 	POST}
 var focusState := 0
-@onready var passwordState = Globals.Current_Settings["passwordWindowOpen"]
+@onready var passwordState: bool = Globals.Current_Settings["passwordWindowOpen"]
 enum FOCUS_STATES {
 	RESTART,
 	EXIT}
