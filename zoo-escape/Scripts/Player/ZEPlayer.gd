@@ -32,8 +32,8 @@ signal InWater
 func _ready() -> void:
 	randomize()
 	$StepCue.volume_db = SoundControl.sfxLevel-stepMuffleLevel ## default player footsteps to low volume
-	$GroundCheck.area_entered.connect(areaEnter)
-	$GroundCheck.area_exited.connect(areaExit)
+	$GroundCheck.body_entered.connect(bodyEnter)
+	$GroundCheck.body_exited.connect(bodyExit)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -117,25 +117,27 @@ func interactWithRayCollider(collidingObj: Object) -> void:
 	if collidingObj is ZESwitchArea: # Is the object a Switch?
 		collidingObj.flipSwitch()
 
+
 # do stuff depending on what you step on. 
-func areaEnter(area: Area2D) -> void:
-	var layer := area.collision_layer
-	
-	if(layer == 2):
-		$ZEHud.closeHud()
-		SoundControl.playCue(SoundControl.fail,3.0)
-		currentState = playerState.INWATER
-	
-		# tell the level to restart
-		InWater.emit()
-	elif(layer == 4):
-		if(!ray.is_colliding()):
-			currentState = playerState.SLIDING
-			$StepCue.stream = load(slipNoise)
-		else:
-			currentState = playerState.IDLE
+func bodyEnter(body: Node2D) -> void:
+	if body is TileMapLayer:
+		var tilePos: Vector2i = body.local_to_map($GroundCheck.global_position)
+		if body.get_cell_tile_data(tilePos).get_custom_data("Water"):
+			$ZEHud.closeHud()
+			SoundControl.playCue(SoundControl.fail,3.0)
+			currentState = playerState.INWATER
+		
+			# tell the level to restart
+			InWater.emit()
+		elif body.get_cell_tile_data(tilePos).get_custom_data("Ice"):
+			if(!ray.is_colliding()):
+				currentState = playerState.SLIDING
+				$StepCue.stream = load(slipNoise)
+			else:
+				currentState = playerState.IDLE
+
 
 # go back to idle when exiting area
-func areaExit(_area: Area2D) -> void:
+func bodyExit(_body: Node2D) -> void:
 	currentState = playerState.IDLE
 	$StepCue.stream = load(stepNoise)

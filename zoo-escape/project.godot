@@ -167,6 +167,12 @@ Numeric_9={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Solid"
+2d_physics/layer_2="Water"
+2d_physics/layer_3="Ice"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
