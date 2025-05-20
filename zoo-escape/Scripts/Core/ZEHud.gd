@@ -1,24 +1,24 @@
 extends Control
 
 
-var steakValue := 1 ## live monitor of steak total
-var timerValue := 1 ## live monitor of timer
-var movesValue := 0 ## live monitor of moves
-@onready var scoreCurrent: int = Globals.Game_Globals.get("player_score") ## player score
-var secondBonus := 50 ## values for abstraction from parent to apply
+var steakValue := 1 # live monitor of steak total
+var timerValue := 1 # live monitor of timer
+var movesValue := 0 # live monitor of moves
+var scoreCurrent := 0  # player score
+var secondBonus := 50 # values for abstraction from parent to apply
 var movePenalty := 25
-var moveMonitoring := false ## shows timer has started
-var timesUp := false ## shows time is out
-var allSteaksCollected := false ## shows goal is open
-var resetBarVisible := false ## reset bar flag for external reference
-var resetGauge := 0.0 ## to compare with level manager
-var password := "ABCD" ## abstraction for password
-var warningTime := 10 ## value when warning cues
+var moveMonitoring := false # shows timer has started
+var timesUp := false # shows time is out
+var allSteaksCollected := false # shows goal is open
+var resetBarVisible := false # reset bar flag for external reference
+var resetGauge := 0.0 # to compare with level manager
+var password := "ABCD" # abstraction for password
+var warningTime := 10 # value when warning cues
 var timeLimit := 30 # value to change for each level
-signal restart_room ## reload signal
-signal exit_game ## exit to title signal
-signal score_processed ## score processing signal for process score
-var post_score := false ## post score process flag, prevents overloading buffer
+signal restart_room # reload signal
+signal exit_game # exit to title signal
+signal score_processed # score processing signal for process score
+var post_score := false # post score process flag, prevents overloading buffer
 var scoreProcessState := SCORE_PROCESS_STATES.IDLE
 enum SCORE_PROCESS_STATES {
 	IDLE,
@@ -26,35 +26,41 @@ enum SCORE_PROCESS_STATES {
 	MOVE_PROCESS,
 	POST}
 var focusState := 0
-@onready var passwordState: bool = Globals.Current_Settings["passwordWindowOpen"]
+var passwordState := false
 enum FOCUS_STATES {
 	RESTART,
-	EXIT}
+	EXIT
+	}
 
-func _ready() -> void: ## reset animations at ready, fetch start values
+
+# Runs at the start set up
+func _ready() -> void: # reset animations at ready, fetch start values
 	self.add_to_group("hud")
 	$HUDAnimation.play("RESET")
 	$HUDAnimationAlt.play("RESET")
-	$HudWindow/TimerValue.text = str(timeLimit)+"s" ## update value at start
+	$HudWindow/TimerValue.text = str(timeLimit)+"s" # update value at start
 	steakValueFetch()
 	timerValue = timeLimit
-	## to avoid queueing error on prompt
+	# to avoid queueing error on prompt
 	$OpenCue.volume_db = SoundControl.cueLevel
 	$AlertCue.volume_db = SoundControl.cueLevel
-	
+	scoreCurrent = Globals.Game_Globals.get("player_score")
+	passwordState = Globals.Current_Settings.get("passwordWindowOpen")
 
+
+# Runs every frame
 func _process(_delta: float) -> void:
-	## monitor password state to hold hud move monitoring
+	# monitor password state to hold hud move monitoring
 	passwordState = Globals.Current_Settings["passwordWindowOpen"]
 	scoreCurrent = Globals.Game_Globals.get("player_score")
 	$HudWindow/ScoreValue.text = str(scoreCurrent)
-	## fetch password from level manager and update
+	# fetch password from level manager and update
 	$TimeOutCurtain/PasswordBox/PasswordLabel.text = "PASSWORD: "+str(password)
-	if !timesUp and passwordState == false: ## if timer not out, update values and monitor inputs
+	if !timesUp and passwordState == false: # if timer not out, update values and monitor inputs
 		steakValueFetch()
 		valueMonitoring()
 
-	## level timer does not start until first input
+	# level timer does not start until first input
 	if !moveMonitoring and !timesUp and passwordState == false:
 		if Input.is_action_just_pressed("DigitalDown"):
 			levelTimerStart()
@@ -65,7 +71,7 @@ func _process(_delta: float) -> void:
 		if Input.is_action_just_pressed("DigitalUp"):
 			levelTimerStart()
 
-	## this number taken from levelManager
+	# this number taken from levelManager
 	$ResetBar.value = resetGauge 
 	
 	
@@ -83,17 +89,18 @@ func _process(_delta: float) -> void:
 	if scoreProcessState != SCORE_PROCESS_STATES.IDLE:
 		scoreProcessing()
 
-## button to grab focus from keyboard for timeout buttons
-func buttonFocusGrab():
-	## lock state values and adjust each button press
+
+# button to grab focus from keyboard for timeout buttons
+func buttonFocusGrab() -> void:
+	# lock state values and adjust each button press
 	focusState+=1
 	if focusState == 2:
 		focusState = 0
 
-	var _variant = randf_range(-0.7,0.7) ## random blips
+	var _variant = randf_range(-0.7,0.7) # random blips
 	SoundControl.playCue(SoundControl.blip,(2.3+_variant))
 	
-	## listen for state
+	# listen for state
 	match focusState:
 		FOCUS_STATES.RESTART:
 			$ExitButton.grab_focus()
@@ -101,60 +108,60 @@ func buttonFocusGrab():
 			$RestartButton.grab_focus()
 
 
-
-
-
-## input start function and flip flop state
-func levelTimerStart():
-	$HUDAnimationAlt.play("time_text_reset") ## reset time text (bugfix)
-	if $HudWindow.scale.x < 1: ## window bug fixing
+# input start function and flip flop state
+func levelTimerStart() -> void:
+	$HUDAnimationAlt.play("time_text_reset") # reset time text (bugfix)
+	if $HudWindow.scale.x < 1: # window bug fixing
 		$HudWindow.scale.x = 1
 
 	if !moveMonitoring:
-		$HUDAnimationAlt.play("timer_start") ## play timer ping on separate animator
-		moveMonitoring = true ## moves now monitored
-		$LevelTimer.start(1) ## timer starts on first input
+		$HUDAnimationAlt.play("timer_start") # play timer ping on separate animator
+		moveMonitoring = true # moves now monitored
+		$LevelTimer.start(1) # timer starts on first input
 
 
-## update label values with strings
-func valueMonitoring():
-	## listen for steaks collected and update as needed
+# update label values with strings
+func valueMonitoring() -> void:
+	# listen for steaks collected and update as needed
 	if !allSteaksCollected:
 		$HudWindow/SteaksValue.text = str(steakValue)+"x"
 	else:
-		$HudWindow/SteaksValue.text = "GOAL!!" ## if all captured, goal text
+		$HudWindow/SteaksValue.text = "GOAL!!" # if all captured, goal text
 	
 	$HudWindow/MovesValue.text = str(movesValue)+"m"
 	
-	## update timer as it counts down
+	# update timer as it counts down
 	if timerValue < timeLimit and moveMonitoring:
 		$HudWindow/TimerValue.text = str(timerValue)+"s"
-	if timerValue == 0 and scoreProcessState == SCORE_PROCESS_STATES.IDLE: ## last second warning
+	if timerValue == 0 and scoreProcessState == SCORE_PROCESS_STATES.IDLE: # last second warning
 		$HudWindow/TimerValue.modulate = Color.RED
 		$HudWindow/TimerText.modulate = Color.RED
 
 
-	if steakValue == 0 and !allSteaksCollected: ## if all collected, run animation
+# if all collected, run animation
+	if steakValue == 0 and !allSteaksCollected: 
 		allSteaksCollected = true
-		$HUDAnimationAlt.play("goal") ## play on alt to prevent conflicts
+		$HUDAnimationAlt.play("goal") # play on alt to prevent conflicts
 
 
-func passwordReport(data:String): ## function for updating password, referenced by manager/ui
+# function for updating password, referenced by manager/ui
+func passwordReport(data:String) -> void: 
 	$HudWindow/PasswordValue.text = data
 
 
-func steakValueFetch(): ## count amount of steaks in scene
+# count amount of steaks in scene
+func steakValueFetch() -> void: 
 	var steakCount = get_tree().get_node_count_in_group("steaks")
 	steakValue = steakCount
 
-## time functionality
+# time functionality
 func _on_level_timer_timeout() -> void:
-	if scoreProcessState == SCORE_PROCESS_STATES.IDLE: ## do not log timeouts during score processing
-		if timerValue >= 1 and !timesUp: ## if time not up, clock counts down
+	if scoreProcessState == SCORE_PROCESS_STATES.IDLE: # do not log timeouts during score processing
+		if timerValue >= 1 and !timesUp: # if time not up, clock counts down
 			timerValue-=1
 			$LevelTimer.start(1)
 
-		if timerValue == 0: ## on time up, flip state, stop non-system noises and trigger feedback
+		if timerValue == 0: # on time up, flip state, stop non-system noises and trigger feedback
 			$HUDAnimationAlt.play("close")
 			SoundControl.stopSounds()
 			get_tree().paused = true
@@ -163,18 +170,16 @@ func _on_level_timer_timeout() -> void:
 			SoundControl.playCue(SoundControl.fail,3.0)
 			$HUDAnimation.play("time_out")
 			timesUp = true
-			$AlertCue.pitch_scale = 0.5 ## alert noise
+			$AlertCue.pitch_scale = 0.5 # alert noise
 			$AlertCue.play()
 
-
-		## warnings during period of time before time out (variable)
+		# warnings during period of time before time out (variable)
 		if timerValue < warningTime and timerValue > 0:
 			$HUDAnimation.play("warning")
-			$OpenCue.play() ## additional warning cue every even second for dynamics
+			$OpenCue.play() # additional warning cue every even second for dynamics
 
 
-
-## buttons open when time out animation ends
+# buttons open when time out animation ends
 func _on_hud_animation_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "time_out":
 		$RestartButton.disabled = false
@@ -183,71 +188,78 @@ func _on_hud_animation_animation_finished(anim_name: StringName) -> void:
 		$HUDAnimation.stop()
 
 
-## time out animation triggers when time is up
+# time out animation triggers when time is up
 func _on_open_timer_timeout() -> void:
 	$HUDAnimation.play("open")
 
 
-## button for restart
+# button for restart
 func _on_restart_button_pressed() -> void:
-	$HudWindow.visible = false ## hide window to avoid artifacting/bugs
+	$HudWindow.visible = false # hide window to avoid artifacting/bugs
 	SoundControl.playCue(SoundControl.flutter,3.0)
 	buttonsDisabled()
 	SoundControl.resetMusicFade()
-	restart_room.emit() ## signal to levelManager to reload
+	restart_room.emit() # signal to levelManager to reload
 
 
+# button for exiting the game
 func _on_exit_button_pressed() -> void:
 	$HudWindow.visible = false
 	SoundControl.playCue(SoundControl.ruined,0.5)
 	buttonsDisabled()
 	SoundControl.resetMusicFade()
-	exit_game.emit() ## signal to levelManager to exit to title
+	exit_game.emit() # signal to levelManager to exit to title
 
 
-func buttonsDisabled(): ## function to close buttons on input
+# function to close buttons on input
+func buttonsDisabled()  -> void: 
 	$RestartButton.disabled = true
 	$ExitButton.disabled = true
 
 
-func closeHud(): ## remote hud close button
+# remote hud close button
+func closeHud()  -> void: 
 	$HUDAnimationAlt.play("close")
 
 
-func resetBarReveal(): ## functions to hide and reveal reset bar
+# functions to hide and reveal reset bar
+func resetBarReveal() -> void: 
 	resetBarVisible = true
 	$HUDAnimationAlt.play("reset_fader")
 
 
-func resetBarFade(): ## remote function to fade out reset bar on release
+# remote function to fade out reset bar on release
+func resetBarFade() -> void: 
 	resetBarVisible = false
 	$HUDAnimationAlt.play_backwards("reset_fader")
 
 
-func resetPrompt(): ## remote function to show reload message on full reset bar
+# remote function to show reload message on full reset bar
+func resetPrompt() -> void: 
 	$HUDAnimationAlt.play("close")
 	$ResetBar/ResetLabel.text = "RELOADING..."
 
 
-func scoreProcessing(): ## score processing state machine
+# score processing state machine
+func scoreProcessing() -> void:
 	match scoreProcessState:
 		SCORE_PROCESS_STATES.IDLE:
-			pass ## don't process
+			pass # don't process
 		SCORE_PROCESS_STATES.TIME_PROCESS:
-			if timerValue > 0: ## timer adds bonus until zero
+			if timerValue > 0: # timer adds bonus until zero
 				timerValue-=1
 				var _old = Globals.Game_Globals.get("player_score")
 				Globals.Game_Globals.set("player_score",(_old+secondBonus))
 			else:
-				scoreProcessState = SCORE_PROCESS_STATES.MOVE_PROCESS ## then state flips
+				scoreProcessState = SCORE_PROCESS_STATES.MOVE_PROCESS # then state flips
 		SCORE_PROCESS_STATES.MOVE_PROCESS:
-			if movesValue > 0: ## moves subtract penalty until zero
+			if movesValue > 0: # moves subtract penalty until zero
 				movesValue-=1
 				var _old2 = Globals.Game_Globals.get("player_score")
 				Globals.Game_Globals.set("player_score",(_old2-movePenalty))
-			else: ## then state flips back to off
+			else: # then state flips back to off
 				print("Score processed!")
-				score_processed.emit() ## after emitting one signal
+				score_processed.emit() # after emitting one signal
 				scoreProcessState = SCORE_PROCESS_STATES.POST
 		SCORE_PROCESS_STATES.POST:
 			pass
