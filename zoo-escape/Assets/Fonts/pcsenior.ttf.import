@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://d1u2twwcxxbjc"
-path="res://.godot/imported/PCSenior.ttf-dae6ef47f2199eb1121576016accc917.fontdata"
+path="res://.godot/imported/pcsenior.ttf-7f7186146643758d8aa5fdcb9f7a8de3.fontdata"
 
 [deps]
 
-source_file="res://Assets/Fonts/PCSenior.ttf"
-dest_files=["res://.godot/imported/PCSenior.ttf-dae6ef47f2199eb1121576016accc917.fontdata"]
+source_file="res://Assets/Fonts/pcsenior.ttf"
+dest_files=["res://.godot/imported/pcsenior.ttf-7f7186146643758d8aa5fdcb9f7a8de3.fontdata"]
 
 [params]
 
