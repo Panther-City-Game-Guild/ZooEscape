@@ -14,7 +14,7 @@ config/name="Zoo Escape"
 run/main_scene="uid://bq8h4mq117i5a"
 config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/bg_color=Color(0.180392, 0.172549, 0.231373, 1)
-config/icon="uid://dgrstxpw3f3im"
+config/icon="uid://c27stihl8g1xr"
 
 [audio]
 
