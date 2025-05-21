@@ -34,7 +34,7 @@ enum FADE_STATES {
 
 
 # global audio references for easy access
-const alert := "res://Assets/Sound/alert.ogg"
+const alert := "res://Assets/Sound/Alert.ogg"
 const blip := "res://Assets/Sound/blip.ogg"
 const chomp := "res://Assets/Sound/chompy.ogg"
 const down := "res://Assets/Sound/flourish_down.ogg"
