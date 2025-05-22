@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-const STEPNOISE := "res://Assets/Sound/deep_thump.ogg"
-const SLIPNOISE := "res://Assets/Sound/squelch.ogg"
+const STEPNOISE := "res://Assets/Sound/DeepThump.ogg"
+const SLIPNOISE := "res://Assets/Sound/Squelch.ogg"
 
 enum playerState {
 	IDLE,

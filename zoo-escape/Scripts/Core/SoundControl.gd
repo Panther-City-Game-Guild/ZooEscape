@@ -8,8 +8,8 @@ extends Node2D
 const MAX_VOLUME := 0
 const DEFAULT_VOLUME := -6
 const SILENCE := -20
-const defaultBgm := "res://Assets/Sound/theme.ogg"
-const testBgm := "res://Assets/Sound/tutorial.ogg"
+const defaultBgm := "res://Assets/Sound/Theme.ogg"
+const testBgm := "res://Assets/Sound/Tutorial.ogg"
 var currentBgm : String
 
 
@@ -34,21 +34,21 @@ enum FADE_STATES {
 
 
 # global audio references for easy access
-const alert := "res://Assets/Sound/alert.ogg"
-const blip := "res://Assets/Sound/blip.ogg"
-const chomp := "res://Assets/Sound/chompy.ogg"
-const down := "res://Assets/Sound/flourish_down.ogg"
-const pickup := "res://Assets/Sound/pickup.ogg"
-const flutter := "res://Assets/Sound/flutter.ogg"
-const fail := "res://Assets/Sound/game_over.ogg"
-const ruined := "res://Assets/Sound/crumble_noise.ogg"
-const scratch := "res://Assets/Sound/scratch_delay.ogg"
-const scuff := "res://Assets/Sound/scuff_noise.ogg"
-const splorch := "res://Assets/Sound/splorch.ogg"
-const success := "res://Assets/Sound/success.ogg"
-const thump := "res://Assets/Sound/thump.ogg"
-const zap := "res://Assets/Sound/zap_delayed.ogg"
-const start := "res://Assets/Sound/flourish_up.ogg"
+const alert := "res://Assets/Sound/Alert.ogg"
+const blip := "res://Assets/Sound/Blip.ogg"
+const chomp := "res://Assets/Sound/Chompy.ogg"
+const down := "res://Assets/Sound/FlourishDown.ogg"
+const pickup := "res://Assets/Sound/Pickup.ogg"
+const flutter := "res://Assets/Sound/Flutter.ogg"
+const fail := "res://Assets/Sound/GameOver.ogg"
+const ruined := "res://Assets/Sound/CrumbleNoise.ogg"
+const scratch := "res://Assets/Sound/ScratchDelay.ogg"
+const scuff := "res://Assets/Sound/ScuffNoise.ogg"
+const splorch := "res://Assets/Sound/Splorch.ogg"
+const success := "res://Assets/Sound/Success.ogg"
+const thump := "res://Assets/Sound/Thump.ogg"
+const zap := "res://Assets/Sound/ZapDelayed.ogg"
+const start := "res://Assets/Sound/FlourishUp.ogg"
 
 
 func _ready() -> void: # sound preferences retrieved at ready

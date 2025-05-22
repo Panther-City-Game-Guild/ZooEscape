@@ -1,7 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dv7hqtmvhe4pn"]
-
-[ext_resource type="Shader" uid="uid://bhyeih47fei80" path="res://Assets/Shaders/password_pixelator.gdshader" id="1_ncnct"]
-
-[resource]
-shader = ExtResource("1_ncnct")
-shader_parameter/amount = 0.0
