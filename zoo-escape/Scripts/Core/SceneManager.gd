@@ -4,7 +4,8 @@ extends Node
 # This is set by gameroot when it is ready
 @onready var gameRoot: GameRoot
 @onready var currentScene: Node
-const TITLE = Scenes.TITLE
+const TITLE := Scenes.TITLE
+const SETTINGS := Scenes.SETTINGS
 
 
 func _ready() -> void:
@@ -30,3 +31,7 @@ func GoToNewSceneString(NewScene: String) -> void:
 
 func GoToTitle() -> void:
 	GoToNewSceneString(TITLE)
+
+
+func GoToSettings() -> void:
+	GoToNewSceneString(SETTINGS)

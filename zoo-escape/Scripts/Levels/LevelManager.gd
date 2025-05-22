@@ -4,9 +4,9 @@ class_name ZELevelManager extends Node2D
 @export var LevelTime := 60 # level time limit relayed to hud
 @export var WarningTime := 15 # time out warning threshold
 @export var ExitScoreBonus := 500 # local editor variables to effect bonuses
-@export var PerSecondBonus := 100
-@export var PerMovePenalty := 25
-@export var TutorialScoreBypass := false
+@export var PerSecondBonus := 100 # bonus per remaining seconds in processing
+@export var PerMovePenalty := 25 # deduction per move in points at level end
+@export var TutorialScoreBypass := false # flag to not count point bonus/deductions
 @onready var player := $Player
 @onready var exitTile := $ExitTile
 @onready var steakManager := $SteakManager
@@ -74,9 +74,9 @@ func _process(delta: float) -> void:
 		restartRoom()
 
 
-# TODO: Need descriptive comment here
+## call to exit level, hold player movement as score processes before scene change
 func exitLevel() -> void:
-	player.currentState = player.playerState.ONEXIT
+	player.currentState = player.playerState.ONEXIT # this state holds player movement
 	SoundControl.playCue(SoundControl.success, 2.0) # sound trigger
 	if !TutorialScoreBypass: # process score before exit
 		localHud.scoreProcessState = 1

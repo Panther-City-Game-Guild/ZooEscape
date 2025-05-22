@@ -5,11 +5,13 @@ signal restart_room # reload signal
 signal exit_game # exit to title signal
 signal score_processed # score processing signal for process score
 
+## shows if restart call state is live
 enum FOCUS_STATES {
 	RESTART,
 	EXIT
 }
 
+## state of score processing at level's end
 enum SCORE_PROCESS_STATES {
 	IDLE,
 	TIME_PROCESS,
@@ -22,7 +24,7 @@ var timerValue := 1 # live monitor of timer
 var movesValue := 0 # live monitor of moves
 var scoreCurrent := 0  # player score
 var secondBonus := 50 # values for abstraction from parent to apply
-var movePenalty := 25
+var movePenalty := 25 ## value to reduce score by move at level end
 var moveMonitoring := false # shows timer has started
 var timesUp := false # shows time is out
 var allSteaksCollected := false # shows goal is open
@@ -32,9 +34,9 @@ var password := "ABCD" # abstraction for password
 var warningTime := 10 # value when warning cues
 var timeLimit := 30 # value to change for each level
 var post_score := false # post score process flag, prevents overloading buffer
-var scoreProcessState := SCORE_PROCESS_STATES.IDLE
-var focusState := 0
-var passwordState := false
+var scoreProcessState := SCORE_PROCESS_STATES.IDLE ## score not processing as default
+var focusState := 0 ## focus out of restart as default
+var passwordState := false ## is password window open
 
 
 
@@ -45,6 +47,7 @@ func _ready() -> void: # reset animations at ready, fetch start values
 	$HUDAnimationAlt.play("RESET")
 	$HudWindow/TimerValue.text = str(timeLimit) + "s" # update value at start
 	steakValueFetch()
+	timeLimit = Globals.currentGameData.get("time_limit")
 	timerValue = timeLimit
 	# to avoid queueing error on prompt
 	$OpenCue.volume_db = SoundControl.cueLevel
@@ -79,6 +82,7 @@ func _process(_delta: float) -> void:
 	# this number taken from levelManager
 	$ResetBar.value = resetGauge 
 	
+	## if time is up, allow buttons to grab focus
 	if timesUp:
 		if Input.is_action_just_pressed("DigitalDown"):
 			buttonFocusGrab()
@@ -89,6 +93,7 @@ func _process(_delta: float) -> void:
 		if Input.is_action_just_pressed("DigitalUp"):
 			buttonFocusGrab()
 	
+	## process score when not idle
 	if scoreProcessState != SCORE_PROCESS_STATES.IDLE:
 		scoreProcessing()
 
@@ -106,9 +111,9 @@ func buttonFocusGrab() -> void:
 	# listen for state
 	match focusState:
 		FOCUS_STATES.RESTART:
-			$ExitButton.grab_focus()
-		FOCUS_STATES.EXIT:
 			$RestartButton.grab_focus()
+		FOCUS_STATES.EXIT:
+			$ExitButton.grab_focus()
 
 
 # input start function and flip flop state
@@ -189,6 +194,7 @@ func _on_hud_animation_animation_finished(anim_name: StringName) -> void:
 		$RestartButton.disabled = false
 		$ExitButton.disabled = false
 		$RestartButton.grab_focus()
+		$RestartButton.grab_click_focus()
 		$HUDAnimation.stop()
 
 
@@ -267,3 +273,25 @@ func scoreProcessing() -> void:
 				scoreProcessState = SCORE_PROCESS_STATES.POST
 		SCORE_PROCESS_STATES.POST:
 			pass
+
+
+## functions to grab restart button focus
+func _on_restart_button_focus_entered() -> void:
+	if timesUp:
+		$RestartButton.grab_click_focus()
+
+
+func _on_restart_button_mouse_entered() -> void:
+	if timesUp:
+		$RestartButton.grab_focus()
+
+
+## functions to grab exit button focus
+func _on_exit_button_focus_entered() -> void:
+	if timesUp:
+		$ExitButton.grab_click_focus()
+
+
+func _on_exit_button_mouse_entered() -> void:
+	if timesUp:
+		$ExitButton.grab_focus()
