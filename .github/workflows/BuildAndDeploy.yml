@@ -133,7 +133,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             *-build.zip
-          body: ${{ github.event.head_commit.message }}
   deploy-itch:
     needs: [create-release]
     runs-on: ubuntu-latest
