@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bojgpxsrs8s60" path="res://Scripts/Core/Settings.gd" id="1_i6roa"]
 [ext_resource type="FontFile" uid="uid://gxb8jc5bj3cd" path="res://Assets/Fonts/PressStart2P.ttf" id="2_jvrum"]
-[ext_resource type="StyleBox" uid="uid://bg1fatmttmcey" path="res://Assets/UI_Resources/focus_texture.tres" id="3_jnco8"]
-[ext_resource type="StyleBox" uid="uid://d4ddxd4fvdf4o" path="res://Assets/UI_Resources/hover_texture.tres" id="4_mow0n"]
-[ext_resource type="StyleBox" uid="uid://b6pmunfpdsdix" path="res://Assets/UI_Resources/pressed_texture.tres" id="5_bxk0w"]
+[ext_resource type="StyleBox" uid="uid://bg1fatmttmcey" path="res://Assets/UI_Resources/FocusTexture.tres" id="3_jnco8"]
+[ext_resource type="StyleBox" uid="uid://d4ddxd4fvdf4o" path="res://Assets/UI_Resources/HoverTexture.tres" id="4_mow0n"]
+[ext_resource type="StyleBox" uid="uid://b6pmunfpdsdix" path="res://Assets/UI_Resources/PressedTexture.tres" id="5_bxk0w"]
 [ext_resource type="FontFile" uid="uid://dltop0cdtk3sp" path="res://Assets/Fonts/PCSenior.ttf" id="6_7pssb"]
 [ext_resource type="Texture2D" uid="uid://dyhwvfgd74prv" path="res://Assets/Images/SelectorFlipH.png" id="6_bxk0w"]
 [ext_resource type="Texture2D" uid="uid://bv8r8myvdoftk" path="res://Assets/Images/Selector.png" id="7_7pssb"]

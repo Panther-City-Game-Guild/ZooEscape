@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://us4h0q25mlj5" path="res://Scripts/Core/Title.gd" id="1_hbotl"]
 [ext_resource type="Texture2D" uid="uid://dav381wq6ly4h" path="res://Assets/Images/Title.png" id="2_e3eap"]
 [ext_resource type="FontFile" uid="uid://gxb8jc5bj3cd" path="res://Assets/Fonts/PressStart2P.ttf" id="3_pljp2"]
-[ext_resource type="StyleBox" uid="uid://bg1fatmttmcey" path="res://Assets/UI_Resources/focus_texture.tres" id="4_p5poa"]
-[ext_resource type="StyleBox" uid="uid://d4ddxd4fvdf4o" path="res://Assets/UI_Resources/hover_texture.tres" id="5_hxufm"]
-[ext_resource type="StyleBox" uid="uid://b6pmunfpdsdix" path="res://Assets/UI_Resources/pressed_texture.tres" id="6_xt5i8"]
+[ext_resource type="StyleBox" uid="uid://bg1fatmttmcey" path="res://Assets/UI_Resources/FocusTexture.tres" id="4_p5poa"]
+[ext_resource type="StyleBox" uid="uid://d4ddxd4fvdf4o" path="res://Assets/UI_Resources/HoverTexture.tres" id="5_hxufm"]
+[ext_resource type="StyleBox" uid="uid://b6pmunfpdsdix" path="res://Assets/UI_Resources/PressedTexture.tres" id="6_xt5i8"]
 
 [sub_resource type="Animation" id="Animation_44kyq"]
 length = 0.001

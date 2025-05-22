@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cxubfhy8y0hcg"]
 
-[ext_resource type="Texture2D" uid="uid://bggw242jpq8vq" path="res://Assets/Images/ZEBox.png" id="1_6kiuv"]
+[ext_resource type="Texture2D" uid="uid://bggw242jpq8vq" path="res://Assets/Images/Box.png" id="1_6kiuv"]
 [ext_resource type="Script" uid="uid://d4chm2g4ghrjl" path="res://Scripts/Components/Interactive/Box.gd" id="2_jnb56"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jx2uq"]

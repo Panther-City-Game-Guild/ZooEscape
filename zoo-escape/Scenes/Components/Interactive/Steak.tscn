@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cs2ar6co6wa5"]
 
-[ext_resource type="Texture2D" uid="uid://dyfcsjnea6ar7" path="res://Assets/Images/ZESteak.png" id="1_rh2m4"]
+[ext_resource type="Texture2D" uid="uid://dyfcsjnea6ar7" path="res://Assets/Images/Steak.png" id="1_rh2m4"]
 [ext_resource type="Script" uid="uid://dghsg2n0uy67b" path="res://Scripts/Components/Interactive/Steak.gd" id="2_p8xwr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rhvaa"]

@@ -3,7 +3,7 @@ extends Node2D
 var areYouSure: bool = false
 
 func _ready() -> void:
-	ZeData.loadData()
+	Data.loadData()
 	$NewGameButton.grab_focus()
 	# set global sound
 	if !AudioServer.is_bus_mute(3) and SoundControl.bgmLevel > -20:
@@ -23,7 +23,7 @@ func _process(_delta: float) -> void:
 
 # TODO: Need descriptive comment here
 func _on_new_game_button_pressed() -> void:
-	ZeData.saveGameData()
+	Data.saveGameData()
 	SoundControl.playCue(SoundControl.start, 1.0)
 	SceneManager.GoToNewSceneString(Scenes.TUTORIAL1) # This will need to be moved to the menu script when the menu is added
 	Globals.currentGameData.set("player_score", 0) # Why is this being done here AND in GameRoot.gd?!  Let's make a central function to do this type of thing in the GameRoot when a new game starts.
@@ -43,7 +43,7 @@ func _on_settings_button_pressed() -> void:
 
 # TODO: Need descriptive comment here
 func _on_exit_button_pressed() -> void: # listen for exit call
-	ZeData.saveGameData()
+	Data.saveGameData()
 	if !areYouSure: # feedback and warning
 		$ExitButton/RollText.speed_scale = 1.0
 		areYouSure = true

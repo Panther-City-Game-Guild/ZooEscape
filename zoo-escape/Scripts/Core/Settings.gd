@@ -42,7 +42,7 @@ var focusGroup := FOCUS_GROUPS.MASTER # shows which control area has focus
 func _ready() -> void:
 	# update text and set first button on master bgm down
 	# update all text and values with globals from load data
-	ZeData.loadData()
+	Data.loadData()
 	SoundControl.setSoundPreferences(masterVolume, bgmVolume, sfxVolume, cueVolume)
 	
 	# update percents
@@ -312,7 +312,7 @@ func _on_deadzone_up_mouse_entered() -> void:
 # save data on escape
 func _on_escape_button_pressed() -> void:
 	if !bufferState:
-		ZeData.saveGameData()
+		Data.saveGameData()
 		globalSettingsUpdate() # update global settings
 		SceneManager.GoToTitle() # go to title
 

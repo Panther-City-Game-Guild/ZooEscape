@@ -2,8 +2,8 @@ extends Control
 
 
 # materials for shader changes on password entry
-const correctShader := preload("res://Assets/Shaders/wobbly_material.tres")
-const failShader := preload("res://Assets/Shaders/error_shake_x.tres")
+const correctShader := preload("res://Assets/Shaders/WobblyMaterial.tres")
+const failShader := preload("res://Assets/Shaders/ErrorShakeX.tres")
 const title := Scenes.TITLE
 const empty := "----"
 const correctedVector := Vector2(-320,-160)

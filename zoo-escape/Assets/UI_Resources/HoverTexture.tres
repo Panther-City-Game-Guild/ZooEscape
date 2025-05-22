@@ -1,0 +1,7 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://d4ddxd4fvdf4o"]
+
+[ext_resource type="Texture2D" uid="uid://bux0jend2lpdp" path="res://Assets/Images/UIFocusGradient.png" id="1_ap6nx"]
+
+[resource]
+texture = ExtResource("1_ap6nx")
+modulate_color = Color(0.423529, 0.831373, 0.878431, 0.498039)

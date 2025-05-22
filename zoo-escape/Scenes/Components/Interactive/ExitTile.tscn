@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cvov28wochc8n" path="res://Assets/Images/ExitTile.png" id="1_0g4yw"]
 [ext_resource type="Script" uid="uid://c5eo1oi16a8rv" path="res://Scripts/Components/Interactive/ExitTile.gd" id="2_2qd3s"]
-[ext_resource type="AudioStream" uid="uid://dyk3iqy52e5y7" path="res://Assets/Sound/fanfare_major.ogg" id="3_qqk7d"]
+[ext_resource type="AudioStream" uid="uid://dyk3iqy52e5y7" path="res://Assets/Sound/FanfareMajor.ogg" id="3_qqk7d"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kmvhh"]
 atlas = ExtResource("1_0g4yw")
