@@ -3,6 +3,8 @@ extends Node2D
 var areYouSure: bool = false
 
 func _ready() -> void:
+	if OS.get_name() == "Web":
+		$ExitButton.hide()
 	Data.loadData()
 	$NewGameButton.grab_focus()
 	# set global sound
@@ -13,7 +15,7 @@ func _ready() -> void:
 
 # listen for exit call from escape button
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("CancelButton") or Input.is_action_just_pressed("PasswordButton"):
+	if OS.get_name() != "Web" && Input.is_action_just_pressed("CancelButton"):
 		if !areYouSure: # if not on warning, move focus to exit button
 			$ExitButton.grab_focus()
 			_on_exit_button_pressed()
