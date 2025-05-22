@@ -4,8 +4,6 @@ extends Control
 # materials for shader changes on password entry
 const correctShader := preload("res://Assets/Shaders/WobblyMaterial.tres")
 const failShader := preload("res://Assets/Shaders/ErrorShakeX.tres")
-
-# hard references for placement, null strings and scene changes
 const title := Scenes.TITLE
 const empty := "----"
 const correctedVector := Vector2(-320,-160)
@@ -24,7 +22,6 @@ enum NUMBER_FOCUS_STATES {
 	NINE,
 	CLEAR,
 	ENTER}
-
 
 @export var inGameMode := false # Determine behavior in and out of frontend
 @export var loadSceneBufferTime := 1 # Buffer until password scene loads
@@ -123,7 +120,7 @@ func _numericFocusCheck() -> void:
 		$ButtonBox/ButtonEnter.grab_focus()
 
 
-# this controls states of all buttons to flip all on/off at once
+# TODO: This needs a descriptive comment here
 func allStatesFlywheel(logic: bool, animate: bool) -> void:
 	# first bool, logic for all hud states, second bool determines if animation necessary
 	Globals.currentAppState["passwordWindowOpen"] = logic # global hud logic

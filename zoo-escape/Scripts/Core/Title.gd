@@ -21,7 +21,7 @@ func _process(_delta: float) -> void:
 			get_tree().quit()
 
 
-## save current settings, start new game with feedback call
+# TODO: Need descriptive comment here
 func _on_new_game_button_pressed() -> void:
 	Data.saveGameData()
 	SoundControl.playCue(SoundControl.start, 1.0)
@@ -31,17 +31,17 @@ func _on_new_game_button_pressed() -> void:
 	SoundControl.levelChangeSoundCall(1.0, SoundControl.defaultBgm)
 
 
-## go to the password input scene
+# TODO: Need descriptive comment here
 func _on_password_button_pressed() -> void:
 	SceneManager.GoToNewSceneString(Scenes.PASSWORD)
 
 
-## go to the settings input scene
+# TODO: Need descriptive comment here
 func _on_settings_button_pressed() -> void:
 	SceneManager.GoToNewSceneString(Scenes.SETTINGS)
 
 
-## if exit warning is visible, exit game, else show warning
+# TODO: Need descriptive comment here
 func _on_exit_button_pressed() -> void: # listen for exit call
 	Data.saveGameData()
 	if !areYouSure: # feedback and warning
@@ -52,76 +52,76 @@ func _on_exit_button_pressed() -> void: # listen for exit call
 		get_tree().quit()
 
 
-# closes exit warning, resetting exit check state
+# TODO: Need descriptive comment here
 func areYouSureReset(): # closes warning state for exit
 	areYouSure = false
 	$ExitButton/RollText.speed_scale = 2.0
 	$ExitButton/RollText.play_backwards("roll_in")
 
 
-# functions to grab click focus
+# functions to grab focus
 func focusEntered(_focusSelect: Button):
 	_focusSelect.grab_click_focus()
 
 
-# function to grab mouse focus
+# TODO: Need descriptive comment here
 func mouseEntered(_mouseSelect: Button):
 	_mouseSelect.grab_focus()
 
 
-# function to start new game
+# TODO: Need descriptive comment here
 func _on_new_game_button_focus_entered() -> void:
 	focusEntered($NewGameButton)
 
 
-# grab mouse focus
+# TODO: Need descriptive comment here
 func _on_new_game_button_mouse_entered() -> void:
 	mouseEntered($NewGameButton)
 
 
-# grab click focus
+# TODO: Need descriptive comment here
 func _on_password_button_focus_entered() -> void:
 	focusEntered($PasswordButton)
 
 
-# grab mouse focus
+# TODO: Need descriptive comment here
 func _on_password_button_mouse_entered() -> void:
 	mouseEntered($PasswordButton)
 
 
-# grab focus and clear exit warning
+# TODO: Need descriptive comment here
 func _on_settings_button_focus_entered() -> void:
 	focusEntered($SettingsButton)
 	if areYouSure:
 		areYouSureReset()
 
 
-# grab mouse focus and clear exit warning
+# TODO: Need descriptive comment here
 func _on_settings_button_mouse_entered() -> void:
 	mouseEntered($SettingsButton)
 	if areYouSure:
 		areYouSureReset()
 
 
-# grab exit button focus
+# TODO: Need descriptive comment here
 func _on_exit_button_focus_entered() -> void:
 	if areYouSure: # are you sure warning
 		focusEntered($ExitButton)
 
 
-# grab mouse focus
+# TODO: Need descriptive comment here
 func _on_exit_button_mouse_entered() -> void:
 	if areYouSure:
 		focusEntered($ExitButton)
 
 
-# reset exit warning text
+# TODO: Need descriptive comment here
 func _on_exit_button_focus_exited() -> void:
 	if areYouSure: # if are you sure visible, reset
 		areYouSureReset()
 
 
-# reset exit warning text
+# TODO: Need descriptive comment here
 func _on_exit_button_mouse_exited() -> void:
 	if areYouSure: # if leaving exit area, reset state
 		areYouSureReset()
