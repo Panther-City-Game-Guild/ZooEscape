@@ -15,8 +15,8 @@ const PASSWORDS := {
 	"0001": Scenes.TUTORIAL1,
 	
 	"0387": Scenes.LEVEL1,
-	"9102": Scenes.LEVEL2
-	# "1476": 
+	"9102": Scenes.LEVEL2,
+	"1476": Scenes.LEVEL3
 	# "5829": 
 	# "0053": 
 	

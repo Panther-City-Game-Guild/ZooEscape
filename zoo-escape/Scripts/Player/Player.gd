@@ -18,6 +18,7 @@ enum playerState {
 }
 
 @export var moveSpeed := 0.3
+@export var slideSpeed := 0.1
 @export var stepMuffleLevel := 9 # value to muffle footsteps
 @onready var currentDir := Vector2.DOWN
 @onready var sprite := $AnimatedSprite2D
@@ -74,7 +75,7 @@ func _process(delta: float) -> void:
 	elif currentState == playerState.SLIDING:
 		moveTimer += delta
 		
-		if moveTimer >= moveSpeed:
+		if moveTimer >= slideSpeed:
 			movePlayer(lastMoveDir)
 			moveTimer = 0
 	
