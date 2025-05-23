@@ -53,6 +53,9 @@ func defaultGameData() -> void:
 	Globals.currentSettings["analog_deadzone"] = DEFAULT_DZ
 	Globals.highScoreboardNames = DEFAULT_NAMES.duplicate()
 	Globals.highScoreboardValues = DEFAULT_VALUES.duplicate()
+	Globals.deadzoneUpdate()
+	SoundControl.setSoundPreferences(DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME)
+	SoundControl.resetMusicFade()
 
 
 # load with check
@@ -65,11 +68,17 @@ func loadData()-> void:
 		saveData = JSON.parse_string(access.get_as_text())
 		print("Data loaded!")
 		access.close()
+		## update global values
 		Globals.currentSettings["master_volume"] = saveData.master_volume
 		Globals.currentSettings["music_volume"] = saveData.music_volume
 		Globals.currentSettings["sfx_volume"] = saveData.sfx_volume
 		Globals.currentSettings["cue_volume"] = saveData.cue_volume
 		Globals.currentSettings["analog_deadzone"] = saveData.analog_deadzone
+		## update settings
+		Globals.deadzoneUpdate()
+		SoundControl.setSoundPreferences(saveData.master_volume, saveData.music_volume, 
+		saveData.sfx_volume, saveData.cue_volume)
+		SoundControl.resetMusicFade()
 		# copy high score arrays
 		Globals.highScoreboardValues = saveData.highScoreboardValues.duplicate()
 		Globals.highScoreboardNames = saveData.highScoreboardNames.duplicate()

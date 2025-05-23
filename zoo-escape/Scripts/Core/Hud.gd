@@ -219,7 +219,7 @@ func _on_open_timer_timeout() -> void:
 # button for restart
 func _on_restart_button_pressed() -> void:
 	$HudWindow.visible = false # hide window to avoid artifacting/bugs
-	SoundControl.playCue(SoundControl.flutter,3.0)
+	SoundControl.playCue(SoundControl.flutter, 3.0)
 	buttonsDisabled()
 	SoundControl.resetMusicFade()
 	restart_room.emit() # signal to levelManager to reload
@@ -228,7 +228,7 @@ func _on_restart_button_pressed() -> void:
 # button for exiting the game
 func _on_exit_button_pressed() -> void:
 	$HudWindow.visible = false
-	SoundControl.playCue(SoundControl.ruined,0.5)
+	SoundControl.playCue(SoundControl.ruined, 0.5)
 	buttonsDisabled()
 	SoundControl.resetMusicFade()
 	exit_game.emit() # signal to levelManager to exit to title
@@ -271,21 +271,20 @@ func scoreProcessing() -> void:
 		SCORE_PROCESS_STATES.TIME_PROCESS:
 			if timerValue > 0: # timer adds bonus until zero
 				timerValue -= 1
-				var _old: int = Globals.currentGameData.get("player_score")
-				Globals.currentGameData.set("player_score", (_old + secondBonus))
+				Globals.scoreUpdate(secondBonus, true)
 			else:
 				scoreProcessState = SCORE_PROCESS_STATES.MOVE_PROCESS # then state flips
 		SCORE_PROCESS_STATES.MOVE_PROCESS:
 			if movesValue > 0: # moves subtract penalty until zero
 				movesValue-=1
-				var _old2 = Globals.currentGameData.get("player_score")
-				Globals.currentGameData.set("player_score", (_old2-movePenalty))
+				Globals.scoreUpdate(movePenalty, false)
 			else: # then state flips back to off
 				print("Score processed!")
 				score_processed.emit() # after emitting one signal
 				scoreProcessState = SCORE_PROCESS_STATES.POST
 		SCORE_PROCESS_STATES.POST:
 			pass
+			# empty state to end processing
 
 
 # grab mouse focus for restart

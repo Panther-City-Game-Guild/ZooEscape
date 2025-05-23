@@ -13,6 +13,7 @@ func _ready() -> void:
 	SceneManager.currentScene = self
 
 
+
 # listen for exit call from escape button
 func _process(_delta: float) -> void:
 	if OS.get_name() != "Web" && Input.is_action_just_pressed("CancelButton"):
@@ -27,22 +28,22 @@ func _process(_delta: float) -> void:
 func _on_new_game_button_pressed() -> void:
 	Data.saveGameData() # save options data
 	SoundControl.playCue(SoundControl.start, 1.0) # audio feedback
-	SceneManager.GoToNewSceneString(Scenes.TUTORIAL1) # This will need to be moved to the menu script when the menu is added
+	SceneManager.goToNewSceneString(Scenes.TUTORIAL1) # This will need to be moved to the menu script when the menu is added
 	Globals.currentGameData.set("player_score", 0) # Why is this being done here AND in GameRoot.gd?!  Let's make a central function to do this type of thing in the GameRoot when a new game starts.
 	# change bgm and fade on out
-	SoundControl.levelChangeSoundCall(1.0, SoundControl.defaultBgm)
+	SoundControl.levelChangeSoundCall(1.0, SoundControl.defaultBgm) # begin bgm fade in
 
 
 # go to password screen after pressing button
 func _on_password_button_pressed() -> void:
 	SoundControl.playCue(SoundControl.zap, 1.0) # audio feedback
-	SceneManager.GoToNewSceneString(Scenes.PASSWORD)
+	SceneManager.goToNewSceneString(Scenes.PASSWORD)
 
 
 # go to settings screen after pressing button
 func _on_settings_button_pressed() -> void:
 	SoundControl.playCue(SoundControl.flutter, 1.0) # audio feedback
-	SceneManager.GoToNewSceneString(Scenes.SETTINGS)
+	SceneManager.goToNewSceneString(Scenes.SETTINGS)
 
 
 # check for warning state. if in warning, exit, else show warning and open state

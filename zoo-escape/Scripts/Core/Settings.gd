@@ -42,8 +42,6 @@ var focusGroup := FOCUS_GROUPS.MASTER # shows which control area has focus
 func _ready() -> void:
 	# update text and set first button on master bgm down
 	# update all text and values with globals from load data
-	Data.loadData()
-	SoundControl.setSoundPreferences(masterVolume, bgmVolume, sfxVolume, cueVolume)
 	
 	# update percents
 	masterPercent = percentageConversion(masterVolume)
@@ -66,7 +64,7 @@ func _ready() -> void:
 	
 	# grab first focus and roll in info text
 	$MasterGroup/MasterSlider.grab_focus()
-	focusInfoRelay("MASTER",masterInfo)
+	focusInfoRelay("MASTER", masterInfo)
 	$Description.text = masterInfo
 	$Animator.play("roll_info")
 
@@ -76,17 +74,17 @@ func _process(_delta: float) -> void: # single button fast value scroll in deadz
 	if !bufferState:
 		if Input.is_action_pressed("ActionButton") and focusGroup == FOCUS_GROUPS.DEADZONE:
 			if $DeadzoneGroup/DeadzoneDown.has_focus() and analogDeadzone > DEADZONE_MIN:
-				analogDeadzone-=0.01 # adjust deadzone and update text
+				analogDeadzone -= 0.01 # adjust deadzone and update text
 				$DeadzoneGroup/DeadzoneValue.text = str(analogDeadzone)
 			if $DeadzoneGroup/DeadzoneUp.has_focus() and analogDeadzone < DEADZONE_MAX:
-				analogDeadzone+=0.01
+				analogDeadzone += 0.01
 				$DeadzoneGroup/DeadzoneValue.text = str(analogDeadzone)
 	
 		if Input.is_action_just_released("DigitalLeft") or Input.is_action_just_released("DigitalRight"):
 			if focusGroup == FOCUS_GROUPS.SFX: # add sound cues to test fx levels
 				SoundControl.playSfx(SoundControl.scratch)
 			if focusGroup == FOCUS_GROUPS.CUE:
-				SoundControl.playCue(SoundControl.pickup,1.0)
+				SoundControl.playCue(SoundControl.pickup, 1.0)
 	
 		if Input.is_action_just_pressed("CancelButton") or Input.is_action_just_pressed("PasswordButton"):
 			if focusGroup != FOCUS_GROUPS.ESCAPE: # move to escape button on press
@@ -103,12 +101,10 @@ func globalSettingsUpdate() -> void: # update global settings
 	Globals.currentSettings["sfx_volume"] = sfxVolume
 	Globals.currentSettings["cue_volume"] = cueVolume
 	Globals.currentSettings["analog_deadzone"] = analogDeadzone
+	# set sound levels
 	SoundControl.setSoundPreferences(masterVolume, bgmVolume, sfxVolume, cueVolume)
 	# set deadzones
-	InputMap.action_set_deadzone("DigitalDown", analogDeadzone)
-	InputMap.action_set_deadzone("DigitalUp", analogDeadzone)
-	InputMap.action_set_deadzone("DigitalLeft", analogDeadzone)
-	InputMap.action_set_deadzone("DigitalRight", analogDeadzone)
+	Globals.deadzoneUpdate()
 
 
 # focus info widget to update info text on focus change
@@ -257,24 +253,24 @@ func _on_cue_slider_mouse_entered() -> void:
 
 # cue test on drag
 func _on_cue_slider_drag_started() -> void:
-	SoundControl.playCue(SoundControl.pickup,1.0) # audio cue for testing on grab
+	SoundControl.playCue(SoundControl.pickup, 1.0) # audio cue for testing on grab
 
 
 # cue test on release
 func _on_cue_slider_drag_ended(_value_changed: bool) -> void:
-	SoundControl.playCue(SoundControl.pickup,1.0) # audio cue for testing after release
+	SoundControl.playCue(SoundControl.pickup, 1.0) # audio cue for testing after release
 
 
 # update deadzone levels
 func _on_deadzone_down_pressed() -> void:
 	if !bufferState:
-		var _downValue := analogDeadzone-0.01
+		var _downValue := analogDeadzone - 0.01
 		if _downValue < DEADZONE_MIN:
 			_downValue = DEADZONE_MIN
 
 		analogDeadzone = _downValue
 		$DeadzoneGroup/DeadzoneValue.text = str(analogDeadzone)
-		globalSettingsUpdate()
+		Globals.deadzoneUpdate()
 
 
 # grab deadzone focus
@@ -296,7 +292,7 @@ func _on_deadzone_up_pressed() -> void:
 
 		analogDeadzone = _upValue
 		$DeadzoneGroup/DeadzoneValue.text = str(analogDeadzone)
-		globalSettingsUpdate()
+		Globals.deadzoneUpdate()
 
 
 # grab deadzone focus
@@ -314,7 +310,7 @@ func _on_escape_button_pressed() -> void:
 	if !bufferState:
 		Data.saveGameData()
 		globalSettingsUpdate() # update global settings
-		SceneManager.GoToTitle() # go to title
+		SceneManager.goToTitle() # go to title
 
 
 # grab escape button focus

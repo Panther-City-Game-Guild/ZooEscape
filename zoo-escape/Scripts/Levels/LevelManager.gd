@@ -15,14 +15,13 @@ class_name ZELevelManager extends Node2D
 var loadingScore: Variant = Globals.currentGameData.get("player_score") # compare score for reloads
 var localHud: Control # pointer for hud
 var timeUp := false # to monitor local hud timer
+@export var levelBgm := "res://Assets/Sound/Theme.ogg"
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SceneManager.currentScene = self
 	self.add_to_group("LevelManager")
-	if !AudioServer.is_bus_mute(3) or SoundControl.bgmLevel > -20:
-		SoundControl.resetMusicFade() # reset music state
 	player.InWater.connect(restartRoom)
 	exitTile.PlayerExits.connect(exitLevel)
 	steakManager.AllSteaksCollected.connect(allSteaksCollected)
@@ -31,8 +30,10 @@ func _ready() -> void:
 	
 	# check to ensure bgm fade level is consistent
 	# if bgm fade level not normal, reset fade state so it fades in
-	if SoundControl.fadeState != SoundControl.FADE_STATES.PEAK_VOLUME:
+	if SoundControl.fadeState != SoundControl.FADE_STATES.PEAK_VOLUME or SoundControl.currentBgm != levelBgm:
 		SoundControl.fadeState = SoundControl.FADE_STATES.IN_TRIGGER
+	
+
 	
 	# connect hud to scene change and score process functions
 	localHud = get_node("Player/ZEHud")
@@ -91,17 +92,15 @@ func exitLevel() -> void:
 # load next level
 func nextRoom():
 	if nextLevel != "9990":
-		SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[nextLevel])
+		SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[nextLevel])
 	else:
-		Globals.currentGameData.set("player_score", 0)
 		exitGame()
 
 
 # update score and apply exit score and bonus
 func allSteaksCollected() -> void:
 	exitTile.activateExit()
-	var _old : int = Globals.currentGameData.get("player_score")
-	Globals.currentGameData.set("player_score", (_old + exitScoreBonus))
+	Globals.scoreUpdate(exitScoreBonus, true)
 
 
 # function to close hud and compare original score before reloading the level
@@ -110,10 +109,10 @@ func restartRoom() -> void:
 	var _score : int = Globals.currentGameData.get("player_score")
 	if _score != loadingScore:
 		Globals.currentGameData.set("player_score", loadingScore)
-	SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[levelCode])
+	SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[levelCode])
 
 
 # game exit function, refers to gameroot function
 func exitGame() -> void:
-	Globals.currentGameData.set("player_score", 0) # reset score to zero on exit
-	SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[nextLevel])
+	Data.saveGameData()
+	SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[nextLevel])

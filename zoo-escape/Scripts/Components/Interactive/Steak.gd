@@ -8,10 +8,9 @@ func _ready() -> void:
 	$Area2D.body_entered.connect(bodyEntered)
 
 
-# if the player enter the area delete itself
+# if the player enters the area delete itself
 func bodyEntered(body: Node2D) -> void:
 	if body.is_in_group("ZEPlayer"):
-		var _oldScore : int = Globals.currentGameData.get("player_score") # QUERY: Should scoring be handled by a steak or by a more significant node, such as the GameRoot?
-		Globals.currentGameData.set("player_score",_oldScore + bonus)
-		SoundControl.playSfx(SoundControl.pickup)
+		Globals.scoreUpdate(bonus, true) # global score update
+		SoundControl.playSfx(SoundControl.pickup) # global sound call
 		queue_free()

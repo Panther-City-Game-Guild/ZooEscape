@@ -60,6 +60,8 @@ func _process(delta: float) -> void: # listen for fade states and update volumes
 	if !AudioServer.is_bus_mute(3): # check volume reference/bgm bus
 		if fadeState != FADE_STATES.PEAK_VOLUME: # fade trigger if bgm not muted
 			bgmFadingMachine(delta,fadeRate)
+		else:
+			pass
 
 
 # values set for sound levels
@@ -88,7 +90,7 @@ func fadeRateUpdate(_newValue:float) -> void:
 	fadeRate = _newValue
 
 
-# queue next track and update fade if needed
+# queue next track and update fade if needed (called remotely)
 func levelChangeSoundCall(_value:float, _music:String) -> void:
 	currentBgm = _music # allows music to change on next fade start
 	fadeState = FADE_STATES.OUT_TRIGGER
@@ -99,6 +101,7 @@ func levelChangeSoundCall(_value:float, _music:String) -> void:
 func stopSounds() -> void:
 	bgm.stop()
 	sfx.stop()
+
 
 # call sfx file and play
 func playSfx(_sfxFile:String) -> void:
