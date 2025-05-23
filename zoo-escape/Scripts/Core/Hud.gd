@@ -34,7 +34,8 @@ var timeLimit := 30 # value to change for each level
 var post_score := false # post score process flag, prevents overloading buffer
 var scoreProcessState := SCORE_PROCESS_STATES.IDLE
 var focusState := 0
-var passwordState := false
+var passwordState := false # shows password window is open
+var tutorialMode := false # tutorial mode state (goes to hud)
 
 
 
@@ -107,8 +108,10 @@ func buttonFocusGrab() -> void:
 	match focusState:
 		FOCUS_STATES.RESTART:
 			$ExitButton.grab_focus()
+			$ExitButton.grab_click_focus()
 		FOCUS_STATES.EXIT:
 			$RestartButton.grab_focus()
+			$RestartButton.grab_click_focus()
 
 
 # input start function and flip flop state
@@ -118,9 +121,12 @@ func levelTimerStart() -> void:
 		$HudWindow.scale.x = 1
 	
 	if !moveMonitoring:
-		$HUDAnimationAlt.play("timer_start") # play timer ping on separate animator
-		moveMonitoring = true # moves now monitored
-		$LevelTimer.start(1) # timer starts on first input
+		if !tutorialMode: ## check for tutorial state (given by level manager)
+			$HUDAnimationAlt.play("timer_start") # play timer ping on separate animator
+			moveMonitoring = true # moves now monitored
+			$LevelTimer.start(1) # timer starts on first input
+		else:
+			$HudWindow/TimerValue.text = "NONE" ## put tutorial time text
 
 
 # update label values with strings
@@ -160,7 +166,7 @@ func steakValueFetch() -> void:
 
 # time functionality
 func _on_level_timer_timeout() -> void:
-	if scoreProcessState == SCORE_PROCESS_STATES.IDLE: # do not log timeouts during score processing
+	if scoreProcessState == SCORE_PROCESS_STATES.IDLE and !tutorialMode: # do not log timeouts during score processing
 		if timerValue >= 1 and !timesUp: # if time not up, clock counts down
 			timerValue -= 1
 			$LevelTimer.start(1)
@@ -168,6 +174,8 @@ func _on_level_timer_timeout() -> void:
 		if timerValue == 0: # on time up, flip state, stop non-system noises and trigger feedback
 			$HUDAnimationAlt.play("close")
 			SoundControl.stopSounds()
+			$RestartButton.disabled = false
+			$ExitButton.disabled = false
 			get_tree().paused = true
 			moveMonitoring = false
 			$LevelTimer.stop()
@@ -189,6 +197,7 @@ func _on_hud_animation_animation_finished(anim_name: StringName) -> void:
 		$RestartButton.disabled = false
 		$ExitButton.disabled = false
 		$RestartButton.grab_focus()
+		$RestartButton.grab_click_focus()
 		$HUDAnimation.stop()
 
 
@@ -267,3 +276,23 @@ func scoreProcessing() -> void:
 				scoreProcessState = SCORE_PROCESS_STATES.POST
 		SCORE_PROCESS_STATES.POST:
 			pass
+
+
+# grab mouse focus for restart
+func _on_restart_button_focus_entered() -> void:
+	$RestartButton.grab_click_focus()
+
+
+# grab click focus for restart
+func _on_restart_button_mouse_entered() -> void:
+	$RestartButton.grab_focus()
+
+
+# grab mouse focus for exit
+func _on_exit_button_focus_entered() -> void:
+	$ExitButton.grab_click_focus()
+
+
+# grab input focus for exit
+func _on_exit_button_mouse_entered() -> void:
+	$ExitButton.grab_focus()

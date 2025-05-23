@@ -50,8 +50,6 @@ var currentSettings := {
 
 # Globally accessible data related to the currently active game
 var currentGameData := {
-	"time_limit": 60,
-	"warning_threshold": 15,
 	"player_score": 0, # player score total
 }
 

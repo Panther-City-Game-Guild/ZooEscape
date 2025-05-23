@@ -40,12 +40,14 @@ func _ready() -> void:
 		localHud.exit_game.connect(exitGame)
 		localHud.score_processed.connect(nextRoom)
 		# update global data report and local UI feedback
-		localHud.timeLimit = Globals.currentGameData.get("time_limit")
-		localHud.warningTime = Globals.currentGameData.get("warning_threshold")
-		localHud.timerValue = localHud.timeLimit
+		localHud.timeLimit = LevelTime
+		localHud.warningTime = WarningTime
+		localHud.timerValue = LevelTime
 		localHud.secondBonus = PerSecondBonus
 		localHud.movePenalty = PerMovePenalty
 		localHud.passwordReport(str(LevelCode))
+		if TutorialScoreBypass:
+			localHud.tutorialMode = true
 	else:
 		var _settings = get_node("ZESettings")
 		_settings.escapePressed.connect(exitGame)

@@ -23,27 +23,29 @@ func _process(_delta: float) -> void:
 			get_tree().quit()
 
 
-# TODO: Need descriptive comment here
+# start a new game after pressing button
 func _on_new_game_button_pressed() -> void:
-	Data.saveGameData()
-	SoundControl.playCue(SoundControl.start, 1.0)
+	Data.saveGameData() # save options data
+	SoundControl.playCue(SoundControl.start, 1.0) # audio feedback
 	SceneManager.GoToNewSceneString(Scenes.TUTORIAL1) # This will need to be moved to the menu script when the menu is added
 	Globals.currentGameData.set("player_score", 0) # Why is this being done here AND in GameRoot.gd?!  Let's make a central function to do this type of thing in the GameRoot when a new game starts.
 	# change bgm and fade on out
 	SoundControl.levelChangeSoundCall(1.0, SoundControl.defaultBgm)
 
 
-# TODO: Need descriptive comment here
+# go to password screen after pressing button
 func _on_password_button_pressed() -> void:
+	SoundControl.playCue(SoundControl.zap, 1.0) # audio feedback
 	SceneManager.GoToNewSceneString(Scenes.PASSWORD)
 
 
-# TODO: Need descriptive comment here
+# go to settings screen after pressing button
 func _on_settings_button_pressed() -> void:
+	SoundControl.playCue(SoundControl.flutter, 1.0) # audio feedback
 	SceneManager.GoToNewSceneString(Scenes.SETTINGS)
 
 
-# TODO: Need descriptive comment here
+# check for warning state. if in warning, exit, else show warning and open state
 func _on_exit_button_pressed() -> void: # listen for exit call
 	Data.saveGameData()
 	if !areYouSure: # feedback and warning
@@ -54,7 +56,7 @@ func _on_exit_button_pressed() -> void: # listen for exit call
 		get_tree().quit()
 
 
-# TODO: Need descriptive comment here
+# reset warning state and roll out message
 func areYouSureReset(): # closes warning state for exit
 	areYouSure = false
 	$ExitButton/RollText.speed_scale = 2.0
@@ -66,64 +68,64 @@ func focusEntered(_focusSelect: Button):
 	_focusSelect.grab_click_focus()
 
 
-# TODO: Need descriptive comment here
+# grab focus from mouse
 func mouseEntered(_mouseSelect: Button):
 	_mouseSelect.grab_focus()
 
 
-# TODO: Need descriptive comment here
+# grab mouse focus from input
 func _on_new_game_button_focus_entered() -> void:
 	focusEntered($NewGameButton)
 
 
-# TODO: Need descriptive comment here
+# grab focus from mouse
 func _on_new_game_button_mouse_entered() -> void:
 	mouseEntered($NewGameButton)
 
 
-# TODO: Need descriptive comment here
+# grab mouse focus from input
 func _on_password_button_focus_entered() -> void:
 	focusEntered($PasswordButton)
 
 
-# TODO: Need descriptive comment here
+# grab focus from mouse
 func _on_password_button_mouse_entered() -> void:
 	mouseEntered($PasswordButton)
 
 
-# TODO: Need descriptive comment here
+# if leaving exit, reset warning state and roll text back
 func _on_settings_button_focus_entered() -> void:
 	focusEntered($SettingsButton)
 	if areYouSure:
 		areYouSureReset()
 
 
-# TODO: Need descriptive comment here
+# if leaving exit, reset warning state and roll text back
 func _on_settings_button_mouse_entered() -> void:
 	mouseEntered($SettingsButton)
 	if areYouSure:
 		areYouSureReset()
 
 
-# TODO: Need descriptive comment here
+# grab exit button focus
 func _on_exit_button_focus_entered() -> void:
 	if areYouSure: # are you sure warning
 		focusEntered($ExitButton)
 
 
-# TODO: Need descriptive comment here
+# grab exit button focus
 func _on_exit_button_mouse_entered() -> void:
 	if areYouSure:
 		focusEntered($ExitButton)
 
 
-# TODO: Need descriptive comment here
+# if leaving exit, reset warning state and roll text back
 func _on_exit_button_focus_exited() -> void:
 	if areYouSure: # if are you sure visible, reset
 		areYouSureReset()
 
 
-# TODO: Need descriptive comment here
+# if leaving exit, reset warning state and roll text back
 func _on_exit_button_mouse_exited() -> void:
 	if areYouSure: # if leaving exit area, reset state
 		areYouSureReset()

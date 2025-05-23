@@ -96,7 +96,7 @@ func _process(_delta: float) -> void: # single button fast value scroll in deadz
 				_on_escape_button_pressed() # trigger escape function
 
 
-# TODO: Need descriptive comment here
+# update settings in global dictionary, update global volume buses and set deadzones
 func globalSettingsUpdate() -> void: # update global settings
 	Globals.currentSettings["master_volume"] = masterVolume
 	Globals.currentSettings["music_volume"] = bgmVolume
@@ -220,12 +220,12 @@ func _on_sfx_slider_mouse_entered() -> void:
 	focusInfoRelay("SFX", sfxInfo)
 
 
-# TODO: Need descriptive comment here
+# sound fx test on starting drag
 func _on_sfx_slider_drag_started() -> void:
 	SoundControl.playSfx(SoundControl.scratch) # audio cue for testing on grab
 
 
-# TODO: Need descriptive comment here
+# sound fx test on releasing drag
 func _on_sfx_slider_drag_ended(_value_changed: bool) -> void:
 	SoundControl.playSfx(SoundControl.scratch) # audio cue for testing after release
 
@@ -250,17 +250,17 @@ func _on_cue_slider_focus_entered() -> void:
 	focusInfoRelay("CUE", cueInfo)
 
 
-# TODO: Need descriptive comment here
+# grab cue focus
 func _on_cue_slider_mouse_entered() -> void:
 	focusInfoRelay("CUE", cueInfo)
 
 
-# TODO: Need descriptive comment here
+# cue test on drag
 func _on_cue_slider_drag_started() -> void:
 	SoundControl.playCue(SoundControl.pickup,1.0) # audio cue for testing on grab
 
 
-# TODO: Need descriptive comment here
+# cue test on release
 func _on_cue_slider_drag_ended(_value_changed: bool) -> void:
 	SoundControl.playCue(SoundControl.pickup,1.0) # audio cue for testing after release
 
@@ -282,7 +282,7 @@ func _on_deadzone_down_focus_entered() -> void:
 	focusInfoRelay("DEADZONE", deadzoneInfo)
 
 
-# TODO: Need descriptive comment here
+# grab deadzone focus
 func _on_deadzone_down_mouse_entered() -> void:
 	focusInfoRelay("DEADZONE", deadzoneInfo)
 
@@ -304,7 +304,7 @@ func _on_deadzone_up_focus_entered() -> void:
 	focusInfoRelay("DEADZONE", deadzoneInfo)
 
 
-# TODO: Need descriptive comment here
+# grab deadzone focus
 func _on_deadzone_up_mouse_entered() -> void:
 	focusInfoRelay("DEADZONE", deadzoneInfo)
 
@@ -322,7 +322,7 @@ func _on_escape_button_focus_entered() -> void:
 	focusInfoRelay("ESCAPE", exitInfo)
 
 
-# TODO: Need descriptive comment here
+# grab escape button focus
 func _on_escape_button_mouse_entered() -> void:
 	focusInfoRelay("ESCAPE", exitInfo)
 
