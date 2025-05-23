@@ -271,21 +271,20 @@ func scoreProcessing() -> void:
 		SCORE_PROCESS_STATES.TIME_PROCESS:
 			if timerValue > 0: # timer adds bonus until zero
 				timerValue -= 1
-				var _old: int = Globals.currentGameData.get("player_score")
-				Globals.currentGameData.set("player_score", (_old + secondBonus))
+				Globals.scoreUpdate(secondBonus,true)
 			else:
 				scoreProcessState = SCORE_PROCESS_STATES.MOVE_PROCESS # then state flips
 		SCORE_PROCESS_STATES.MOVE_PROCESS:
 			if movesValue > 0: # moves subtract penalty until zero
 				movesValue-=1
-				var _old2 = Globals.currentGameData.get("player_score")
-				Globals.currentGameData.set("player_score", (_old2-movePenalty))
+				Globals.scoreUpdate(movePenalty,false)
 			else: # then state flips back to off
 				print("Score processed!")
 				score_processed.emit() # after emitting one signal
 				scoreProcessState = SCORE_PROCESS_STATES.POST
 		SCORE_PROCESS_STATES.POST:
 			pass
+			# empty state to end processing
 
 
 # grab mouse focus for restart

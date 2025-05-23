@@ -42,8 +42,6 @@ var focusGroup := FOCUS_GROUPS.MASTER # shows which control area has focus
 func _ready() -> void:
 	# update text and set first button on master bgm down
 	# update all text and values with globals from load data
-	Data.loadData()
-	SoundControl.setSoundPreferences(masterVolume, bgmVolume, sfxVolume, cueVolume)
 	
 	# update percents
 	masterPercent = percentageConversion(masterVolume)
@@ -103,12 +101,10 @@ func globalSettingsUpdate() -> void: # update global settings
 	Globals.currentSettings["sfx_volume"] = sfxVolume
 	Globals.currentSettings["cue_volume"] = cueVolume
 	Globals.currentSettings["analog_deadzone"] = analogDeadzone
+	# set sound levels
 	SoundControl.setSoundPreferences(masterVolume, bgmVolume, sfxVolume, cueVolume)
 	# set deadzones
-	InputMap.action_set_deadzone("DigitalDown", analogDeadzone)
-	InputMap.action_set_deadzone("DigitalUp", analogDeadzone)
-	InputMap.action_set_deadzone("DigitalLeft", analogDeadzone)
-	InputMap.action_set_deadzone("DigitalRight", analogDeadzone)
+	Globals.deadzoneUpdate()
 
 
 # focus info widget to update info text on focus change
@@ -274,7 +270,7 @@ func _on_deadzone_down_pressed() -> void:
 
 		analogDeadzone = _downValue
 		$DeadzoneGroup/DeadzoneValue.text = str(analogDeadzone)
-		globalSettingsUpdate()
+		Globals.deadzoneUpdate()
 
 
 # grab deadzone focus
@@ -296,7 +292,7 @@ func _on_deadzone_up_pressed() -> void:
 
 		analogDeadzone = _upValue
 		$DeadzoneGroup/DeadzoneValue.text = str(analogDeadzone)
-		globalSettingsUpdate()
+		Globals.deadzoneUpdate()
 
 
 # grab deadzone focus
