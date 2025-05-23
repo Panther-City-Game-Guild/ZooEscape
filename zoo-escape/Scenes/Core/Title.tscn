@@ -43,7 +43,7 @@ _data = {
 &"roll_in": SubResource("Animation_hadrf")
 }
 
-[node name="Title" type="Node2D"]
+[node name="ZETitle" type="Node2D"]
 script = ExtResource("1_hbotl")
 
 [node name="Background" type="Sprite2D" parent="."]

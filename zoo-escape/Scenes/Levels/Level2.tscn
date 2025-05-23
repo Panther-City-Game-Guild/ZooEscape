@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://b6fpe6cti8jrw" path="res://Scenes/Components/Interactive/ExitTile.tscn" id="9_ncahn"]
 [ext_resource type="PackedScene" uid="uid://3ah88dbq7yi4" path="res://Scenes/Player/Player.tscn" id="10_uxmkr"]
 
-[node name="Level2" type="Node2D"]
+[node name="ZELevel2" type="Node2D"]
 script = ExtResource("1_kf4kq")
 LevelCode = "9102"
 LevelTime = 90
@@ -26,7 +26,6 @@ tile_set = ExtResource("2_bxkus")
 
 [node name="ExitTile" parent="." instance=ExtResource("9_ncahn")]
 position = Vector2(328, 72)
-nextLevelCode = "1476"
 
 [node name="Button" parent="." instance=ExtResource("4_o6d5b")]
 position = Vector2(168, 72)

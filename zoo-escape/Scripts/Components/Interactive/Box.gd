@@ -9,21 +9,10 @@ enum states {
 @onready var currentState := states.MOVABLE
 @onready var ray := $RayCast2D
 @onready var currentDir := Vector2.DOWN
-@export var slideSpeed := 0.1
-@onready var moveTimer := 0.0
 
 # set up signals
 func _ready() -> void:
 	$GroundCheck.body_entered.connect(bodyEnter)
-	$GroundCheck.body_exited.connect(bodyExit)
-	
-func _physics_process(delta: float) -> void:
-	if currentState == states.SLIDING:
-		moveTimer += delta
-		
-		if moveTimer >= slideSpeed:
-			move(currentDir)
-			moveTimer = 0
 
 # if possable moves the box and reports back to caller
 func move(dir: Vector2) -> bool:
@@ -51,9 +40,6 @@ func bodyEnter(body: Node2D) -> void:
 		elif body.get_cell_tile_data(tilePos).get_custom_data("Ice"):
 			if(!ray.is_colliding()):
 				currentState = states.SLIDING
+				move(currentDir)
 			else:
 				currentState = states.MOVABLE
-				
-# go back to idle when exiting area
-func bodyExit(_body: Node2D) -> void:
-	currentState = states.MOVABLE

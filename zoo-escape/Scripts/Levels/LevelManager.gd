@@ -19,7 +19,6 @@ var timeUp := false # to monitor local hud timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	SceneManager.currentScene = self
 	if !AudioServer.is_bus_mute(3) or SoundControl.bgmLevel > -20:
 		SoundControl.resetMusicFade() # reset music state
 	player.InWater.connect(restartRoom)
@@ -87,7 +86,7 @@ func exitLevel() -> void:
 
 # load next level
 func nextRoom():
-	if nextLevel != "9990":
+	if nextLevel != str(SceneManager.gameRoot.title):
 		SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[nextLevel])
 	else:
 		Globals.currentGameData.set("player_score", 0)
@@ -113,4 +112,6 @@ func restartRoom() -> void:
 # game exit function, refers to gameroot function
 func exitGame() -> void:
 	Globals.currentGameData.set("player_score", 0) # reset score to zero on exit
-	SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[nextLevel])
+	var _root = get_parent()
+	_root.ReturnToTitle()
+	
