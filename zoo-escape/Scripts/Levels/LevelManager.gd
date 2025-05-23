@@ -41,13 +41,13 @@ func _ready() -> void:
 		localHud.exit_game.connect(exitGame)
 		localHud.score_processed.connect(nextRoom)
 		# update global data report and local UI feedback
-		localHud.timeLimit = levelTime
-		localHud.warningTime = warningTime
-		localHud.timerValue = levelTime
-		localHud.secondBonus = perSecondBonus
-		localHud.movePenalty = perMovePenalty
+		localHud.timeLimit = int(levelTime)
+		localHud.warningTime = int(warningTime)
+		localHud.timerValue = int(levelTime)
+		localHud.secondBonus = int(perSecondBonus)
+		localHud.movePenalty = int(perMovePenalty)
 		localHud.passwordReport(str(levelCode))
-		if tutorialScoreBypass:
+		if tutorialScoreBypass == true:
 			localHud.tutorialMode = true
 	else:
 		var _settings = get_node("ZESettings")
@@ -100,14 +100,14 @@ func nextRoom():
 # update score and apply exit score and bonus
 func allSteaksCollected() -> void:
 	exitTile.activateExit()
-	var _old = Globals.currentGameData.get("player_score")
+	var _old : int = Globals.currentGameData.get("player_score")
 	Globals.currentGameData.set("player_score", (_old + exitScoreBonus))
 
 
 # function to close hud and compare original score before reloading the level
 func restartRoom() -> void:
 	localHud.closeHud()
-	var _score = Globals.currentGameData.get("player_score")
+	var _score : int = Globals.currentGameData.get("player_score")
 	if _score != loadingScore:
 		Globals.currentGameData.set("player_score", loadingScore)
 	SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[levelCode])

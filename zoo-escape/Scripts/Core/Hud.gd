@@ -55,9 +55,9 @@ func _ready() -> void: # reset animations at ready, fetch start values
 
 ## double check value vs globals
 func timeCheck() -> void:
-	var _manager = get_parent().get_parent() # get level manager root
-	var _timeCheck = _manager.levelTime # check time
-	var _warningCheck = _manager.warningTime # check warning
+	var _manager : Node = get_parent().get_parent() # get level manager root
+	var _timeCheck : int = _manager.levelTime # check time
+	var _warningCheck : int = _manager.warningTime # check warning
 	if timeLimit != _timeCheck: # update if needed
 		timeLimit = _timeCheck
 	if warningTime != _warningCheck:
