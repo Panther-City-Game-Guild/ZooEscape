@@ -120,7 +120,7 @@ func _numericFocusCheck() -> void:
 		$ButtonBox/ButtonEnter.grab_focus()
 
 
-# TODO: This needs a descriptive comment here
+# disable all buttons widget
 func allStatesFlywheel(logic: bool, animate: bool) -> void:
 	# first bool, logic for all hud states, second bool determines if animation necessary
 	Globals.currentAppState["passwordWindowOpen"] = logic # global hud logic

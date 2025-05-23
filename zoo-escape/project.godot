@@ -48,6 +48,10 @@ folder_colors={
 "res://Scripts/": "purple"
 }
 
+[global_group]
+
+LevelManager="LevelManager objects"
+
 [input]
 
 ActionButton={
