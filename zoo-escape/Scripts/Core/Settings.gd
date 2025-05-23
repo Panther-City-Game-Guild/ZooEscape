@@ -310,7 +310,7 @@ func _on_escape_button_pressed() -> void:
 	if !bufferState:
 		Data.saveGameData()
 		globalSettingsUpdate() # update global settings
-		SceneManager.GoToTitle() # go to title
+		SceneManager.goToTitle() # go to title
 
 
 # grab escape button focus

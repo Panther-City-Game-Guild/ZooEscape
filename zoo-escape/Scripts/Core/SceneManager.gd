@@ -16,27 +16,27 @@ func _ready() -> void:
 
 
 # this takes a loaded scene as argument and unpauses the tree
-func GoToNewScenePacked(newScene: PackedScene) -> void:
+func goToNewScenePacked(newScene: PackedScene) -> void:
 	# Before switching to another scene, make sure the scene tree is not paused
 	# This happens if a game is exited while paused
 	get_tree().paused = false
 	
 	# Switch the scenes
-	gameRoot.GoToNextScene(currentScene, newScene)
+	gameRoot.goToNextScene(currentScene, newScene)
 
 
 # this takes a filename/string as argument and loads it with the previous function
-func GoToNewSceneString(newScene: String) -> void:
+func goToNewSceneString(newScene: String) -> void:
 	# TODO: add error checking
 	var scene: Resource = load(newScene)
-	GoToNewScenePacked(scene)
+	goToNewScenePacked(scene)
 
 
 # this returns to the title
-func GoToTitle() -> void:
-	GoToNewSceneString(TITLE)
+func goToTitle() -> void:
+	goToNewSceneString(TITLE)
 
 
 # this goes to the settings menu
-func GoToSettings() -> void:
-	GoToNewSceneString(SETTINGS)
+func goToSettings() -> void:
+	goToNewSceneString(SETTINGS)

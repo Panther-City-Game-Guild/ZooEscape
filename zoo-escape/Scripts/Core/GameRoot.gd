@@ -11,7 +11,7 @@ func _ready() -> void:
 
 
 # Called to progress the game to the next sceene
-func GoToNextScene(OldScene: Node, NewScene: PackedScene) -> void:
+func goToNextScene(OldScene: Node, NewScene: PackedScene) -> void:
 	# start the Fade out , close processing
 	set_process_input(false)
 	set_physics_process(false)
@@ -30,7 +30,7 @@ func GoToNextScene(OldScene: Node, NewScene: PackedScene) -> void:
 
 
 # Called to return to the game's Title scene
-func ReturnToTitle() -> void:
+func returnToTitle() -> void:
 	set_process_input(false) # end processing, just like new scene
 	set_physics_process(false)
 	aniPlayer.play("FadeOut")

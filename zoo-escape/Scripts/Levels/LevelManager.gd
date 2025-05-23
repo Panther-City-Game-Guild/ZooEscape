@@ -92,7 +92,7 @@ func exitLevel() -> void:
 # load next level
 func nextRoom():
 	if nextLevel != "9990":
-		SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[nextLevel])
+		SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[nextLevel])
 	else:
 		exitGame()
 
@@ -109,10 +109,10 @@ func restartRoom() -> void:
 	var _score : int = Globals.currentGameData.get("player_score")
 	if _score != loadingScore:
 		Globals.currentGameData.set("player_score", loadingScore)
-	SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[levelCode])
+	SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[levelCode])
 
 
 # game exit function, refers to gameroot function
 func exitGame() -> void:
 	Data.saveGameData()
-	SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[nextLevel])
+	SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[nextLevel])
