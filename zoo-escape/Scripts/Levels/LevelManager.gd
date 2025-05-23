@@ -1,12 +1,12 @@
 class_name ZELevelManager extends Node2D
 
-@export var LevelCode := "" # stores as password
-@export var LevelTime := 60 # level time limit relayed to hud
-@export var WarningTime := 15 # time out warning threshold
-@export var ExitScoreBonus := 500 # local editor variables to effect bonuses
-@export var PerSecondBonus := 100
-@export var PerMovePenalty := 25
-@export var TutorialScoreBypass := false
+@export var levelCode := "" # stores as password
+@export var levelTime := 60 # level time limit relayed to hud
+@export var warningTime := 15 # time out warning threshold
+@export var exitScoreBonus := 500 # local editor variables to effect bonuses
+@export var perSecondBonus := 100
+@export var perMovePenalty := 25
+@export var tutorialScoreBypass := false
 @onready var player := $Player
 @onready var exitTile := $ExitTile
 @onready var steakManager := $SteakManager
@@ -20,13 +20,14 @@ var timeUp := false # to monitor local hud timer
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SceneManager.currentScene = self
+	self.add_to_group("LevelManager")
 	if !AudioServer.is_bus_mute(3) or SoundControl.bgmLevel > -20:
 		SoundControl.resetMusicFade() # reset music state
 	player.InWater.connect(restartRoom)
 	exitTile.PlayerExits.connect(exitLevel)
 	steakManager.AllSteaksCollected.connect(allSteaksCollected)
-	Globals.currentGameData.set("time_limit", LevelTime)
-	Globals.currentGameData.set("warning_threshold", WarningTime)
+	Globals.currentGameData.set("time_limit", levelTime)
+	Globals.currentGameData.set("warning_threshold", warningTime)
 	
 	# check to ensure bgm fade level is consistent
 	# if bgm fade level not normal, reset fade state so it fades in
@@ -40,13 +41,13 @@ func _ready() -> void:
 		localHud.exit_game.connect(exitGame)
 		localHud.score_processed.connect(nextRoom)
 		# update global data report and local UI feedback
-		localHud.timeLimit = LevelTime
-		localHud.warningTime = WarningTime
-		localHud.timerValue = LevelTime
-		localHud.secondBonus = PerSecondBonus
-		localHud.movePenalty = PerMovePenalty
-		localHud.passwordReport(str(LevelCode))
-		if TutorialScoreBypass:
+		localHud.timeLimit = levelTime
+		localHud.warningTime = warningTime
+		localHud.timerValue = levelTime
+		localHud.secondBonus = perSecondBonus
+		localHud.movePenalty = perMovePenalty
+		localHud.passwordReport(str(levelCode))
+		if tutorialScoreBypass:
 			localHud.tutorialMode = true
 	else:
 		var _settings = get_node("ZESettings")
@@ -57,7 +58,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	timeUp = localHud.timesUp # watch timer
 	localHud.resetGauge = resetTime # compare gauge with HUD meter
-	localHud.password = str(LevelCode) # update hud password text
+	localHud.password = str(levelCode) # update hud password text
 	
 	if Input.is_action_pressed("RightBumper") and !timeUp:
 		resetTime += delta # do not allow reload when time up!
@@ -77,11 +78,11 @@ func _process(delta: float) -> void:
 		restartRoom()
 
 
-# TODO: Need descriptive comment here
+# exit the level function - hold player, process score then go to next room
 func exitLevel() -> void:
 	player.currentState = player.playerState.ONEXIT
 	SoundControl.playCue(SoundControl.success, 2.0) # sound trigger
-	if !TutorialScoreBypass: # process score before exit
+	if !tutorialScoreBypass: # process score before exit
 		localHud.scoreProcessState = 1
 	else: # if tutorial, do not apply score bonuses/penalties
 		nextRoom()
@@ -100,7 +101,7 @@ func nextRoom():
 func allSteaksCollected() -> void:
 	exitTile.activateExit()
 	var _old = Globals.currentGameData.get("player_score")
-	Globals.currentGameData.set("player_score", (_old + ExitScoreBonus))
+	Globals.currentGameData.set("player_score", (_old + exitScoreBonus))
 
 
 # function to close hud and compare original score before reloading the level
@@ -109,7 +110,7 @@ func restartRoom() -> void:
 	var _score = Globals.currentGameData.get("player_score")
 	if _score != loadingScore:
 		Globals.currentGameData.set("player_score", loadingScore)
-	SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[LevelCode])
+	SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[levelCode])
 
 
 # game exit function, refers to gameroot function

@@ -22,7 +22,7 @@ var timerValue := 1 # live monitor of timer
 var movesValue := 0 # live monitor of moves
 var scoreCurrent := 0  # player score
 var secondBonus := 50 # values for abstraction from parent to apply
-var movePenalty := 25
+var movePenalty := 25 # score penalty per move
 var moveMonitoring := false # shows timer has started
 var timesUp := false # shows time is out
 var allSteaksCollected := false # shows goal is open
@@ -31,9 +31,8 @@ var resetGauge := 0.0 # to compare with level manager
 var password := "ABCD" # abstraction for password
 var warningTime := 10 # value when warning cues
 var timeLimit := 30 # value to change for each level
-var post_score := false # post score process flag, prevents overloading buffer
-var scoreProcessState := SCORE_PROCESS_STATES.IDLE
-var focusState := 0
+var scoreProcessState := SCORE_PROCESS_STATES.IDLE # state of score process function at level end
+var focusState := 0 # state of time out window ui focus
 var passwordState := false # shows password window is open
 var tutorialMode := false # tutorial mode state (goes to hud)
 
@@ -46,12 +45,23 @@ func _ready() -> void: # reset animations at ready, fetch start values
 	$HUDAnimationAlt.play("RESET")
 	$HudWindow/TimerValue.text = str(timeLimit) + "s" # update value at start
 	steakValueFetch()
-	timerValue = timeLimit
+	timeCheck()
 	# to avoid queueing error on prompt
 	$OpenCue.volume_db = SoundControl.cueLevel
 	$AlertCue.volume_db = SoundControl.cueLevel
 	scoreCurrent = Globals.currentGameData.get("player_score")
 	passwordState = Globals.currentAppState.get("passwordWindowOpen")
+
+
+## double check value vs globals
+func timeCheck() -> void:
+	var _manager = get_parent().get_parent() # get level manager root
+	var _timeCheck = _manager.levelTime # check time
+	var _warningCheck = _manager.warningTime # check warning
+	if timeLimit != _timeCheck: # update if needed
+		timeLimit = _timeCheck
+	if warningTime != _warningCheck:
+		warningTime = _warningCheck
 
 
 # Runs every frame
