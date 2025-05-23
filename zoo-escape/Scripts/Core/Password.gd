@@ -39,9 +39,9 @@ func _ready() -> void:
 		$Animator.play("fade_in")
 		$InputBufferTimer.start()
 		$ButtonBox/Button1.grab_focus()
-		allStatesFlywheel(true,true) # all hud flags true with animation in
+		allStatesFlywheel(true, true) # all hud flags true with animation in
 	else:
-		allStatesFlywheel(false,false) # hud flags off but no animation
+		allStatesFlywheel(false, false) # hud flags off but no animation
 		self.position = correctedVector
 
 
@@ -58,12 +58,12 @@ func _input(_event: InputEvent) -> void:
 					$InputBufferTimer.start()
 					$ButtonBox/Button1.grab_focus()
 					buttonBatchControl(true)
-					allStatesFlywheel(true,true) # open all hud states, animation in
+					allStatesFlywheel(true, true) # open all hud states, animation in
 				else:
 					buttonBatchControl(false)
-					allStatesFlywheel(false,true)
+					allStatesFlywheel(false, true)
 			else: # close all states with animation out
-				allStatesFlywheel(false,true)
+				allStatesFlywheel(false, true)
 		
 	if inGameMode and windowOpenFlag == true:
 		fetchInput()
@@ -144,7 +144,7 @@ func randomBlipCue() -> void:
 # grabbing global input
 func fetchInput() -> void:
 	if Input.is_action_just_pressed("PasswordButton"):
-		SoundControl.playCue(SoundControl.down,2.0)
+		SoundControl.playCue(SoundControl.down, 2.0)
 		if inGameMode and !windowOpenFlag:
 			get_tree().paused = true
 			$Animator.play_backwards("fade_in")
@@ -165,10 +165,9 @@ func fetchInput() -> void:
 				$ButtonBox/ButtonEnter.grab_focus()
 			
 		if Globals.PASSWORDS.has(code.text): # if level code correct, show feedback
-			SoundControl.playCue(SoundControl.success,2.5)
+			SoundControl.playCue(SoundControl.success, 2.5)
 			code.material = correctShader
 			code.modulate = Color.GREEN_YELLOW
-			Globals.currentGameData["player_score"] = 0 # NOTE:  Why is this happening here instead of in the GameRoot or somewhere besides a menu?
 			$LoadSceneBuffer.start(loadSceneBufferTime) # begin buffer to load
 			
 		if !"-" in code.text: # if no blanks, go to enter button
@@ -182,7 +181,8 @@ func fetchInput() -> void:
 			codeRemoval()
 		else:
 			buttonBatchControl(false)
-			allStatesFlywheel(false,true)
+			allStatesFlywheel(false, true)
+			## TODO: May soon be obsolete due to new global value
 			if !inGameMode: # if in from frontend, return thru frontend
 				returnToTitle()
 
@@ -210,7 +210,7 @@ func buttonBatchControl(logic:bool) -> void:
 # return sound cue and load function
 func returnToTitle() -> void:
 	SoundControl.playCue(SoundControl.down, 1.4)
-	SceneManager.call_deferred("GoToNewSceneString", title)
+	SceneManager.call_deferred("goToNewSceneString", title)
 
 
 # check code for answer
@@ -231,7 +231,7 @@ func answerCheck() -> void:
 
 # load scene at end of load buffer timer
 func _on_load_scene_buffer_timeout() -> void:
-	SceneManager.call_deferred("GoToNewSceneString", Globals.PASSWORDS[code.text])
+	SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[code.text])
 
 
 # get number by state and input
@@ -441,7 +441,7 @@ func _on_button_clear_pressed() -> void:
 		if !inGameMode:
 			returnToTitle()
 		else:
-			allStatesFlywheel(false,true)
+			allStatesFlywheel(false, true)
 
 
 # Called when Clear button focused
