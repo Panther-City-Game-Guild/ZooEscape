@@ -100,7 +100,7 @@ func nextRoom():
 # update score and apply exit score and bonus
 func allSteaksCollected() -> void:
 	exitTile.activateExit()
-	Globals.scoreUpdate(exitScoreBonus,true)
+	Globals.scoreUpdate(exitScoreBonus, true)
 
 
 # function to close hud and compare original score before reloading the level
