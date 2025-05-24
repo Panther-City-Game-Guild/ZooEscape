@@ -56,7 +56,8 @@ var currentGameData := {
 # Globally accessible data related to the state of the application
 var currentAppState := {
 	"passwordWindowOpen": false, # global hud control flag
-	"gameRunning" : false # flag to return to game from settings screen
+	"settingsWindowOpen" : false, # global hud control flag
+	"gameRunning" : false # flag to change hud behaviors in game
 }
 
 # TODO: Try combining highScoreboardNames with highScoreBoardValues into one Dictionary.

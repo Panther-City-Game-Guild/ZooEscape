@@ -75,11 +75,14 @@ func positionCheck() -> void:
 
 # Runs every frame
 func _process(_delta: float) -> void:
+	$SettingsButton/GearIcon.play("default") # play gear animation
 	positionCheck() # follow player position
+	
 	# monitor password state to hold hud move monitoring
 	passwordState = Globals.currentAppState["passwordWindowOpen"]
 	scoreCurrent = Globals.currentGameData.get("player_score")
 	$HudWindow/ScoreValue.text = str(scoreCurrent)
+	
 	# fetch password from level manager and update
 	$TimeOutCurtain/PasswordBox/PasswordLabel.text = "PASSWORD: "+str(password)
 	if !timesUp and passwordState == false: # if timer not out, update values and monitor inputs
@@ -100,7 +103,8 @@ func _process(_delta: float) -> void:
 	# this number taken from levelManager
 	$ResetBar.value = resetGauge 
 	
-	if timesUp:
+	# only grab button focus for time out buttons if time is out
+	if timesUp: 
 		if Input.is_action_just_pressed("DigitalDown"):
 			buttonFocusGrab()
 		if Input.is_action_just_pressed("DigitalLeft"):
@@ -110,6 +114,7 @@ func _process(_delta: float) -> void:
 		if Input.is_action_just_pressed("DigitalUp"):
 			buttonFocusGrab()
 	
+	## score processes when not idle or done
 	if scoreProcessState != SCORE_PROCESS_STATES.IDLE:
 		scoreProcessing()
 
@@ -226,22 +231,24 @@ func _on_open_timer_timeout() -> void:
 	$HUDAnimation.play("open")
 
 
-# button for restart
+# button emits signal to restart if time out
 func _on_restart_button_pressed() -> void:
-	$HudWindow.visible = false # hide window to avoid artifacting/bugs
-	SoundControl.playCue(SoundControl.flutter, 3.0)
-	buttonsDisabled()
-	SoundControl.resetMusicFade()
-	restart_room.emit() # signal to levelManager to reload
+	if timesUp:
+		$HudWindow.visible = false # hide window to avoid artifacting/bugs
+		SoundControl.playCue(SoundControl.flutter, 3.0)
+		buttonsDisabled()
+		SoundControl.resetMusicFade()
+		restart_room.emit() # signal to levelManager to reload
 
 
-# button for exiting the game
+# button for exiting the game if time out
 func _on_exit_button_pressed() -> void:
-	$HudWindow.visible = false
-	SoundControl.playCue(SoundControl.ruined, 0.5)
-	buttonsDisabled()
-	SoundControl.resetMusicFade()
-	exit_game.emit() # signal to levelManager to exit to title
+	if timesUp:
+		$HudWindow.visible = false
+		SoundControl.playCue(SoundControl.ruined, 0.5)
+		buttonsDisabled()
+		SoundControl.resetMusicFade()
+		exit_game.emit() # signal to levelManager to exit to title
 
 
 # function to close buttons on input
@@ -315,3 +322,8 @@ func _on_exit_button_focus_entered() -> void:
 # grab input focus for exit
 func _on_exit_button_mouse_entered() -> void:
 	$ExitButton.grab_focus()
+
+
+# opens settings in game (handled in settings)
+func _on_settings_button_pressed() -> void:
+	SoundControl.playCue(SoundControl.blip, 3.0)

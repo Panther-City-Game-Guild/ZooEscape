@@ -15,6 +15,7 @@ class_name ZELevelManager extends Node2D
 var loadingScore: Variant = Globals.currentGameData.get("player_score") # compare score for reloads
 var localHud = null # pointer for hud
 var localPassword = null # pointer for password
+var localSettings = null # pointer for settings
 var timeUp := false # to monitor local hud timer
 @export var levelBgm := "res://Assets/Sound/Theme.ogg"
 
@@ -34,7 +35,7 @@ func _ready() -> void:
 		SoundControl.fadeState = SoundControl.FADE_STATES.IN_TRIGGER
 	
 	
-## this function grabs the hud and adds it to the level
+## this function grabs the hud elements and adds them to the level
 func hudFetch() -> void:
 	var _loadHud = load(Scenes.HUD)
 	var _newHud = _loadHud.instantiate()
@@ -42,9 +43,10 @@ func hudFetch() -> void:
 	localHud = _newHud
 	hudUpdate()
 	passwordFetch()
+	settingsFetch()
 
 
-## this function connects hud with signals and needed game variables
+## this function loads and connects hud with signals and needed game variables
 func hudUpdate() -> void:
 	localHud.restart_room.connect(restartRoom)
 	localHud.exit_game.connect(exitGame)
@@ -63,13 +65,23 @@ func hudUpdate() -> void:
 	currentPlayer.localHud = localHud
 
 
-## this function pulls up a password window when needed
+## this function pulls up the password window when needed
 func passwordFetch() -> void:
 	var _loadWindow = load(Scenes.PASSWORD)
 	var _newWindow = _loadWindow.instantiate()
 	get_tree().current_scene.add_child(_newWindow)
 	_newWindow.inGameMode = true
 	localPassword = _newWindow
+
+
+## and this grabs the settings window when needed
+func settingsFetch() -> void:
+	var _check = get_tree().get_nodes_in_group("Settings")
+	if _check.size()==0:
+		var _loadSettings = load(Scenes.SETTINGS)
+		var _newSettings = _loadSettings.instantiate()
+		get_tree().current_scene.add_child(_newSettings)
+		localSettings = _newSettings
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -108,13 +120,20 @@ func exitLevel() -> void:
 
 
 # load next level and free previous hud elements
-func nextRoom():
+func nextRoom() -> void:
 	if nextLevel != "9990":
-		localHud.queue_free()
-		localPassword.queue_free()
+		hudClosing()
 		SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[nextLevel])
 	else:
 		exitGame()
+
+
+# this function is to free hud elements or they will not overlay or place correctly
+# and to prevent stack overflow of hud scenes
+func hudClosing() -> void:
+	localHud.queue_free()
+	localPassword.queue_free()
+	localSettings.queue_free()
 
 
 # update score and apply exit score and bonus
@@ -127,12 +146,14 @@ func allSteaksCollected() -> void:
 func restartRoom() -> void:
 	localHud.closeHud()
 	var _score : int = Globals.currentGameData.get("player_score")
-	if _score != loadingScore:
+	if _score != loadingScore: ## load score from first level boot
 		Globals.currentGameData.set("player_score", loadingScore)
+	hudClosing()
 	SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[levelCode])
 
 
-# game exit function, refers to gameroot function
+# game exit function, returns to title after cleaming out hud
 func exitGame() -> void:
 	Data.saveGameData()
-	SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[nextLevel])
+	hudClosing()
+	SceneManager.goToTitle()
