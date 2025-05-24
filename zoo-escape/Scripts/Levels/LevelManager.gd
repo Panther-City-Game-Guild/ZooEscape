@@ -25,8 +25,7 @@ func _ready() -> void:
 	player.InWater.connect(restartRoom)
 	exitTile.PlayerExits.connect(exitLevel)
 	steakManager.AllSteaksCollected.connect(allSteaksCollected)
-	Globals.currentGameData.set("time_limit", levelTime)
-	Globals.currentGameData.set("warning_threshold", warningTime)
+	Globals.currentGameData.set("current_level", levelCode)
 	
 	# check to ensure bgm fade level is consistent
 	# if bgm fade level not normal, reset fade state so it fades in
@@ -115,4 +114,5 @@ func restartRoom() -> void:
 # game exit function, refers to gameroot function
 func exitGame() -> void:
 	Data.saveGameData()
-	SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[nextLevel])
+	Globals.gameRun(false)
+	SceneManager.goToTitle()

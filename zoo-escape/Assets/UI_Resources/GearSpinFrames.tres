@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://cxnq63qpvwx13"]
+
+[ext_resource type="Texture2D" uid="uid://d0kbbpfgbkobv" path="res://Assets/Images/Icons/gear_spinning_spritesheet.png" id="1_o5xqb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f4iw3"]
+atlas = ExtResource("1_o5xqb")
+region = Rect2(0, 0, 34, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ugh5x"]
+atlas = ExtResource("1_o5xqb")
+region = Rect2(34, 0, 34, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lxtjt"]
+atlas = ExtResource("1_o5xqb")
+region = Rect2(68, 0, 34, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7myin"]
+atlas = ExtResource("1_o5xqb")
+region = Rect2(102, 0, 34, 34)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f4iw3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ugh5x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lxtjt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7myin")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]

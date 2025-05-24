@@ -23,7 +23,7 @@ enum NUMBER_FOCUS_STATES {
 	CLEAR,
 	ENTER}
 
-@export var inGameMode := false # Determine behavior in and out of frontend
+var inGameMode := false # Determine behavior in and out of frontend
 @export var loadSceneBufferTime := 1 # Buffer until password scene loads
 var numberFocusState := 1 # current focus
 var codeTextPos := 0 # position in code
@@ -35,7 +35,9 @@ var inputBufferActive := true # hold input until window fades in
 # Called when the node enters the scene tree for the first time
 func _ready() -> void:
 	code.text = empty # reset text
-	if !inGameMode: # fade in and queue buffers, grab focus
+	if Globals.currentAppState.get("gameRunning") == false:
+#	if !inGameMode: # fade in and queue buffers, grab focus
+		inGameMode = false
 		$Animator.play("fade_in")
 		$InputBufferTimer.start()
 		$ButtonBox/Button1.grab_focus()
@@ -43,6 +45,7 @@ func _ready() -> void:
 	else:
 		allStatesFlywheel(false, false) # hud flags off but no animation
 		self.position = correctedVector
+		inGameMode = true
 
 
 # Called when input is detected
@@ -182,8 +185,7 @@ func fetchInput() -> void:
 		else:
 			buttonBatchControl(false)
 			allStatesFlywheel(false, true)
-			## TODO: May soon be obsolete due to new global value
-			if !inGameMode: # if in from frontend, return thru frontend
+			if Globals.currentAppState.get("gameRunning") == true:
 				returnToTitle()
 
 
@@ -219,6 +221,7 @@ func answerCheck() -> void:
 		code.material = correctShader
 		code.modulate = Color.GREEN_YELLOW
 		SoundControl.playCue(SoundControl.success, 1.5)
+		Globals.gameRun(true)
 		$LoadSceneBuffer.start(1)
 	else: # nay, code clears out and timer sets for shader reset
 		codeTextPos = 0
@@ -472,3 +475,5 @@ func _on_button_enter_mouse_entered() -> void:
 # alpha of blur backdrop changes each frame with parent (self)
 func _process(_delta: float) -> void:
 	$Backdrop.material.set_shader_parameter("parentAlpha", self.modulate.a)
+
+	inGameMode = Globals.currentAppState.get("gameRunning")

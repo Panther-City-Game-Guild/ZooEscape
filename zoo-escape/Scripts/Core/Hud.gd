@@ -66,6 +66,7 @@ func timeCheck() -> void:
 
 # Runs every frame
 func _process(_delta: float) -> void:
+	$SettingsButton/GearSprite.play("default") # play gear sprite animation
 	# monitor password state to hold hud move monitoring
 	passwordState = Globals.currentAppState["passwordWindowOpen"]
 	scoreCurrent = Globals.currentGameData.get("player_score")
@@ -102,6 +103,10 @@ func _process(_delta: float) -> void:
 	
 	if scoreProcessState != SCORE_PROCESS_STATES.IDLE:
 		scoreProcessing()
+	
+	if scoreProcessState == SCORE_PROCESS_STATES.IDLE:
+		if Input.is_action_just_pressed("SettingsButton"):
+			_on_settings_button_pressed()
 
 
 # button to grab focus from keyboard for timeout buttons
@@ -231,6 +236,7 @@ func _on_exit_button_pressed() -> void:
 	SoundControl.playCue(SoundControl.ruined, 0.5)
 	buttonsDisabled()
 	SoundControl.resetMusicFade()
+	Globals.gameRun(false)
 	exit_game.emit() # signal to levelManager to exit to title
 
 
@@ -305,3 +311,8 @@ func _on_exit_button_focus_entered() -> void:
 # grab input focus for exit
 func _on_exit_button_mouse_entered() -> void:
 	$ExitButton.grab_focus()
+
+
+# go to settings menu
+func _on_settings_button_pressed() -> void:
+	SceneManager.goToSettings()
