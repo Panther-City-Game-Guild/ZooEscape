@@ -67,6 +67,9 @@ func _ready() -> void:
 	focusInfoRelay("MASTER", masterInfo)
 	$Description.text = masterInfo
 	$Animator.play("roll_info")
+	
+	if Globals.currentAppState.get("gameRunning") == true:
+		exitInfo = "Return to the game at the start of your current level."
 
 
 # Called every render frame
@@ -310,7 +313,13 @@ func _on_escape_button_pressed() -> void:
 	if !bufferState:
 		Data.saveGameData()
 		globalSettingsUpdate() # update global settings
-		SceneManager.goToTitle() # go to title
+		SoundControl.playCue(SoundControl.down, 3.0)
+		## and check if we are in game
+		if Globals.currentAppState.get("gameRunning") == false:
+			SceneManager.goToTitle() # go to title if not in game
+		else:
+			var _return = str(Globals.currentGameData.get("current_level")) ## return to game and fetch level
+			SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[_return])
 
 
 # grab escape button focus

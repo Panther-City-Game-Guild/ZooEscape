@@ -32,11 +32,11 @@ func goToNewSceneString(newScene: String) -> void:
 	goToNewScenePacked(scene)
 
 
-# this returns to the title
+# this returns to the title with a function that clears the scene queue
 func goToTitle() -> void:
 	goToNewSceneString(TITLE)
 
 
-# this goes to the settings menu
+# this goes to the settings menu with a function that clears the scene queue
 func goToSettings() -> void:
 	goToNewSceneString(SETTINGS)

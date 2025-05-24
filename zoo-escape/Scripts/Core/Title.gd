@@ -27,6 +27,7 @@ func _process(_delta: float) -> void:
 # start a new game after pressing button
 func _on_new_game_button_pressed() -> void:
 	Data.saveGameData() # save options data
+	Globals.gameRun(true)
 	SoundControl.playCue(SoundControl.start, 1.0) # audio feedback
 	SceneManager.goToNewSceneString(Scenes.TUTORIAL1) # This will need to be moved to the menu script when the menu is added
 	Globals.currentGameData.set("player_score", 0) # Why is this being done here AND in GameRoot.gd?!  Let's make a central function to do this type of thing in the GameRoot when a new game starts.
@@ -43,7 +44,7 @@ func _on_password_button_pressed() -> void:
 # go to settings screen after pressing button
 func _on_settings_button_pressed() -> void:
 	SoundControl.playCue(SoundControl.flutter, 1.0) # audio feedback
-	SceneManager.goToNewSceneString(Scenes.SETTINGS)
+	SceneManager.goToSettings()
 
 
 # check for warning state. if in warning, exit, else show warning and open state

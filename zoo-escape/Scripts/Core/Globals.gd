@@ -50,13 +50,14 @@ var currentSettings := {
 
 # Globally accessible data related to the currently active game
 var currentGameData := {
-	"player_score": 0, # player score total
+	"player_score" : 0, # player score total
+	"current_level" : 0001
 }
 
 # Globally accessible data related to the state of the application
 var currentAppState := {
 	"passwordWindowOpen": false, # global hud control flag
-	"gameRunning" : false # flag to return to game from settings screen
+	"gameRunning" : false # flag to return to game from settings or password screen
 }
 
 # TODO: Try combining highScoreboardNames with highScoreBoardValues into one Dictionary.
@@ -106,3 +107,13 @@ func deadzoneUpdate() -> void:
 	InputMap.action_set_deadzone("DigitalDown", _deadzone)
 	InputMap.action_set_deadzone("DigitalRight", _deadzone)
 	InputMap.action_set_deadzone("DigitalUp", _deadzone)
+
+
+# function to report game is running, for relaying UI scene behavior (passwords, etc)
+func gameRun(_state:bool) -> void:
+	if _state == true:
+		if currentAppState.get("gameRunning") == false:
+			currentAppState.set("gameRunning", true)
+	else:
+		if currentAppState.get("gameRunning") == true:
+			currentAppState.set("gameRunning", false)
