@@ -106,3 +106,11 @@ func deadzoneUpdate() -> void:
 	InputMap.action_set_deadzone("DigitalDown", _deadzone)
 	InputMap.action_set_deadzone("DigitalRight", _deadzone)
 	InputMap.action_set_deadzone("DigitalUp", _deadzone)
+
+
+# function to set game running flag for ui event monitoring
+func gameRunning(logic:bool) -> void:
+	if logic:
+		currentAppState.set("gameRunning", true)
+	else:
+		currentAppState.set("gameRunning", false)

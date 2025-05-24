@@ -10,7 +10,7 @@ func _ready() -> void:
 
 # if the player enters the area delete itself
 func bodyEntered(body: Node2D) -> void:
-	if body.is_in_group("ZEPlayer"):
+	if body.is_in_group("Player"):
 		Globals.scoreUpdate(bonus, true) # global score update
 		SoundControl.playSfx(SoundControl.pickup) # global sound call
 		queue_free()

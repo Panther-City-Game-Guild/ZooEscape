@@ -35,14 +35,21 @@ var inputBufferActive := true # hold input until window fades in
 # Called when the node enters the scene tree for the first time
 func _ready() -> void:
 	code.text = empty # reset text
-	if !inGameMode: # fade in and queue buffers, grab focus
+	if Globals.currentAppState.get("gameRunning") == false: # fade in and queue buffers, grab focus
 		$Animator.play("fade_in")
 		$InputBufferTimer.start()
 		$ButtonBox/Button1.grab_focus()
 		allStatesFlywheel(true, true) # all hud flags true with animation in
 	else:
 		allStatesFlywheel(false, false) # hud flags off but no animation
-		self.position = correctedVector
+
+
+# to fix position in comparison to player
+func positionFix() -> void:
+	var _player : CharacterBody2D = get_tree().get_first_node_in_group("Player")
+	var _pos : Vector2 = _player.global_position
+	self.position.x = _pos.x-320
+	self.position.y = _pos.y-180
 
 
 # Called when input is detected
@@ -471,4 +478,5 @@ func _on_button_enter_mouse_entered() -> void:
 
 # alpha of blur backdrop changes each frame with parent (self)
 func _process(_delta: float) -> void:
+	positionFix()
 	$Backdrop.material.set_shader_parameter("parentAlpha", self.modulate.a)

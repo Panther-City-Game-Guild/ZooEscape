@@ -53,9 +53,9 @@ func _ready() -> void: # reset animations at ready, fetch start values
 	passwordState = Globals.currentAppState.get("passwordWindowOpen")
 
 
-## double check value vs globals
+## double check time values vs globals
 func timeCheck() -> void:
-	var _manager : Node = get_parent().get_parent() # get level manager root
+	var _manager : ZELevelManager = get_tree().get_first_node_in_group("LevelManager") # get level manager root
 	var _timeCheck : int = _manager.levelTime # check time
 	var _warningCheck : int = _manager.warningTime # check warning
 	if timeLimit != _timeCheck: # update if needed
@@ -64,8 +64,18 @@ func timeCheck() -> void:
 		warningTime = _warningCheck
 
 
+## double check position vs player
+func positionCheck() -> void:
+	var _player : CharacterBody2D = get_tree().get_first_node_in_group("Player")
+	var _viewport = Vector2(_player.global_position)
+	
+	self.position.x = _viewport.x-320
+	self.position.y = _viewport.y-180
+
+
 # Runs every frame
 func _process(_delta: float) -> void:
+	positionCheck() # follow player position
 	# monitor password state to hold hud move monitoring
 	passwordState = Globals.currentAppState["passwordWindowOpen"]
 	scoreCurrent = Globals.currentGameData.get("player_score")
