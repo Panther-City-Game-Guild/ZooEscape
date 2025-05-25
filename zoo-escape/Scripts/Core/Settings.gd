@@ -122,7 +122,7 @@ func _process(_delta: float) -> void: # single button fast value scroll in deadz
 		
 		
 		## if settings button pressed in game, place window then open or close
-		if Input.is_action_just_pressed("SettingsButton"):
+		if Input.is_action_just_pressed("SettingsButton") and Globals.currentAppState.get("passwordWindowOpen") == false:
 			if Globals.currentAppState.get("gameRunning") == true: ## only do this in game
 				if !get_tree().paused: ## listen to process state to determine correct behavior
 					windowPlacement()
@@ -170,6 +170,10 @@ func openSettingsCall() -> void:
 		button.disabled = false
 	for slider in sliders:
 		slider.editable = true
+		slider.scrollable = true
+
+	## grab focus to show control feedback
+	$MasterGroup/MasterSlider.grab_focus()
 
 
 # function to close settings window in-game
@@ -181,7 +185,9 @@ func closeSettingsCall() -> void:
 		button.disabled = true
 	for slider in sliders:
 		slider.editable = false
+		slider.scrollable = false
 	
+	## keep escape button active for main screen
 	$EscapeButton.disabled = false
 
 
@@ -374,10 +380,11 @@ func _on_escape_button_pressed() -> void:
 			globalSettingsUpdate() # update global settings
 			SceneManager.goToTitle() # go to title
 		else:
-			if Globals.currentAppState.get("settingsWindowOpen") == false:
-				openSettingsCall()
-			else:
-				closeSettingsCall()
+			if Globals.currentAppState.get("gameRunning") == true:
+				if Globals.currentAppState.get("settingsWindowOpen") == false:
+					openSettingsCall()
+				else:
+					closeSettingsCall()
 
 
 # grab escape button focus

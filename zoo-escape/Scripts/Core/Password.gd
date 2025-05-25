@@ -33,7 +33,9 @@ var inputBufferActive := true # hold input until window fades in
 
 
 # Called when the node enters the scene tree for the first time
+# get app state before determining behavior of menu
 func _ready() -> void:
+	inGameMode = Globals.currentAppState.get("gameRunning")
 	code.text = empty # reset text
 	if Globals.currentAppState.get("gameRunning") == false: # fade in and queue buffers, grab focus
 		$Animator.play("fade_in")
@@ -58,8 +60,8 @@ func _input(_event: InputEvent) -> void:
 		fetchInput() # listen for input outside game from frontend
 		numberInputGrab()
 		
-	if inGameMode: # listen for password button (escape)
-		if Input.is_action_just_pressed("PasswordButton"):
+	if inGameMode: # listen for password button (escape) but watch for settings window
+		if Input.is_action_just_pressed("PasswordButton") and Globals.currentAppState.get("settingsWindowOpen") == false:
 			if !inputBufferActive: # is input buffer expired? (waits from start)
 				if windowOpenFlag == false: # is window already open?
 					$InputBufferTimer.start()
@@ -71,7 +73,8 @@ func _input(_event: InputEvent) -> void:
 					allStatesFlywheel(false, true)
 			else: # close all states with animation out
 				allStatesFlywheel(false, true)
-		
+
+
 	if inGameMode and windowOpenFlag == true:
 		fetchInput()
 		numberInputGrab()
@@ -161,6 +164,8 @@ func fetchInput() -> void:
 			windowOpenFlag = true
 		else:
 			get_tree().paused = false
+			buttonBatchControl(false)
+
 		
 		if !inGameMode:
 			returnToTitle()
@@ -189,7 +194,6 @@ func fetchInput() -> void:
 		else:
 			buttonBatchControl(false)
 			allStatesFlywheel(false, true)
-			## TODO: May soon be obsolete due to new global value
 			if !inGameMode: # if in from frontend, return thru frontend
 				returnToTitle()
 
@@ -480,3 +484,4 @@ func _on_button_enter_mouse_entered() -> void:
 func _process(_delta: float) -> void:
 	positionFix()
 	$Backdrop.material.set_shader_parameter("parentAlpha", self.modulate.a)
+	
