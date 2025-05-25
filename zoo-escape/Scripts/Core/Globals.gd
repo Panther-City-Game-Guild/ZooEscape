@@ -56,7 +56,8 @@ var currentGameData := {
 # Globally accessible data related to the state of the application
 var currentAppState := {
 	"passwordWindowOpen": false, # global hud control flag
-	"gameRunning" : false # flag to return to game from settings screen
+	"settingsWindowOpen" : false, # global hud control flag
+	"gameRunning" : false # flag to change hud behaviors in game
 }
 
 # TODO: Try combining highScoreboardNames with highScoreBoardValues into one Dictionary.
@@ -106,3 +107,8 @@ func deadzoneUpdate() -> void:
 	InputMap.action_set_deadzone("DigitalDown", _deadzone)
 	InputMap.action_set_deadzone("DigitalRight", _deadzone)
 	InputMap.action_set_deadzone("DigitalUp", _deadzone)
+
+
+# function to set game running flag for ui event monitoring
+func gameRunning(logic:bool) -> void:
+	currentAppState.set("gameRunning", logic)

@@ -28,9 +28,11 @@ enum playerState {
 @onready var lastMoveDir := Vector2.DOWN
 
 signal InWater
+var localHud = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	localHud = get_tree().get_first_node_in_group("hud") ## grab hud if there is none
 	randomize()
 	$StepCue.volume_db = SoundControl.sfxLevel-stepMuffleLevel # default player footsteps to low volume
 	$GroundCheck.body_entered.connect(bodyEnter)
@@ -39,6 +41,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	localHud = get_tree().get_first_node_in_group("hud") ## grab hud if there is none
+
 	if currentState == playerState.IDLE:
 		if Input.is_action_just_pressed("DigitalUp"):
 			movePlayer(Vector2.UP)
@@ -83,6 +87,7 @@ func _process(delta: float) -> void:
 		get_tree().paused = true # NOTE: This should be happening at a higher level in the scene tree
 
 
+
 # Called to move the player
 func movePlayer(dir: Vector2) -> void:
 	var _pitch = randf_range(-0.25, 0.25)
@@ -101,12 +106,12 @@ func movePlayer(dir: Vector2) -> void:
 		if collidingObj is ZEBoxArea or collidingObj is ZEBall:
 		# If the collider is a Box, try to move the Box and the Player
 			if collidingObj.move(dir):
-				$ZEHud.movesValue += 1
+				localHud.movesValue += 1
 				position += dir * Globals.TILESIZE
 	
 	# Otherwise, if the RayCast2D is not colliding, simply move
 	elif !ray.is_colliding():
-		$ZEHud.movesValue += 1
+		localHud.movesValue += 1
 		position += dir * Globals.TILESIZE
 		lastMoveDir = dir
 
@@ -124,7 +129,7 @@ func bodyEnter(body: Node2D) -> void:
 	if body is TileMapLayer:
 		var tilePos: Vector2i = body.local_to_map($GroundCheck.global_position)
 		if body.get_cell_tile_data(tilePos).get_custom_data("Water"):
-			$ZEHud.closeHud()
+			localHud.closeHud()
 			SoundControl.playCue(SoundControl.fail,3.0)
 			currentState = playerState.INWATER
 		

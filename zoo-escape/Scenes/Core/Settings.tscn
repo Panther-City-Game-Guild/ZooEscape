@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dybggrx1korki"]
+[gd_scene load_steps=17 format=3 uid="uid://dybggrx1korki"]
 
 [ext_resource type="Script" uid="uid://bojgpxsrs8s60" path="res://Scripts/Core/Settings.gd" id="1_i6roa"]
 [ext_resource type="FontFile" uid="uid://gxb8jc5bj3cd" path="res://Assets/Fonts/PressStart2P.ttf" id="2_jvrum"]
@@ -8,6 +8,24 @@
 [ext_resource type="FontFile" uid="uid://dltop0cdtk3sp" path="res://Assets/Fonts/PCSenior.ttf" id="6_7pssb"]
 [ext_resource type="Texture2D" uid="uid://dyhwvfgd74prv" path="res://Assets/Images/SelectorFlipH.png" id="6_bxk0w"]
 [ext_resource type="Texture2D" uid="uid://bv8r8myvdoftk" path="res://Assets/Images/Selector.png" id="7_7pssb"]
+
+[sub_resource type="Shader" id="Shader_dhxby"]
+code = "shader_type canvas_item;
+
+uniform float lod: hint_range(0.0, 5) = 0.0;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture,filter_linear_mipmap;
+uniform float parentAlpha = 1.0;
+
+void fragment(){
+	vec4 color = texture(SCREEN_TEXTURE, SCREEN_UV, lod);
+	COLOR = color;
+	COLOR.a = parentAlpha;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4rh1a"]
+shader = SubResource("Shader_dhxby")
+shader_parameter/lod = 2.584
+shader_parameter/parentAlpha = 1.0
 
 [sub_resource type="Animation" id="Animation_kbgmh"]
 length = 0.001
@@ -45,7 +63,46 @@ _data = {
 &"roll_info": SubResource("Animation_sbfs6")
 }
 
+[sub_resource type="Animation" id="Animation_atut8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_dhxby"]
+resource_name = "open"
+length = 0.5
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4rh1a"]
+_data = {
+&"RESET": SubResource("Animation_atut8"),
+&"open": SubResource("Animation_dhxby")
+}
+
 [node name="ZESettings" type="Control"]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,6 +122,16 @@ deadzoneInfo = "Controls the level at which
 analog direction inputs trigger."
 exitInfo = "Escape to main menu."
 metadata/_edit_lock_ = true
+
+[node name="Backdrop" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_4rh1a")
+layout_mode = 0
+offset_left = -17.0
+offset_top = -20.0
+offset_right = 656.0
+offset_bottom = 373.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.254902)
 
 [node name="Header" type="Label" parent="."]
 layout_mode = 0
@@ -118,7 +185,7 @@ text = "70%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MasterSlider" type="HSlider" parent="MasterGroup"]
+[node name="MasterSlider" type="HSlider" parent="MasterGroup" groups=["sliders"]]
 layout_mode = 0
 offset_left = 396.0
 offset_top = 83.0
@@ -172,7 +239,7 @@ text = "70%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BGMSlider" type="HSlider" parent="BGMGroup"]
+[node name="BGMSlider" type="HSlider" parent="BGMGroup" groups=["sliders"]]
 layout_mode = 0
 offset_left = 396.0
 offset_top = 83.0
@@ -226,7 +293,7 @@ text = "70%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SFXSlider" type="HSlider" parent="SFXGroup"]
+[node name="SFXSlider" type="HSlider" parent="SFXGroup" groups=["sliders"]]
 layout_mode = 0
 offset_left = 396.0
 offset_top = 144.0
@@ -280,7 +347,7 @@ text = "70%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CueSlider" type="HSlider" parent="CueGroup"]
+[node name="CueSlider" type="HSlider" parent="CueGroup" groups=["sliders"]]
 layout_mode = 0
 offset_left = 396.0
 offset_top = 208.0
@@ -333,7 +400,7 @@ text = "0.5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DeadzoneDown" type="Button" parent="DeadzoneGroup"]
+[node name="DeadzoneDown" type="Button" parent="DeadzoneGroup" groups=["buttons"]]
 layout_mode = 0
 offset_left = 336.0
 offset_top = 272.0
@@ -350,7 +417,7 @@ theme_override_styles/hover = ExtResource("4_mow0n")
 theme_override_styles/pressed = ExtResource("5_bxk0w")
 icon = ExtResource("6_bxk0w")
 
-[node name="DeadzoneUp" type="Button" parent="DeadzoneGroup"]
+[node name="DeadzoneUp" type="Button" parent="DeadzoneGroup" groups=["buttons"]]
 layout_mode = 0
 offset_left = 528.0
 offset_top = 272.0
@@ -383,7 +450,7 @@ visible_characters = 0
 visible_ratio = 0.0188679
 metadata/_edit_lock_ = true
 
-[node name="EscapeButton" type="Button" parent="."]
+[node name="EscapeButton" type="Button" parent="." groups=["buttons"]]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 16.0
@@ -401,6 +468,11 @@ text = "ESC"
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_kv0sb")
+}
+
+[node name="Fader" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_4rh1a")
 }
 
 [node name="InputBuffer" type="Timer" parent="."]

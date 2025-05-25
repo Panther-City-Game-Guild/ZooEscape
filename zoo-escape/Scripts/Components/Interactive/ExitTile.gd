@@ -19,5 +19,5 @@ func activateExit() -> void:
 
 # if the player enters the and the exit tile is active tell the level to go to the next level
 func bodyEntered(body: Node2D) -> void:
-	if animation == "Active" && body.is_in_group("ZEPlayer"):
+	if animation == "Active" && body.is_in_group("Player"):
 		PlayerExits.emit()

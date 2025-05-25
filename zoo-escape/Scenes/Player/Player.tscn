@@ -1,9 +1,7 @@
-[gd_scene load_steps=25 format=3 uid="uid://3ah88dbq7yi4"]
+[gd_scene load_steps=23 format=3 uid="uid://3ah88dbq7yi4"]
 
 [ext_resource type="Script" uid="uid://dbcs0mgpcg3be" path="res://Scripts/Player/Player.gd" id="1_fxagb"]
 [ext_resource type="Texture2D" uid="uid://cbcuw7wsx26tw" path="res://Assets/Images/CatSpritesheetGray.png" id="2_mim3m"]
-[ext_resource type="PackedScene" uid="uid://nheh2k2bhpjo" path="res://Scenes/Core/Hud.tscn" id="3_anyud"]
-[ext_resource type="PackedScene" uid="uid://10h8qxtfap0i" path="res://Scenes/Core/Password.tscn" id="4_6pkit"]
 [ext_resource type="AudioStream" uid="uid://b3v6myl26lgyv" path="res://Assets/Sound/DeepThump.ogg" id="5_gxbec"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_44cu1"]
@@ -147,7 +145,7 @@ size = Vector2(16, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dmbf3"]
 size = Vector2(2, 2)
 
-[node name="Player" type="CharacterBody2D" groups=["ZEPlayer"]]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 process_mode = 1
 script = ExtResource("1_fxagb")
 
@@ -158,52 +156,6 @@ animation = &"IdleDown"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_72fhx")
-
-[node name="ZEHud" parent="." instance=ExtResource("3_anyud")]
-
-[node name="ZEPassword" parent="." instance=ExtResource("4_6pkit")]
-offset_left = -320.0
-offset_top = -180.0
-offset_right = -320.0
-offset_bottom = -180.0
-inGameMode = true
-metadata/_edit_lock_ = true
-
-[node name="Button1" parent="ZEPassword/ButtonBox" index="0" groups=["buttons"]]
-process_mode = 3
-
-[node name="Button2" parent="ZEPassword/ButtonBox" index="1" groups=["buttons"]]
-process_mode = 3
-
-[node name="Button3" parent="ZEPassword/ButtonBox" index="2" groups=["buttons"]]
-process_mode = 3
-
-[node name="Button4" parent="ZEPassword/ButtonBox" index="3" groups=["buttons"]]
-process_mode = 3
-
-[node name="Button5" parent="ZEPassword/ButtonBox" index="4" groups=["buttons"]]
-process_mode = 3
-
-[node name="Button6" parent="ZEPassword/ButtonBox" index="5" groups=["buttons"]]
-process_mode = 3
-
-[node name="Button7" parent="ZEPassword/ButtonBox" index="6" groups=["buttons"]]
-process_mode = 3
-
-[node name="Button8" parent="ZEPassword/ButtonBox" index="7" groups=["buttons"]]
-process_mode = 3
-
-[node name="Button9" parent="ZEPassword/ButtonBox" index="8" groups=["buttons"]]
-process_mode = 3
-
-[node name="Button0" parent="ZEPassword/ButtonBox" index="9" groups=["buttons"]]
-process_mode = 3
-
-[node name="ButtonClear" parent="ZEPassword/ButtonBox" index="10" groups=["buttons"]]
-process_mode = 3
-
-[node name="ButtonEnter" parent="ZEPassword/ButtonBox" index="11" groups=["buttons"]]
-process_mode = 3
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -223,5 +175,3 @@ debug_color = Color(0.981801, 0, 0.367869, 0.42)
 stream = ExtResource("5_gxbec")
 volume_db = -18.0
 pitch_scale = 6.0
-
-[editable path="ZEPassword"]
