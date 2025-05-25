@@ -111,7 +111,4 @@ func deadzoneUpdate() -> void:
 
 # function to set game running flag for ui event monitoring
 func gameRunning(logic:bool) -> void:
-	if logic:
-		currentAppState.set("gameRunning", true)
-	else:
-		currentAppState.set("gameRunning", false)
+	currentAppState.set("gameRunning", logic)

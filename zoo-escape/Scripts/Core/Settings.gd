@@ -38,8 +38,8 @@ var bufferState := true # hold player input until timer flips
 var focusGroup := FOCUS_GROUPS.MASTER # shows which control area has focus
 
 # holders for UI elements for batch disabling/enabling
-var sliders : Array = []
-var buttons : Array = []
+var sliders := []
+var buttons := []
 
 
 # Called when node enters the scene tree for the first time
@@ -75,7 +75,7 @@ func _ready() -> void:
 	$Animator.play("roll_info")
 	
 	
-	if Globals.currentAppState.get("gameRunning") == false:
+	if !Globals.currentAppState.get("gameRunning"):
 		$Fader.play("open")
 	else:
 		windowPlacement()
@@ -112,7 +112,7 @@ func _process(_delta: float) -> void: # single button fast value scroll in deadz
 
 
 		## is game not running, allow exit/focus on exit with either button
-		if Globals.currentAppState.get("gameRunning") == false:
+		if !Globals.currentAppState.get("gameRunning"):
 			if Input.is_action_just_pressed("CancelButton") or Input.is_action_just_pressed("PasswordButton"):
 				if focusGroup != FOCUS_GROUPS.ESCAPE: # move to escape button on press
 					_on_escape_button_focus_entered()
@@ -375,7 +375,7 @@ func _on_deadzone_up_mouse_entered() -> void:
 # save data on escape
 func _on_escape_button_pressed() -> void:
 	if !bufferState:
-		if Globals.currentAppState.get("gameRunning") == false:
+		if !Globals.currentAppState.get("gameRunning"):
 			Data.saveGameData()
 			globalSettingsUpdate() # update global settings
 			SceneManager.goToTitle() # go to title

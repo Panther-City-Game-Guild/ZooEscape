@@ -1,4 +1,4 @@
-class_name ZEHud extends Control
+class_name ZEHud extends CanvasLayer
 
 
 signal restart_room # reload signal
@@ -64,19 +64,10 @@ func timeCheck() -> void:
 		warningTime = _warningCheck
 
 
-## double check position vs player
-func positionCheck() -> void:
-	var _player : CharacterBody2D = get_tree().get_first_node_in_group("Player")
-	var _viewport = Vector2(_player.global_position)
-	
-	self.position.x = _viewport.x-320
-	self.position.y = _viewport.y-180
-
 
 # Runs every frame
 func _process(_delta: float) -> void:
 	$SettingsButton/GearIcon.play("default") # play gear animation
-	positionCheck() # follow player position
 	
 	# monitor password state to hold hud move monitoring
 	passwordState = Globals.currentAppState["passwordWindowOpen"]

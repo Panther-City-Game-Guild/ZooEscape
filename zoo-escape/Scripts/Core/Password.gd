@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 
 # materials for shader changes on password entry
@@ -6,7 +6,7 @@ const correctShader := preload("res://Assets/Shaders/WobblyMaterial.tres")
 const failShader := preload("res://Assets/Shaders/ErrorShakeX.tres")
 const title := Scenes.TITLE
 const empty := "----"
-const correctedVector := Vector2(-320,-160)
+const correctedVector := Vector2(-320,-180)
 
 # states to control focus and input
 enum NUMBER_FOCUS_STATES {
@@ -45,13 +45,6 @@ func _ready() -> void:
 	else:
 		allStatesFlywheel(false, false) # hud flags off but no animation
 
-
-# to fix position in comparison to player
-func positionFix() -> void:
-	var _player : CharacterBody2D = get_tree().get_first_node_in_group("Player")
-	var _pos : Vector2 = _player.global_position
-	self.position.x = _pos.x-320
-	self.position.y = _pos.y-180
 
 
 # Called when input is detected
@@ -242,6 +235,7 @@ func answerCheck() -> void:
 
 # load scene at end of load buffer timer
 func _on_load_scene_buffer_timeout() -> void:
+	Globals.currentAppState.set("gameRunning", true)
 	SceneManager.call_deferred("goToNewSceneString", Globals.PASSWORDS[code.text])
 
 
@@ -482,6 +476,5 @@ func _on_button_enter_mouse_entered() -> void:
 
 # alpha of blur backdrop changes each frame with parent (self)
 func _process(_delta: float) -> void:
-	positionFix()
-	$Backdrop.material.set_shader_parameter("parentAlpha", self.modulate.a)
+	$Backdrop.material.set_shader_parameter("parentAlpha", $PasswordWindow.modulate.a)
 	

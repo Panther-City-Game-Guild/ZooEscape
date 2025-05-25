@@ -134,6 +134,9 @@ func hudClosing() -> void:
 	localHud.queue_free()
 	localPassword.queue_free()
 	localSettings.queue_free()
+	Globals.currentAppState.set("passwordWindowOpen", false)
+	Globals.currentAppState.set("settingsWindowOpen", false)
+
 
 
 # update score and apply exit score and bonus
