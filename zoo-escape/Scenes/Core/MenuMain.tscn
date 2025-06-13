@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bg626xfxp25i2" path="res://Assets/Images/MainMenuBackground.png" id="2_7a404"]
 [ext_resource type="Script" uid="uid://dubpjf4h8ayup" path="res://Scripts/Core/AnimatedTitleElements.gd" id="3_2i1af"]
 [ext_resource type="SpriteFrames" uid="uid://cfu2np5ucp3r5" path="res://Assets/Images/Title/EyeballSpriteFrameset.tres" id="4_kbsxh"]
-[ext_resource type="Theme" uid="uid://c5f45xbhg3i0d" path="res://Assets/UI_Resources/MenuTheme.tres" id="6_kbsxh"]
+[ext_resource type="Theme" uid="uid://qxfj6qis06k2" path="res://Assets/UI_Resources/MenuTheme.tres" id="6_kbsxh"]
 
 [sub_resource type="Animation" id="Animation_44kyq"]
 length = 0.001

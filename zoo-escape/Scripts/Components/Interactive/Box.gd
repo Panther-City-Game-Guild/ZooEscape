@@ -10,7 +10,8 @@ enum states {
 @onready var ray := $RayCast2D
 @onready var currentDir := Vector2.DOWN
 @export var slideSpeed := 0.1
-@onready var moveTimer := 0.0
+@export var moveSpeed := 0.25
+var newPose := Vector2.ZERO
 
 # set up signals
 func _ready() -> void:
@@ -20,11 +21,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if currentState == states.SLIDING:
-		moveTimer += delta
-		
-		if moveTimer >= slideSpeed:
-			move(currentDir)
-			moveTimer = 0
+		move(currentDir)
 	
 	if currentState == states.INWATER:
 		$Sprite.play("float")
@@ -38,11 +35,13 @@ func move(dir: Vector2) -> bool:
 	
 	if currentState != states.INWATER && !ray.is_colliding():
 		SoundControl.playSfx(SoundControl.scuff)
-		position += dir * Globals.TILESIZE
+		var tween := get_tree().create_tween()
+		tween.tween_property(self, "position", position + (dir * Globals.TILESIZE), moveSpeed)
 		return true
 	else:
 		SoundControl.playSfx(SoundControl.scuff)
 		return false
+
 
 # check for 
 func bodyEnter(body: Node2D) -> void:

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=5 format=3 uid="uid://c5f45xbhg3i0d"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://qxfj6qis06k2"]
 
 [ext_resource type="FontFile" uid="uid://gxb8jc5bj3cd" path="res://Assets/Fonts/PressStart2P.ttf" id="1_qeila"]
 [ext_resource type="StyleBox" uid="uid://d4ddxd4fvdf4o" path="res://Assets/UI_Resources/HoverTexture.tres" id="3_notyd"]

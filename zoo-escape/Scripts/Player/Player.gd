@@ -19,7 +19,7 @@ enum playerState {
 	Vector2.LEFT: "IdleLeft"
 }
 
-@export var moveSpeed := 0.3
+@export var moveSpeed := 0.25
 @export var slideSpeed := 0.1
 @export var stepMuffleLevel := 9 # value to muffle footsteps
 @onready var currentDir := Vector2.DOWN
@@ -28,7 +28,6 @@ enum playerState {
 @onready var thoughtBubble := $ThoughtBubble
 @onready var idleTimer := $IdleTimer
 @onready var currentState := playerState.IDLE
-@onready var moveTimer := 0.0
 @onready var lastMoveDir := Vector2.DOWN
 
 signal InWater
@@ -38,15 +37,13 @@ signal PlayerMoved
 func _ready() -> void:
 	randomize()
 	$StepCue.volume_db = SoundControl.sfxLevel - stepMuffleLevel # default player footsteps to low volume
-	$GroundCheck.body_entered.connect(bodyEnter)
-	$GroundCheck.body_exited.connect(bodyExit)
 	$GroundCheck.area_entered.connect(areaEnter)
 	idleTimer.timeout.connect(showResetThought)
 	sprite.play("IdleDown")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if currentState == playerState.IDLE:
 		if idleTimer.is_stopped(): # is player is idle, idle bubble timer starts
 			idleTimer.start()
@@ -60,24 +57,6 @@ func _process(delta: float) -> void:
 			move(Vector2.DOWN)
 		elif Input.is_action_pressed("DigitalLeft"):
 			move(Vector2.LEFT)
-			
-		#if Input.is_action_pressed("DigitalUp") || Input.is_action_pressed("DigitalRight") || Input.is_action_pressed("DigitalDown") || Input.is_action_pressed("DigitalLeft"):
-			#moveTimer += delta
-			#
-		#if Input.is_action_just_released("DigitalUp") || Input.is_action_just_released("DigitalRight") || Input.is_action_just_released("DigitalDown") || Input.is_action_just_released("DigitalLeft"):
-			#moveTimer = 0
-			#
-		#if moveTimer >= moveSpeed:
-			#if Input.is_action_pressed("DigitalUp"):
-				#movePlayer(Vector2.UP)
-			#elif Input.is_action_pressed("DigitalRight"):
-				#movePlayer(Vector2.RIGHT)
-			#elif Input.is_action_pressed("DigitalDown"):
-				#movePlayer(Vector2.DOWN)
-			#elif Input.is_action_pressed("DigitalLeft"):
-				#movePlayer(Vector2.LEFT)
-			
-			#moveTimer = 0
 		
 		if Input.is_action_just_pressed("ActionButton"):
 			# Detect if "ray" is colliding with an object (e.g., Player is facing a Switch)
@@ -85,30 +64,21 @@ func _process(delta: float) -> void:
 			if ray.is_colliding():
 				interactWithRayCollider(ray.get_collider())
 	elif currentState == playerState.SLIDING:
-		moveTimer += delta
-		
-		# move player and choose slide animation when sliding
-		if moveTimer >= slideSpeed:
-			movePlayer(lastMoveDir)
-			moveTimer = 0
-			slideAnimationCall()
+		move(lastMoveDir)
+
 
 
 # called to fetch and compare the slide animation to slide direction and movement
 func slideAnimationCall() -> void:
-	if moveTimer == 0:
-		match lastMoveDir:
-			Vector2.DOWN:
-				sprite.play("SlideDown")
-			Vector2.LEFT:
-				sprite.play("SlideLeft")
-			Vector2.RIGHT:
-				sprite.play("SlideRight")
-			Vector2.UP:
-				sprite.play("SlideUp")
-			Vector2.ZERO: # return to idle if still
-				currentState = playerState.IDLE
-				sprite.play(dirToAnimtionName[lastMoveDir])
+	match lastMoveDir:
+		Vector2.DOWN:
+			sprite.play("SlideDown")
+		Vector2.LEFT:
+			sprite.play("SlideLeft")
+		Vector2.RIGHT:
+			sprite.play("SlideRight")
+		Vector2.UP:
+			sprite.play("SlideUp")
 
 func move(dir: Vector2) -> void:
 	var _pitch = randf_range(-0.25, 0.25)
@@ -117,41 +87,14 @@ func move(dir: Vector2) -> void:
 	idleTimer.stop()
 	
 	# Change the direction the Player is facing and determine animation update behavior
-	if currentState != playerState.SLIDING:
+	if currentState != playerState.SLIDING && currentState != playerState.CORNERSLIDING:
 		sprite.play(dirToAnimtionName[dir])
+
+		
 	# update facing direction
 	ray.target_position = dir * Globals.TILESIZE
 	ray.force_raycast_update()
-	
-	# After changing the direction the Player is facing,
-	# if the Player's RayCast2D is colliding, do logic
-	if !ray.is_colliding():
-		thoughtBubble.hide()
-		lastMoveDir = dir
-		currentState = playerState.MOVING
-		var tween := get_tree().create_tween()
-		tween.tween_property(self, "position", position + (dir * Globals.TILESIZE), .35)
-		await tween.finished
-		PlayerMoved.emit()
-	
-	checkForInteract()
-	
-	currentState = playerState.IDLE
-
-
-# Called to move the player
-func movePlayer(dir: Vector2) -> void:
-	var _pitch = randf_range(-0.25, 0.25)
-	$StepCue.pitch_scale = 1 + _pitch
-	$StepCue.play()
-	idleTimer.stop()
-	
-	# Change the direction the Player is facing and determine animation update behavior
-	if currentState != playerState.SLIDING:
-		sprite.play(dirToAnimtionName[dir])
-	# update facing direction
-	ray.target_position = dir * Globals.TILESIZE
-	ray.force_raycast_update()
+	thoughtBubble.hide()
 	
 	# After changing the direction the Player is facing,
 	# if the Player's RayCast2D is colliding, do logic
@@ -160,17 +103,23 @@ func movePlayer(dir: Vector2) -> void:
 		if collidingObj is ZEBoxArea:
 		# If the collider is a Box, try to move the Box and the Player
 			if collidingObj.move(dir):
-				position += dir * Globals.TILESIZE
-				if currentState == playerState.IDLE:
-					PlayerMoved.emit()
+				lastMoveDir = dir
+				currentState = playerState.MOVING
+				var tween := get_tree().create_tween()
+				tween.tween_property(self, "position", position + (dir * Globals.TILESIZE), moveSpeed)
+				await tween.finished
+				PlayerMoved.emit()
 	# Otherwise, if the RayCast2D is not colliding, simply move
 	elif !ray.is_colliding():
-		position += dir * Globals.TILESIZE
 		lastMoveDir = dir
-		if currentState == playerState.IDLE:
-			PlayerMoved.emit()
-
+		currentState = playerState.MOVING
+		var tween := get_tree().create_tween()
+		tween.tween_property(self, "position", position + (dir * Globals.TILESIZE), moveSpeed)
+		await tween.finished
+		PlayerMoved.emit()
+	
 	checkForInteract()
+	checkGroundForBody()
 
 
 # Called to attempt interaction with various objects when player is facing a collider
@@ -186,7 +135,14 @@ func interactWithRayCollider(collidingObj: Object) -> void:
 
 
 # give feedback and state change dependent on terrain
-func bodyEnter(body: Node2D) -> void:
+func checkGroundForBody() -> void:
+	# if there is nothing under the player then go to default idle
+	if $GroundCheck.get_overlapping_bodies().size() == 0:
+		currentState = playerState.IDLE
+		sprite.play(dirToAnimtionName[lastMoveDir])
+		return
+	
+	var body = $GroundCheck.get_overlapping_bodies()[0]
 	if body is TileMapLayer:
 		var tilePos: Vector2i = body.local_to_map($GroundCheck.global_position)
 		if body.get_cell_tile_data(tilePos).get_custom_data("Water"):
@@ -199,16 +155,11 @@ func bodyEnter(body: Node2D) -> void:
 				# if ice, audio cues and state change
 				currentState = playerState.SLIDING
 				$StepCue.stream = load(SLIPNOISE)
+				slideAnimationCall()
 			else:
 				# retrigger idle after stopping sliding movement
 				currentState = playerState.IDLE
 				sprite.play(dirToAnimtionName[lastMoveDir])
-
-
-# go back to idle when exiting area
-func bodyExit(_body: Node2D) -> void:
-	currentState = playerState.IDLE
-	$StepCue.stream = load(STEPNOISE)
 
 
 # check the ground to any area 2dAdd commentMore actions
@@ -249,9 +200,3 @@ func checkForInteract() -> void:
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation == "Drown":
 		InWater.emit() # level reload call
-
-
-# check to see if slide animation still running and if so, return to idle animation
-func _on_animated_sprite_2d_frame_changed() -> void:
-	if "Slide" in sprite.animation and currentState != playerState.SLIDING:
-		sprite.play(dirToAnimtionName[lastMoveDir])

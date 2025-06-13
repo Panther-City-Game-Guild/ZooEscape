@@ -587,7 +587,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_n1hvv")
 }],
-"loop": false,
+"loop": true,
 "name": &"SlideDown",
 "speed": 10.0
 }, {
@@ -604,7 +604,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ywgti")
 }],
-"loop": false,
+"loop": true,
 "name": &"SlideLeft",
 "speed": 10.0
 }, {
@@ -621,7 +621,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bt0ce")
 }],
-"loop": false,
+"loop": true,
 "name": &"SlideRight",
 "speed": 10.0
 }, {
@@ -644,7 +644,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ygrhg")
 }],
-"loop": false,
+"loop": true,
 "name": &"SlideUp",
 "speed": 10.0
 }]
@@ -737,7 +737,7 @@ script = ExtResource("1_fxagb")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_w2ove")
-animation = &"IdleDown"
+animation = &"SlideDown"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_72fhx")
@@ -772,4 +772,3 @@ animation = &"ActionC"
 wait_time = 7.5
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]

@@ -16,21 +16,21 @@ func bodyEntered(body: Node2D) -> void:
 		match cornerPos:
 			"TopLeft": 
 				if lastDir == Vector2.UP:
-					body.movePlayer(Vector2.RIGHT)
+					body.move(Vector2.RIGHT)
 				else:
-					body.movePlayer(Vector2.DOWN)
+					body.move(Vector2.DOWN)
 			"TopRight": 
 				if lastDir == Vector2.UP:
-					body.movePlayer(Vector2.LEFT)
+					body.move(Vector2.LEFT)
 				else:
-					body.movePlayer(Vector2.DOWN)
+					body.move(Vector2.DOWN)
 			"BottomLeft": 
 				if lastDir == Vector2.DOWN:
-					body.movePlayer(Vector2.RIGHT)
+					body.move(Vector2.RIGHT)
 				else:
-					body.movePlayer(Vector2.UP)
+					body.move(Vector2.UP)
 			"BottomRight": 
 				if lastDir == Vector2.DOWN:
-					body.movePlayer(Vector2.LEFT)
+					body.move(Vector2.LEFT)
 				else:
-					body.movePlayer(Vector2.UP)
+					body.move(Vector2.UP)
