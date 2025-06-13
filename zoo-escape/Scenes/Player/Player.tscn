@@ -743,6 +743,14 @@ animation = &"SlideDown"
 shape = SubResource("RectangleShape2D_72fhx")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.1
+drag_top_margin = 0.1
+drag_right_margin = 0.1
+drag_bottom_margin = 0.1
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 target_position = Vector2(0, 16)
