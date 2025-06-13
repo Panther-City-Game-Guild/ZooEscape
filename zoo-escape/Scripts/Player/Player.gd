@@ -139,7 +139,7 @@ func interactWithRayCollider(collidingObj: Object) -> void:
 # give feedback and state change dependent on terrain
 func checkGroundForBody() -> void:
 	# if there is nothing under the player then go to default idle
-	if $GroundCheck.get_overlapping_bodies().size() == 0:
+	if $GroundCheck.get_overlapping_bodies().size() == 0 && $GroundCheck.get_overlapping_areas().size() == 0:
 		currentState = playerState.IDLE
 		sprite.play(dirToAnimtionName[lastMoveDir])
 		return

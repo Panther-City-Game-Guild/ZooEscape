@@ -63,7 +63,7 @@ script = ExtResource("1_ymavr")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ypekl")
 animation = &"TopLeft"
-frame_progress = 0.532823
+frame_progress = 0.298472
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 8
@@ -71,3 +71,4 @@ collision_mask = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_ij6rg")
+debug_color = Color(0.975964, 0, 0.41545, 0.42)
