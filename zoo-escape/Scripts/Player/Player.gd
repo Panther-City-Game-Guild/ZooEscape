@@ -50,13 +50,13 @@ func _process(_delta: float) -> void:
 			
 		# move player in direction of input
 		if Input.is_action_pressed("DigitalUp"):
-			move(Vector2.UP)
+			movePlayer(Vector2.UP)
 		elif Input.is_action_pressed("DigitalRight"):
-			move(Vector2.RIGHT)
+			movePlayer(Vector2.RIGHT)
 		elif Input.is_action_pressed("DigitalDown"):
-			move(Vector2.DOWN)
+			movePlayer(Vector2.DOWN)
 		elif Input.is_action_pressed("DigitalLeft"):
-			move(Vector2.LEFT)
+			movePlayer(Vector2.LEFT)
 		
 		if Input.is_action_just_pressed("ActionButton"):
 			# Detect if "ray" is colliding with an object (e.g., Player is facing a Switch)
@@ -64,7 +64,7 @@ func _process(_delta: float) -> void:
 			if ray.is_colliding():
 				interactWithRayCollider(ray.get_collider())
 	elif currentState == playerState.SLIDING:
-		move(lastMoveDir)
+		movePlayer(lastMoveDir)
 
 
 
@@ -80,7 +80,9 @@ func slideAnimationCall() -> void:
 		Vector2.UP:
 			sprite.play("SlideUp")
 
-func move(dir: Vector2) -> void:
+
+# Called to move the player
+func movePlayer(dir: Vector2) -> void:
 	var _pitch = randf_range(-0.25, 0.25)
 	$StepCue.pitch_scale = 1 + _pitch
 	$StepCue.play()
