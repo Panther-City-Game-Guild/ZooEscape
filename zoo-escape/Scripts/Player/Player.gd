@@ -126,14 +126,17 @@ func move(dir: Vector2) -> void:
 	# After changing the direction the Player is facing,
 	# if the Player's RayCast2D is colliding, do logic
 	if !ray.is_colliding():
-		#position += dir * Globals.TILESIZE
+		thoughtBubble.hide()
 		lastMoveDir = dir
 		currentState = playerState.MOVING
 		var tween := get_tree().create_tween()
 		tween.tween_property(self, "position", position + (dir * Globals.TILESIZE), .35)
 		await tween.finished
-		currentState = playerState.IDLE
 		PlayerMoved.emit()
+	
+	checkForInteract()
+	
+	currentState = playerState.IDLE
 
 
 # Called to move the player
@@ -231,7 +234,6 @@ func showMoveThought() -> void:
 # check if we should show the interact thought bubble
 func checkForInteract() -> void:
 	ray.force_raycast_update()
-	thoughtBubble.hide()
 	
 	if ray.is_colliding():
 		var collidingObj: Object = ray.get_collider()
