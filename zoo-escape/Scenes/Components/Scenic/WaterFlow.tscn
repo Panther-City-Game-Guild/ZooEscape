@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cuw4758o5nmh6"]
+
+[ext_resource type="Material" uid="uid://dh776fui1f0pq" path="res://Assets/Shaders/WaterMaterial.tres" id="1_hewdv"]
+[ext_resource type="Script" uid="uid://b8t01h1vtchj4" path="res://Scripts/Components/Scenic/WaterFlow.gd" id="1_s62rr"]
+[ext_resource type="SpriteFrames" uid="uid://8lghrijyw7tc" path="res://Assets/Images/UnderWaterFrames.tres" id="2_hewdv"]
+
+[node name="WaterFlow" type="Node2D"]
+material = ExtResource("1_hewdv")
+script = ExtResource("1_s62rr")
+metadata/_edit_group_ = true
+
+[node name="FlowStreamHorizontal" type="AnimatedSprite2D" parent="."]
+use_parent_material = true
+position = Vector2(48, -25)
+scale = Vector2(1.875, 1.40625)
+sprite_frames = ExtResource("2_hewdv")
+
+[node name="FlowStreamVertical" type="AnimatedSprite2D" parent="."]
+use_parent_material = true
+position = Vector2(120, -20)
+scale = Vector2(0.75, 0.5)
+sprite_frames = ExtResource("2_hewdv")
+
+[node name="BodyFlow" type="AnimatedSprite2D" parent="."]
+use_parent_material = true
+position = Vector2(-56, -25)
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("2_hewdv")

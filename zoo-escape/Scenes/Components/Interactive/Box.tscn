@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cctpj70esr363" path="res://Assets/Images/BoxFloating.png" id="2_o0ys2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jx2uq"]
-size = Vector2(16, 16)
+size = Vector2(32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4ftjx"]
 atlas = ExtResource("2_o0ys2")
@@ -93,6 +93,7 @@ script = ExtResource("2_jnb56")
 shape = SubResource("RectangleShape2D_jx2uq")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_cor2s")
 animation = &"idle"
 

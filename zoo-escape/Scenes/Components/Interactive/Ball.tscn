@@ -11,7 +11,7 @@ size = Vector2(112, 112)
 size = Vector2(80, 80)
 
 [node name="Ball" type="Area2D"]
-scale = Vector2(0.125, 0.125)
+scale = Vector2(0.25, 0.25)
 script = ExtResource("1_kjo4a")
 
 [node name="CollisionArea" type="CollisionShape2D" parent="."]

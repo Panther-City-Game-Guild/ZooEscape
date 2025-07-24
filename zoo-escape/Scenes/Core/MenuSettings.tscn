@@ -1,20 +1,21 @@
-[gd_scene load_steps=13 format=3 uid="uid://cjoj03uah2tp8"]
+[gd_scene load_steps=11 format=3 uid="uid://cjoj03uah2tp8"]
 
+[ext_resource type="Theme" uid="uid://c5f45xbhg3i0d" path="res://Assets/UI_Resources/MenuTheme.tres" id="1_a0my0"]
 [ext_resource type="Script" uid="uid://2qrx6d2bu2c1" path="res://Scripts/Core/MenuSettings.gd" id="1_ioldb"]
 [ext_resource type="FontFile" uid="uid://gxb8jc5bj3cd" path="res://Assets/Fonts/PressStart2P.ttf" id="2_a0my0"]
-[ext_resource type="StyleBox" uid="uid://bg1fatmttmcey" path="res://Assets/UI_Resources/FocusTexture.tres" id="3_uld2q"]
-[ext_resource type="StyleBox" uid="uid://d4ddxd4fvdf4o" path="res://Assets/UI_Resources/HoverTexture.tres" id="4_etoxc"]
-[ext_resource type="StyleBox" uid="uid://b6pmunfpdsdix" path="res://Assets/UI_Resources/PressedTexture.tres" id="5_s6d8b"]
-[ext_resource type="Texture2D" uid="uid://dyhwvfgd74prv" path="res://Assets/Images/SelectorFlipH.png" id="6_v2n2c"]
-[ext_resource type="Texture2D" uid="uid://bv8r8myvdoftk" path="res://Assets/Images/Selector.png" id="7_r2118"]
-[ext_resource type="FontFile" uid="uid://dltop0cdtk3sp" path="res://Assets/Fonts/PCSenior.ttf" id="8_gqm55"]
+[ext_resource type="StyleBox" uid="uid://c52rka3sbvbs6" path="res://Assets/UI_Resources/SliderGrabAreaHighlight.tres" id="4_c3hnw"]
+[ext_resource type="AudioStream" uid="uid://dyk3iqy52e5y7" path="res://Assets/Sound/FanfareMajor.ogg" id="5_62no5"]
+[ext_resource type="AudioStream" uid="uid://ckdt5pc4g670o" path="res://Assets/Sound/Tutorial.ogg" id="6_apj5e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62no5"]
+bg_color = Color(0, 0, 0, 0.501961)
 
 [sub_resource type="Animation" id="Animation_kbgmh"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Description:visible_ratio")
+tracks/0/path = NodePath("VBox/Description:visible_ratio")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -24,15 +25,12 @@ tracks/0/keys = {
 "values": [0.0188679]
 }
 
-[sub_resource type="Animation" id="Animation_ioldb"]
-resource_name = "fadeIn"
-
 [sub_resource type="Animation" id="Animation_sbfs6"]
 resource_name = "roll_info"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Description:visible_ratio")
+tracks/0/path = NodePath("VBox/Description:visible_ratio")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -45,396 +43,289 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kv0sb"]
 _data = {
 &"RESET": SubResource("Animation_kbgmh"),
-&"fadeIn": SubResource("Animation_ioldb"),
 &"roll_info": SubResource("Animation_sbfs6")
 }
 
-[node name="SettingsMenu" type="Control"]
-layout_mode = 3
+[node name="SettingsMenu" type="Panel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_a0my0")
+theme_override_styles/panel = SubResource("StyleBoxFlat_62no5")
 script = ExtResource("1_ioldb")
 
 [node name="Background" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(944, 544)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -472.0
+offset_top = -272.0
+offset_right = 472.0
+offset_bottom = 272.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.180392, 0.172549, 0.231373, 0.862745)
+color = Color(0.180392, 0.172549, 0.231373, 1)
 metadata/_edit_lock_ = true
 
-[node name="Header" type="Label" parent="."]
-layout_mode = 0
-offset_right = 640.0
-offset_bottom = 64.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
-theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 27
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -456.0
+offset_top = -256.0
+offset_right = 456.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+metadata/_edit_lock_ = true
+
+[node name="Header" type="Label" parent="VBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
 text = "SETTINGS"
 horizontal_alignment = 1
-vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="MasterGroup" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="CloseButton" type="Button" parent="VBox/Header"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -48.0
+offset_bottom = 48.0
+grow_horizontal = 0
+focus_neighbor_top = NodePath("../../DeadzoneGroup/DeadzoneSlider")
+focus_neighbor_bottom = NodePath("../../MasterGroup/MasterSlider")
+focus_next = NodePath("../../MasterGroup/MasterSlider")
+focus_previous = NodePath("../../DeadzoneGroup/DeadzoneSlider")
+text = "X"
+metadata/_edit_lock_ = true
+
+[node name="MasterGroup" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
-[node name="MasterText" type="Label" parent="MasterGroup"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 80.0
-offset_right = 320.0
-offset_bottom = 112.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
-theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 16
+[node name="MasterText" type="Label" parent="VBox/MasterGroup"]
+custom_minimum_size = Vector2(516, 48)
+layout_mode = 2
+size_flags_horizontal = 2
 text = "MASTER VOLUME"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MasterValue" type="Label" parent="MasterGroup"]
-layout_mode = 0
-offset_left = 320.0
-offset_top = 80.0
-offset_right = 384.0
-offset_bottom = 112.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
-theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 16
-text = "70%"
-horizontal_alignment = 1
+[node name="MasterValue" type="Label" parent="VBox/MasterGroup"]
+custom_minimum_size = Vector2(128, 48)
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_font_sizes/font_size = 32
+text = "100%"
+horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="MasterSlider" type="HSlider" parent="MasterGroup"]
-layout_mode = 0
-offset_left = 396.0
-offset_top = 83.0
-offset_right = 556.0
-offset_bottom = 107.0
-focus_neighbor_left = NodePath("../../EscapeButton")
-focus_neighbor_top = NodePath("../../EscapeButton")
+[node name="MasterSlider" type="HSlider" parent="VBox/MasterGroup"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../../Header/CloseButton")
 focus_neighbor_bottom = NodePath("../../BGMGroup/BGMSlider")
 focus_next = NodePath("../../BGMGroup/BGMSlider")
-focus_previous = NodePath("../../EscapeButton")
+focus_previous = NodePath("../../Header/CloseButton")
+theme_override_styles/grabber_area_highlight = ExtResource("4_c3hnw")
 min_value = -20.0
 max_value = 0.0
 step = 0.2
 value = -6.0
 
-[node name="BGMGroup" type="Control" parent="."]
-anchors_preset = 0
-offset_top = 48.0
-offset_right = 40.0
-offset_bottom = 88.0
-metadata/_edit_lock_ = true
+[node name="BGMGroup" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
 metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
-[node name="BGMText" type="Label" parent="BGMGroup"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 80.0
-offset_right = 320.0
-offset_bottom = 112.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+[node name="BGMText" type="Label" parent="VBox/BGMGroup"]
+custom_minimum_size = Vector2(516, 48)
+layout_mode = 2
+size_flags_horizontal = 2
 theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 16
 text = "MUSIC VOLUME"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BGMValue" type="Label" parent="BGMGroup"]
-layout_mode = 0
-offset_left = 320.0
-offset_top = 80.0
-offset_right = 384.0
-offset_bottom = 112.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
-theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 16
-text = "70%"
-horizontal_alignment = 1
+[node name="BGMValue" type="Label" parent="VBox/BGMGroup"]
+custom_minimum_size = Vector2(128, 48)
+layout_mode = 2
+size_flags_horizontal = 6
+text = "100%"
+horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="BGMSlider" type="HSlider" parent="BGMGroup"]
-layout_mode = 0
-offset_left = 396.0
-offset_top = 83.0
-offset_right = 556.0
-offset_bottom = 107.0
-focus_neighbor_left = NodePath("../../EscapeButton")
+[node name="BGMSlider" type="HSlider" parent="VBox/BGMGroup"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
 focus_neighbor_top = NodePath("../../MasterGroup/MasterSlider")
 focus_neighbor_bottom = NodePath("../../SFXGroup/SFXSlider")
 focus_next = NodePath("../../SFXGroup/SFXSlider")
 focus_previous = NodePath("../../MasterGroup/MasterSlider")
+theme_override_styles/grabber_area_highlight = ExtResource("4_c3hnw")
 min_value = -20.0
 max_value = 0.0
 step = 0.2
 value = -6.0
 
-[node name="SFXGroup" type="Control" parent="."]
-anchors_preset = 0
-offset_top = 32.0
-offset_right = 40.0
-offset_bottom = 72.0
+[node name="SFXGroup" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
-[node name="SFXText" type="Label" parent="SFXGroup"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 144.0
-offset_right = 320.0
-offset_bottom = 176.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+[node name="SFXText" type="Label" parent="VBox/SFXGroup"]
+custom_minimum_size = Vector2(516, 48)
+layout_mode = 2
+size_flags_horizontal = 2
 theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 16
 text = "SOUND FX VOLUME"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SFXValue" type="Label" parent="SFXGroup"]
-layout_mode = 0
-offset_left = 320.0
-offset_top = 144.0
-offset_right = 384.0
-offset_bottom = 176.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
-theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 16
-text = "70%"
-horizontal_alignment = 1
+[node name="SFXValue" type="Label" parent="VBox/SFXGroup"]
+custom_minimum_size = Vector2(128, 48)
+layout_mode = 2
+size_flags_horizontal = 6
+text = "100%"
+horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="SFXSlider" type="HSlider" parent="SFXGroup"]
-layout_mode = 0
-offset_left = 396.0
-offset_top = 144.0
-offset_right = 556.0
-offset_bottom = 168.0
-focus_neighbor_left = NodePath("../../EscapeButton")
+[node name="SFXSlider" type="HSlider" parent="VBox/SFXGroup"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
 focus_neighbor_top = NodePath("../../BGMGroup/BGMSlider")
 focus_neighbor_bottom = NodePath("../../CueGroup/CueSlider")
 focus_next = NodePath("../../CueGroup/CueSlider")
 focus_previous = NodePath("../../BGMGroup/BGMSlider")
+theme_override_styles/grabber_area_highlight = ExtResource("4_c3hnw")
 min_value = -20.0
 max_value = 0.0
 step = 0.2
 value = -6.0
 
-[node name="CueGroup" type="Control" parent="."]
-anchors_preset = 0
-offset_top = 16.0
-offset_right = 40.0
-offset_bottom = 56.0
+[node name="CueGroup" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
-[node name="CueText" type="Label" parent="CueGroup"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 208.0
-offset_right = 320.0
-offset_bottom = 240.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+[node name="CueText" type="Label" parent="VBox/CueGroup"]
+custom_minimum_size = Vector2(516, 48)
+layout_mode = 2
+size_flags_horizontal = 2
 theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 16
 text = "CUE VOLUME"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CueValue" type="Label" parent="CueGroup"]
-layout_mode = 0
-offset_left = 320.0
-offset_top = 208.0
-offset_right = 384.0
-offset_bottom = 240.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
-theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 16
-text = "70%"
-horizontal_alignment = 1
+[node name="CueValue" type="Label" parent="VBox/CueGroup"]
+custom_minimum_size = Vector2(128, 48)
+layout_mode = 2
+size_flags_horizontal = 6
+text = "100%"
+horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="CueSlider" type="HSlider" parent="CueGroup"]
-layout_mode = 0
-offset_left = 396.0
-offset_top = 208.0
-offset_right = 556.0
-offset_bottom = 232.0
-focus_neighbor_left = NodePath("../../EscapeButton")
+[node name="CueSlider" type="HSlider" parent="VBox/CueGroup"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
 focus_neighbor_top = NodePath("../../SFXGroup/SFXSlider")
-focus_neighbor_bottom = NodePath("../../DeadzoneGroup/DeadzoneDown")
-focus_next = NodePath("../../DeadzoneGroup/DeadzoneDown")
+focus_neighbor_bottom = NodePath("../../DeadzoneGroup/DeadzoneSlider")
+focus_next = NodePath("../../DeadzoneGroup/DeadzoneSlider")
 focus_previous = NodePath("../../SFXGroup/SFXSlider")
+theme_override_styles/grabber_area_highlight = ExtResource("4_c3hnw")
 min_value = -20.0
 max_value = 0.0
 step = 0.2
 value = -6.0
 
-[node name="DeadzoneGroup" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-metadata/_edit_lock_ = true
+[node name="DeadzoneGroup" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
 metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
-[node name="DeadzoneText" type="Label" parent="DeadzoneGroup"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 272.0
-offset_right = 320.0
-offset_bottom = 304.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
+[node name="DeadzoneText" type="Label" parent="VBox/DeadzoneGroup"]
+custom_minimum_size = Vector2(516, 48)
+layout_mode = 2
+size_flags_horizontal = 2
 theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 16
 text = "ANALOG DEADZONE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DeadzoneValue" type="Label" parent="DeadzoneGroup"]
-layout_mode = 0
-offset_left = 384.0
-offset_top = 272.0
-offset_right = 512.0
-offset_bottom = 304.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_colors/font_outline_color = Color(0.380392, 0.25098, 0.478431, 1)
-theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 16
+[node name="DeadzoneValue" type="Label" parent="VBox/DeadzoneGroup"]
+custom_minimum_size = Vector2(196, 48)
+layout_mode = 2
+size_flags_horizontal = 4
 text = "0.5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DeadzoneDown" type="Button" parent="DeadzoneGroup"]
-layout_mode = 0
-offset_left = 336.0
-offset_top = 272.0
-offset_right = 368.0
-offset_bottom = 304.0
-focus_neighbor_left = NodePath("../DeadzoneUp")
+[node name="DeadzoneSlider" type="HSlider" parent="VBox/DeadzoneGroup"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
 focus_neighbor_top = NodePath("../../CueGroup/CueSlider")
-focus_neighbor_right = NodePath("../DeadzoneUp")
-focus_neighbor_bottom = NodePath("../../EscapeButton")
-focus_next = NodePath("../DeadzoneUp")
+focus_neighbor_bottom = NodePath("../../Header/CloseButton")
+focus_next = NodePath("../../Header/CloseButton")
 focus_previous = NodePath("../../CueGroup/CueSlider")
-theme_override_styles/focus = ExtResource("3_uld2q")
-theme_override_styles/hover = ExtResource("4_etoxc")
-theme_override_styles/pressed = ExtResource("5_s6d8b")
-icon = ExtResource("6_v2n2c")
+theme_override_styles/grabber_area_highlight = ExtResource("4_c3hnw")
+min_value = 0.2
+max_value = 1.0
+step = 0.01
+value = 0.5
 
-[node name="DeadzoneUp" type="Button" parent="DeadzoneGroup"]
-layout_mode = 0
-offset_left = 528.0
-offset_top = 272.0
-offset_right = 560.0
-offset_bottom = 304.0
-focus_neighbor_left = NodePath("../DeadzoneDown")
-focus_neighbor_top = NodePath("../../CueGroup/CueSlider")
-focus_neighbor_right = NodePath("../DeadzoneDown")
-focus_neighbor_bottom = NodePath("../../EscapeButton")
-focus_next = NodePath("../../EscapeButton")
-focus_previous = NodePath("../DeadzoneDown")
-theme_override_styles/focus = ExtResource("3_uld2q")
-theme_override_styles/hover = ExtResource("4_etoxc")
-theme_override_styles/pressed = ExtResource("5_s6d8b")
-icon = ExtResource("7_r2118")
-
-[node name="Description" type="Label" parent="."]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 312.0
-offset_right = 632.0
-offset_bottom = 352.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+[node name="Description" type="Label" parent="VBox"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980392, 0.858824, 0.686275, 1)
 theme_override_fonts/font = ExtResource("2_a0my0")
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 24
+vertical_alignment = 2
 autowrap_mode = 2
 visible_characters = 0
 visible_ratio = 0.0188679
 metadata/_edit_lock_ = true
-
-[node name="EscapeButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 48.0
-offset_bottom = 48.0
-focus_neighbor_top = NodePath("../DeadzoneGroup/DeadzoneDown")
-focus_previous = NodePath("../DeadzoneGroup/DeadzoneUp")
-theme_override_fonts/font = ExtResource("8_gqm55")
-theme_override_font_sizes/font_size = 8
-theme_override_styles/focus = ExtResource("3_uld2q")
-theme_override_styles/hover = ExtResource("4_etoxc")
-theme_override_styles/pressed = ExtResource("5_s6d8b")
-text = "ESC"
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_kv0sb")
 }
 
-[node name="InputBuffer" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
-autostart = true
+[node name="LocalMasterTest" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_62no5")
 
-[connection signal="focus_entered" from="MasterGroup/MasterSlider" to="." method="_on_master_slider_focus_entered"]
-[connection signal="mouse_entered" from="MasterGroup/MasterSlider" to="." method="_on_master_slider_mouse_entered"]
-[connection signal="value_changed" from="MasterGroup/MasterSlider" to="." method="_on_master_slider_value_changed"]
-[connection signal="drag_ended" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_drag_ended"]
-[connection signal="drag_started" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_drag_started"]
-[connection signal="focus_entered" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_focus_entered"]
-[connection signal="mouse_entered" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_mouse_entered"]
-[connection signal="value_changed" from="BGMGroup/BGMSlider" to="." method="_on_bgm_slider_value_changed"]
-[connection signal="drag_ended" from="SFXGroup/SFXSlider" to="." method="_on_sfx_slider_drag_ended"]
-[connection signal="drag_started" from="SFXGroup/SFXSlider" to="." method="_on_sfx_slider_drag_started"]
-[connection signal="focus_entered" from="SFXGroup/SFXSlider" to="." method="_on_sfx_slider_focus_entered"]
-[connection signal="mouse_entered" from="SFXGroup/SFXSlider" to="." method="_on_sfx_slider_mouse_entered"]
-[connection signal="value_changed" from="SFXGroup/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
-[connection signal="drag_ended" from="CueGroup/CueSlider" to="." method="_on_cue_slider_drag_ended"]
-[connection signal="drag_started" from="CueGroup/CueSlider" to="." method="_on_cue_slider_drag_started"]
-[connection signal="focus_entered" from="CueGroup/CueSlider" to="." method="_on_cue_slider_focus_entered"]
-[connection signal="mouse_entered" from="CueGroup/CueSlider" to="." method="_on_cue_slider_mouse_entered"]
-[connection signal="value_changed" from="CueGroup/CueSlider" to="." method="_on_cue_slider_value_changed"]
-[connection signal="focus_entered" from="DeadzoneGroup/DeadzoneDown" to="." method="_on_deadzone_down_focus_entered"]
-[connection signal="mouse_entered" from="DeadzoneGroup/DeadzoneDown" to="." method="_on_deadzone_down_mouse_entered"]
-[connection signal="pressed" from="DeadzoneGroup/DeadzoneDown" to="." method="_on_deadzone_down_pressed"]
-[connection signal="focus_entered" from="DeadzoneGroup/DeadzoneUp" to="." method="_on_deadzone_up_focus_entered"]
-[connection signal="mouse_entered" from="DeadzoneGroup/DeadzoneUp" to="." method="_on_deadzone_up_mouse_entered"]
-[connection signal="pressed" from="DeadzoneGroup/DeadzoneUp" to="." method="_on_deadzone_up_pressed"]
-[connection signal="focus_entered" from="EscapeButton" to="." method="_on_escape_button_focus_entered"]
-[connection signal="mouse_entered" from="EscapeButton" to="." method="_on_escape_button_mouse_entered"]
-[connection signal="pressed" from="EscapeButton" to="." method="_on_escape_button_pressed"]
-[connection signal="timeout" from="InputBuffer" to="." method="_on_input_buffer_timeout"]
+[node name="LocalBgmTest" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_apj5e")
+bus = &"Bgm"

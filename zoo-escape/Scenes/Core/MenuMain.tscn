@@ -1,12 +1,278 @@
-[gd_scene load_steps=11 format=3 uid="uid://cmhbojvsjsq0"]
+[gd_scene load_steps=39 format=3 uid="uid://cmhbojvsjsq0"]
 
 [ext_resource type="Script" uid="uid://b4e8ul7se7xgj" path="res://Scripts/Core/MenuMain.gd" id="1_yuxgg"]
 [ext_resource type="Texture2D" uid="uid://bg626xfxp25i2" path="res://Assets/Images/MainMenuBackground.png" id="2_7a404"]
-[ext_resource type="FontFile" uid="uid://dltop0cdtk3sp" path="res://Assets/Fonts/PCSenior.ttf" id="3_7a404"]
-[ext_resource type="FontFile" uid="uid://gxb8jc5bj3cd" path="res://Assets/Fonts/PressStart2P.ttf" id="3_nt7sf"]
-[ext_resource type="StyleBox" uid="uid://bg1fatmttmcey" path="res://Assets/UI_Resources/FocusTexture.tres" id="4_2i1af"]
-[ext_resource type="StyleBox" uid="uid://d4ddxd4fvdf4o" path="res://Assets/UI_Resources/HoverTexture.tres" id="5_kbsxh"]
-[ext_resource type="StyleBox" uid="uid://b6pmunfpdsdix" path="res://Assets/UI_Resources/PressedTexture.tres" id="6_rfi1q"]
+[ext_resource type="Script" uid="uid://dubpjf4h8ayup" path="res://Scripts/Core/AnimatedTitleElements.gd" id="3_2i1af"]
+[ext_resource type="SpriteFrames" uid="uid://cfu2np5ucp3r5" path="res://Assets/Images/Title/EyeballSpriteFrameset.tres" id="4_kbsxh"]
+[ext_resource type="Texture2D" uid="uid://rf6tkn8xf208" path="res://Assets/Images/Title/SnakeIdle.png" id="6_7a404"]
+[ext_resource type="Theme" uid="uid://c5f45xbhg3i0d" path="res://Assets/UI_Resources/MenuTheme.tres" id="6_kbsxh"]
+[ext_resource type="Texture2D" uid="uid://spyqhtb63uhd" path="res://Assets/Images/Title/SnakeSlither.png" id="7_nt7sf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2i1af"]
+atlas = ExtResource("6_7a404")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kbsxh"]
+atlas = ExtResource("6_7a404")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rfi1q"]
+atlas = ExtResource("6_7a404")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yc038"]
+atlas = ExtResource("6_7a404")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b3nfo"]
+atlas = ExtResource("6_7a404")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l1u7f"]
+atlas = ExtResource("6_7a404")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l1c3t"]
+atlas = ExtResource("6_7a404")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q4uxn"]
+atlas = ExtResource("6_7a404")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nbh6f"]
+atlas = ExtResource("6_7a404")
+region = Rect2(256, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gteb1"]
+atlas = ExtResource("6_7a404")
+region = Rect2(384, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ovg6"]
+atlas = ExtResource("6_7a404")
+region = Rect2(512, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j7eue"]
+atlas = ExtResource("6_7a404")
+region = Rect2(640, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3csd"]
+atlas = ExtResource("6_7a404")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h08k5"]
+atlas = ExtResource("6_7a404")
+region = Rect2(128, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_abixm"]
+atlas = ExtResource("6_7a404")
+region = Rect2(256, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3kbm3"]
+atlas = ExtResource("6_7a404")
+region = Rect2(384, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77dhs"]
+atlas = ExtResource("6_7a404")
+region = Rect2(512, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wwpoe"]
+atlas = ExtResource("6_7a404")
+region = Rect2(640, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yodhd"]
+atlas = ExtResource("7_nt7sf")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oh6nu"]
+atlas = ExtResource("7_nt7sf")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_emoua"]
+atlas = ExtResource("7_nt7sf")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ycp7f"]
+atlas = ExtResource("7_nt7sf")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_agfb4"]
+atlas = ExtResource("7_nt7sf")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d70w1"]
+atlas = ExtResource("7_nt7sf")
+region = Rect2(256, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mlgs4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2i1af")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kbsxh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rfi1q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yc038")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b3nfo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l1u7f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l1c3t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q4uxn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nbh6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gteb1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ovg6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j7eue")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3csd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h08k5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_abixm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3kbm3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_77dhs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wwpoe")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yodhd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oh6nu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_emoua")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ycp7f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_agfb4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d70w1")
+}],
+"loop": true,
+"name": &"slither",
+"speed": 15.0
+}]
+
+[sub_resource type="Animation" id="Animation_x8iep"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Snake:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1352, 104)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Snake:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Snake:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.5, 1.5)]
+}
+
+[sub_resource type="Animation" id="Animation_ctrxk"]
+resource_name = "slither"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Snake:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.666667, 0.866667, 1.6, 1.83333, 2.5, 2.76667, 3.3, 3.5, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1352, 104), Vector2(1152, 105), Vector2(1152, 105), Vector2(952, 107), Vector2(952, 107), Vector2(752, 105), Vector2(752, 105), Vector2(552, 107), Vector2(552, 107), Vector2(470, 104)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Snake:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"idle", &"idle"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Snake:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.0333333, 1.2, 2.1, 2.96667, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1.5, 1.5), Vector2(1.35, 1.5), Vector2(1.5, 1.5), Vector2(1.3, 1.5), Vector2(1.5, 1.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wpa7j"]
+_data = {
+&"RESET": SubResource("Animation_x8iep"),
+&"slither": SubResource("Animation_ctrxk")
+}
 
 [sub_resource type="Animation" id="Animation_44kyq"]
 length = 0.001
@@ -32,7 +298,7 @@ tracks/0/path = NodePath("ExitWarning:visible_ratio")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -51,7 +317,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("6_kbsxh")
 script = ExtResource("1_yuxgg")
+metadata/_edit_lock_ = true
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -60,209 +328,259 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.180392, 0.172549, 0.231373, 1)
+color = Color(0.180392, 0.172549, 0.231373, 0.784314)
+metadata/_edit_lock_ = true
 
 [node name="MenuImage" type="TextureRect" parent="."]
-layout_mode = 0
-offset_left = 152.0
-offset_right = 488.0
-offset_bottom = 360.0
-texture = ExtResource("2_7a404")
-
-[node name="PausedHint" type="Label" parent="."]
-visible = false
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 13
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -156.0
-offset_top = -174.0
-offset_right = 164.0
-offset_bottom = 28.0
+anchor_bottom = 1.0
+offset_left = -252.0
+offset_right = 252.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_outline_color = Color(0.121569, 0.239216, 0.254902, 1)
-theme_override_fonts/font = ExtResource("3_7a404")
-theme_override_font_sizes/font_size = 32
-text = "[ PAUSED ]"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("2_7a404")
+metadata/_edit_lock_ = true
 
-[node name="HintBackground" type="ColorRect" parent="PausedHint"]
-show_behind_parent = true
+[node name="AnimatedTitleElements" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -4.0
-offset_right = -4.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.156863, 0.156863, 0.156863, 0.784314)
+mouse_filter = 2
+script = ExtResource("3_2i1af")
 
-[node name="ResumeButton" type="Button" parent="."]
+[node name="EyeballLeft" type="AnimatedSprite2D" parent="AnimatedTitleElements"]
+position = Vector2(628, 120)
+sprite_frames = ExtResource("4_kbsxh")
+animation = &"look"
+
+[node name="EyeballRight" type="AnimatedSprite2D" parent="AnimatedTitleElements"]
+position = Vector2(796, 120)
+sprite_frames = ExtResource("4_kbsxh")
+animation = &"sparkle"
+
+[node name="EyeballTimer" type="Timer" parent="AnimatedTitleElements"]
+wait_time = 5.0
+autostart = true
+
+[node name="Snake" type="AnimatedSprite2D" parent="AnimatedTitleElements"]
+process_mode = 2
+position = Vector2(1352, 104)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_mlgs4")
+animation = &"idle"
+
+[node name="SnakeMover" type="AnimationPlayer" parent="AnimatedTitleElements"]
+libraries = {
+&"": SubResource("AnimationLibrary_wpa7j")
+}
+
+[node name="PausedHint" type="Label" parent="."]
 visible = false
+custom_minimum_size = Vector2(504, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -144.0
-offset_top = 4.0
-offset_right = 144.0
-offset_bottom = 36.0
+offset_left = -249.0
+offset_top = -222.0
+offset_right = 255.0
+offset_bottom = -174.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "[ PAUSED ]"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="HintBackground" type="ColorRect" parent="PausedHint"]
+show_behind_parent = true
+custom_minimum_size = Vector2(504, 308)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -255.0
+offset_top = -154.0
+offset_right = 249.0
+offset_bottom = 154.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.180392, 0.172549, 0.231373, 0.784314)
+metadata/_edit_lock_ = true
+
+[node name="MarginBox" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -400.0
+offset_right = 260.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 60
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="VBox" type="VBoxContainer" parent="MarginBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/separation = 10
+metadata/_edit_lock_ = true
+
+[node name="ResumeButton" type="Button" parent="MarginBox/VBox"]
+visible = false
+custom_minimum_size = Vector2(480, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 focus_neighbor_top = NodePath("../BackButton")
 focus_neighbor_bottom = NodePath("../PasswordButton")
 focus_next = NodePath("../PasswordButton")
 focus_previous = NodePath("../BackButton")
-theme_override_colors/font_outline_color = Color(0.121229, 0.237502, 0.253147, 1)
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_pressed_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_fonts/font = ExtResource("3_nt7sf")
-theme_override_styles/focus = ExtResource("4_2i1af")
-theme_override_styles/hover = ExtResource("5_kbsxh")
-theme_override_styles/pressed = ExtResource("6_rfi1q")
 text = "Resume Game"
+metadata/_edit_lock_ = true
 
-[node name="NewGameButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -144.0
-offset_top = 44.0
-offset_right = 144.0
-offset_bottom = 76.0
-grow_horizontal = 2
-grow_vertical = 2
-focus_neighbor_top = NodePath("../ExitButton")
-focus_neighbor_right = NodePath("../ExitButton")
+[node name="NewGameButton" type="Button" parent="MarginBox/VBox"]
+custom_minimum_size = Vector2(480, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../../../ExitMargin/ExitButton")
 focus_neighbor_bottom = NodePath("../PasswordButton")
 focus_next = NodePath("../PasswordButton")
-focus_previous = NodePath("../ExitButton")
-theme_override_colors/font_outline_color = Color(0.121229, 0.237502, 0.253147, 1)
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_pressed_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_fonts/font = ExtResource("3_nt7sf")
-theme_override_styles/focus = ExtResource("4_2i1af")
-theme_override_styles/hover = ExtResource("5_kbsxh")
-theme_override_styles/pressed = ExtResource("6_rfi1q")
+focus_previous = NodePath("../../../ExitMargin/ExitButton")
 text = "New Game"
+metadata/_edit_lock_ = true
 
-[node name="PasswordButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 264.0
-offset_right = 464.0
-offset_bottom = 296.0
+[node name="PasswordButton" type="Button" parent="MarginBox/VBox"]
+custom_minimum_size = Vector2(480, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 focus_neighbor_top = NodePath("../NewGameButton")
-focus_neighbor_right = NodePath("../ExitButton")
+focus_neighbor_bottom = NodePath("../ScoresButton")
+focus_next = NodePath("../ScoresButton")
+focus_previous = NodePath("../NewGameButton")
+text = "Password"
+metadata/_edit_lock_ = true
+
+[node name="ScoresButton" type="Button" parent="MarginBox/VBox"]
+custom_minimum_size = Vector2(480, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../PasswordButton")
 focus_neighbor_bottom = NodePath("../SettingsButton")
 focus_next = NodePath("../SettingsButton")
-focus_previous = NodePath("../NewGameButton")
-theme_override_colors/font_outline_color = Color(0.121229, 0.237502, 0.253147, 1)
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_pressed_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_fonts/font = ExtResource("3_nt7sf")
-theme_override_styles/focus = ExtResource("4_2i1af")
-theme_override_styles/hover = ExtResource("5_kbsxh")
-theme_override_styles/pressed = ExtResource("6_rfi1q")
-text = "Password"
-
-[node name="SettingsButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 304.0
-offset_right = 464.0
-offset_bottom = 336.0
-focus_neighbor_top = NodePath("../PasswordButton")
-focus_neighbor_right = NodePath("../ExitButton")
-focus_neighbor_bottom = NodePath("../ExitButton")
-focus_next = NodePath("../ExitButton")
 focus_previous = NodePath("../PasswordButton")
-theme_override_colors/font_outline_color = Color(0.121229, 0.237502, 0.253147, 1)
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_pressed_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_fonts/font = ExtResource("3_nt7sf")
-theme_override_styles/focus = ExtResource("4_2i1af")
-theme_override_styles/hover = ExtResource("5_kbsxh")
-theme_override_styles/pressed = ExtResource("6_rfi1q")
-text = "Settings"
+text = "High Scores"
+metadata/_edit_lock_ = true
 
-[node name="BackButton" type="Button" parent="."]
+[node name="SettingsButton" type="Button" parent="MarginBox/VBox"]
+custom_minimum_size = Vector2(480, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../ScoresButton")
+focus_neighbor_bottom = NodePath("../CreditsButton")
+focus_next = NodePath("../CreditsButton")
+focus_previous = NodePath("../ScoresButton")
+text = "Settings"
+metadata/_edit_lock_ = true
+
+[node name="CreditsButton" type="Button" parent="MarginBox/VBox"]
+custom_minimum_size = Vector2(480, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../SettingsButton")
+focus_neighbor_bottom = NodePath("../../../ExitMargin/ExitButton")
+focus_next = NodePath("../../../ExitMargin/ExitButton")
+focus_previous = NodePath("../SettingsButton")
+disabled = true
+text = "Credits"
+metadata/_edit_lock_ = true
+
+[node name="BackButton" type="Button" parent="MarginBox/VBox"]
 visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -144.0
-offset_top = 124.0
-offset_right = 144.0
-offset_bottom = 156.0
-grow_horizontal = 2
-grow_vertical = 2
+custom_minimum_size = Vector2(480, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 focus_neighbor_top = NodePath("../SettingsButton")
 focus_neighbor_bottom = NodePath("../ResumeButton")
 focus_next = NodePath("../ResumeButton")
 focus_previous = NodePath("../SettingsButton")
-theme_override_colors/font_outline_color = Color(0.121229, 0.237502, 0.253147, 1)
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_pressed_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_fonts/font = ExtResource("3_nt7sf")
-theme_override_styles/focus = ExtResource("4_2i1af")
-theme_override_styles/hover = ExtResource("5_kbsxh")
-theme_override_styles/pressed = ExtResource("6_rfi1q")
 text = "Back to Title"
+metadata/_edit_lock_ = true
 
-[node name="ExitButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 550.0
-offset_top = 304.0
-offset_right = 630.0
-offset_bottom = 336.0
-focus_neighbor_left = NodePath("../SettingsButton")
-focus_neighbor_top = NodePath("../SettingsButton")
-focus_neighbor_right = NodePath("../SettingsButton")
-focus_neighbor_bottom = NodePath("../NewGameButton")
-focus_next = NodePath("../NewGameButton")
-focus_previous = NodePath("../SettingsButton")
-theme_override_colors/font_outline_color = Color(0.121229, 0.237502, 0.253147, 1)
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_pressed_color = Color(0.560784, 0.239216, 0.654902, 1)
-theme_override_fonts/font = ExtResource("3_nt7sf")
-theme_override_styles/focus = ExtResource("4_2i1af")
-theme_override_styles/hover = ExtResource("5_kbsxh")
-theme_override_styles/pressed = ExtResource("6_rfi1q")
+[node name="ExitMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -56.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 60
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="ExitButton" type="Button" parent="ExitMargin"]
+custom_minimum_size = Vector2(180, 56)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../MarginBox/VBox/CreditsButton")
+focus_neighbor_bottom = NodePath("../../MarginBox/VBox/NewGameButton")
+focus_next = NodePath("../../MarginBox/VBox/NewGameButton")
+focus_previous = NodePath("../../MarginBox/VBox/CreditsButton")
 text = "Exit"
+metadata/_edit_lock_ = true
 
-[node name="ExitWarning" type="Label" parent="ExitButton"]
-layout_mode = 0
-offset_left = -229.0
-offset_top = 38.0
-offset_right = 51.0
-offset_bottom = 61.0
-theme_override_colors/font_color = Color(0.756863, 0.898039, 0.917647, 1)
-theme_override_colors/font_shadow_color = Color(0.121229, 0.237502, 0.253147, 1)
-theme_override_fonts/font = ExtResource("3_nt7sf")
-theme_override_font_sizes/font_size = 8
-text = "Are you sure? Will exit to Desktop."
+[node name="ExitWarning" type="Label" parent="ExitMargin/ExitButton"]
+custom_minimum_size = Vector2(600, 32)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -600.0
+offset_top = 13.0
+offset_bottom = 45.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 16
+text = "Press again to exit."
+horizontal_alignment = 2
+vertical_alignment = 1
 visible_characters = 0
 visible_ratio = 0.0
+metadata/_edit_lock_ = true
 
-[node name="RollText" type="AnimationPlayer" parent="ExitButton"]
+[node name="RollText" type="AnimationPlayer" parent="ExitMargin/ExitButton"]
 libraries = {
 &"": SubResource("AnimationLibrary_y47t4")
 }
 
-[connection signal="focus_exited" from="ExitButton" to="." method="onExitButtonFocusExited"]
-[connection signal="mouse_exited" from="ExitButton" to="." method="onExitButtonMouseExited"]
+[connection signal="focus_exited" from="ExitMargin/ExitButton" to="." method="onExitButtonFocusExited"]
+[connection signal="mouse_exited" from="ExitMargin/ExitButton" to="." method="onExitButtonMouseExited"]

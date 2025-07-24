@@ -1,15 +1,15 @@
 [gd_scene load_steps=4 format=3 uid="uid://ysyvvvc1ead2"]
 
 [ext_resource type="Script" uid="uid://cx60twkwk3nie" path="res://Scripts/Core/SoundControl.gd" id="1_wp1sj"]
-[ext_resource type="AudioStream" uid="uid://cie14ls7b82c5" path="res://Assets/Sound/Theme.ogg" id="2_v1cck"]
+[ext_resource type="AudioStream" uid="uid://ckdt5pc4g670o" path="res://Assets/Sound/Tutorial.ogg" id="2_pslfc"]
 [ext_resource type="AudioStream" uid="uid://ywcv7qntrexc" path="res://Assets/Sound/Blip.ogg" id="3_l54mi"]
 
-[node name="sound_control" type="Node"]
+[node name="SoundControl" type="Node"]
 script = ExtResource("1_wp1sj")
 
 [node name="BGM" type="AudioStreamPlayer" parent="."]
-process_mode = 4
-stream = ExtResource("2_v1cck")
+process_mode = 1
+stream = ExtResource("2_pslfc")
 volume_db = -80.0
 bus = &"Bgm"
 

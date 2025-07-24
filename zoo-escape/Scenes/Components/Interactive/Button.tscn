@@ -1,7 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://64cp455l5y64"]
+[gd_scene load_steps=9 format=3 uid="uid://64cp455l5y64"]
 
+[ext_resource type="Shader" uid="uid://ccxeyqdj55mpa" path="res://Scenes/Components/Interactive/SwitchHighlight.gdshader" id="1_ep2hj"]
 [ext_resource type="Texture2D" uid="uid://bgm3y4noolbcg" path="res://Assets/Images/Button.png" id="1_xmseu"]
 [ext_resource type="Script" uid="uid://dvcael4e4y3vr" path="res://Scripts/Components/Interactive/Button.gd" id="2_13oxr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i7d5v"]
+shader = ExtResource("1_ep2hj")
+shader_parameter/highlight_color = Color(1, 1, 1, 1)
+shader_parameter/frequency = 0.35
+shader_parameter/highlight_speed = 6.0
+shader_parameter/highlight_width = 15.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qsivu"]
 atlas = ExtResource("1_xmseu")
@@ -29,6 +37,8 @@ animations = [{
 size = Vector2(14, 14)
 
 [node name="Button" type="AnimatedSprite2D"]
+material = SubResource("ShaderMaterial_i7d5v")
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_l1f6s")
 script = ExtResource("2_13oxr")
 

@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dh776fui1f0pq"]
+
+[ext_resource type="Shader" uid="uid://d3e2ggvefck5x" path="res://Assets/Shaders/WavyWater.gdshader" id="1_dahuo"]
+
+[resource]
+shader = ExtResource("1_dahuo")
+shader_parameter/waveAmplitude = 0.081
+shader_parameter/correctVertex = false
+shader_parameter/waveFrequency = 10.0
+shader_parameter/verticalWave = true
+shader_parameter/keepTransparency = true
+shader_parameter/useTime = true
+shader_parameter/waveSpeed = 1.0
+shader_parameter/progress = 0.0
+shader_parameter/firstHalf = 0.5
+shader_parameter/secondHalf = 0.5
+shader_parameter/freezeFirstHalf = false
+shader_parameter/freezeSecondHalf = false

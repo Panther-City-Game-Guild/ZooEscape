@@ -1,9 +1,6 @@
 class_name Hud extends CanvasLayer
 
 
-signal RestartRoom # reload signal
-signal QuitGame # quit to title signal
-
 var resetBarVisible := false # is the resetBar visible?
 
 
@@ -11,9 +8,8 @@ var resetBarVisible := false # is the resetBar visible?
 func _ready() -> void: # reset animations at ready, fetch volume values
 	$HUDAnimation.play("RESET")
 	$HUDAnimationAlt.play("RESET")
-	# to avoid queueing error on prompt
-	$OpenCue.volume_db = SoundControl.cueLevel
-	$AlertCue.volume_db = SoundControl.cueLevel
+	$MenuButton.pressed.connect(onMenuButtonPressed)
+	$OpenTimer.timeout.connect(onOpenTimerTimeout)
 
 
 # Play animation when level begins
@@ -23,41 +19,19 @@ func playTimerStart() -> void:
 
 # Play HUD close animation
 func closeHud()  -> void: 
-	$SettingsButton.hide()
+	$MenuButton.hide()
 	$HUDAnimationAlt.play("close")
 
 
 # Give visual and audio warnings when running low on time
 func giveTimeWarning() -> void:
-	$HUDIcons/TimerIcon.play("feedback")
+	$MBox/HUDWindow/Timer/Control/TimerIcon.play("feedback")
 	$HUDAnimation.play("warning")
-	$OpenCue.play() # Audio warning cue
-
-
-# Show the Timeout window when out of time
-func outOfTime() -> void:
-	$HUDAnimationAlt.play("close")
-	SoundControl.stopSounds()
-	$RestartButton.disabled = false
-	$QuitButton.disabled = false
-	get_tree().paused = true
-	SoundControl.playCue(SoundControl.fail, 3.0)
-	$HUDAnimation.play("time_out")
-	$AlertCue.pitch_scale = 0.5 # alert noise
-	$AlertCue.play()
-	$RestartButton.grab_focus()
-	$RestartButton.grab_click_focus()
 
 
 # Play the HUD open animation (when hud loaded, e.g.)
 func onOpenTimerTimeout() -> void:
 	$HUDAnimation.play("open")
-
-
-# Function to disable buttons on input
-func disableButtons()  -> void: 
-	$RestartButton.disabled = true
-	$QuitButton.disabled = true
 
 
 # Functions to reveal reset bar
@@ -86,71 +60,42 @@ func resetBarUpdate(value: float) -> void:
 
 # Set some text values if we're playing a tutorial
 func setTutorialText():
-	$HUDIcons/TimerValue.text = "NONE"
+	$MBox/HUDWindow/Timer/TimerValue.text = "NONE"
 
 
 # Updates time text on hud
 func updateTimeText(time: int) -> void:
 	if !$HUDAnimationAlt.current_animation == "timer_start":
-		$HUDIcons/TimerValue.text = str(time) + "s" # If not playing a tutorial, display how much time is left
+		$MBox/HUDWindow/Timer/TimerValue.text = str(time) + "s" # If not playing a tutorial, display how much time is left
 
 
 # Updates score text on hud
 func updateScoreText(value) -> void:
-	$HUDIcons/ScoreValue.text = str(value)
+	$MBox/HUDWindow/ScoreValue.text = str(value)
 
 
 # Updates move text on hud
 func updateMovesText(count) -> void:
-	$HUDIcons/MovesValue.text = str(count) + "m"
+	$MBox/HUDWindow/Moves/MovesValue.text = str(count) + "m"
 
 
 # Updates steak text on hud (play animations if count = 0)
 func updateSteaksText(count: int) -> void:
 	if count > 0: # If the new value is more than 0, show that
-		$HUDIcons/SteaksValue.text = str(count) + "x"
+		$MBox/HUDWindow/Steaks/SteaksValue.text = str(count) + "x"
 		
 	else: # If the new value is less than or equal to 0, goal has been met
-		$HUDIcons/SteaksValue.text = "GOAL"
-		$HUDIcons/SteakIcon.play("feedback")
+		$MBox/HUDWindow/Steaks/SteaksValue.text = "GOAL"
+		$MBox/HUDWindow/Steaks/Control/SteakIcon.play("feedback")
 		$HUDAnimationAlt.play("goal")
 
 
 # updates password text on hud
 func updatePasswordText(code: String) -> void:
-	$HUDIcons/PasswordValue.text = code # Password value in the HUD
-	$TimeOutCurtain/PasswordBox/PasswordLabel.text = "PASSWORD: " + str(code) # Password label in the Time Out window
+	$MBox/HUDWindow/PasswordValue.text = code # Password value in the HUD
 
 
-# Open SettingsMenu in game (handled by MenuManager)
-func onSettingsButtonPressed() -> void:
+# Open menu in game (handled by MenuManager)
+func onMenuButtonPressed() -> void:
 	SoundControl.playCue(SoundControl.blip, 3.0)
-	MenuManager.setMenu(MenuManager.menuTypes.SETTINGS)
-
-
-# Button emits signal to restart if time out
-func onRestartButtonPressed() -> void:
-	$HudWindow.visible = false # Hide HUD
-	SoundControl.playCue(SoundControl.flutter, 3.0)
-	disableButtons()
-	SoundControl.resetMusicFade()
-	RestartRoom.emit() # signal to levelManager to reload
-
-
-# button for exiting the game if time out
-func onQuitButtonPressed() -> void:
-	$HudWindow.visible = false
-	SoundControl.playCue(SoundControl.ruined, 0.5)
-	disableButtons()
-	SoundControl.resetMusicFade()
-	QuitGame.emit() # signal to levelManager to exit to title
-
-
-# Grab click focus for restart
-func onRestartButtonMouseEntered() -> void:
-	$RestartButton.grab_focus()
-
-
-# Grab input focus for exit
-func onQuitButtonMouseEntered() -> void:
-	$QuitButton.grab_focus()
+	MenuManager.setMenu(MenuManager.menuTypes.MAIN)

@@ -1,80 +1,221 @@
 extends Control
 
-const FILEPATH := "user://ZooEscapeSave.sv1" # persistent filepath
-var saveData : Dictionary # save data dictionary
-var access : FileAccess # file access call
-# default values for external settings
-const DEFAULT_VOLUME := -6
-const DEFAULT_DZ := 0.5
-const DEFAULT_VALUES := [
-	20000,
-	19000,
-	18000,
-	17000,
-	16000]
-const DEFAULT_NAMES := [
-	"ZAP",
-	"MKV",
-	"GUS",
-	"FTW",
-	"ZOO"]
+
+const SETTINGSFILE := "user://ZooEscapeSave.sv1" # Filepath for Settings
+const SCORESFILE := "user://ZooEscapeSave.sv2" # Filepath for High Scores
+const VOLUMESETTINGSKEYS := [ "masterVolume", "musicVolume", "sfxVolume", "cueVolume" ]
 
 
+# Called when node enters scene tree for the first time
 func _ready() -> void:
-	loadData()
+	loadSettingsData() # Load settings
+	loadScoreData() # Load scores
 
 
-# apply default settings
-func defaultGameData() -> void:
-	Globals.currentSettings["master_volume"] = DEFAULT_VOLUME
-	Globals.currentSettings["music_volume"] = DEFAULT_VOLUME
-	Globals.currentSettings["sfx_volume"] = DEFAULT_VOLUME
-	Globals.currentSettings["sfx_volume"] = DEFAULT_VOLUME
-	Globals.currentSettings["cue_volume"] = DEFAULT_VOLUME
-	Globals.currentSettings["analog_deadzone"] = DEFAULT_DZ
-	Globals.highScoreboardNames = DEFAULT_NAMES.duplicate()
-	Globals.highScoreboardValues = DEFAULT_VALUES.duplicate()
-	Globals.deadzoneUpdate()
-	SoundControl.setSoundPreferences(DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME)
-	SoundControl.resetMusicFade()
+# Open or create file, fetch data, convert dictionary to json and save
+func saveSettingsData() -> void:
+	var saveData := Globals.currentSettings.duplicate()
+	var json_string := JSON.stringify(saveData, "\t")
+	var file := FileAccess.open(SETTINGSFILE, FileAccess.WRITE)
+	file.store_string(json_string)
+	file.close()
 
 
-# open file, fetch data, convert dictionary to json and save
-func saveGameData() -> void:
-	access = FileAccess.open(FILEPATH, FileAccess.WRITE)
-	saveData = {
-		"master_volume" = Globals.currentSettings.get("master_volume"),
-		"music_volume" = Globals.currentSettings.get("music_volume"),
-		"sfx_volume" = Globals.currentSettings.get("sfx_volume"),
-		"cue_volume" = Globals.currentSettings.get("cue_volume"),
-		"analog_deadzone" = Globals.currentSettings.get("analog_deadzone"),
-		"highScoreboardValues" = Globals.highScoreboardValues,
-		"highScoreboardNames" = Globals.highScoreboardNames
-	}
-	access.store_string(JSON.stringify(saveData))
-	access.close()
-
-
-# load with check
-func loadData() -> void:
-	if !FileAccess.file_exists(FILEPATH): # if no file, default settings
-		print("No save detected. Default data loaded.")
-		defaultGameData()
+# Load settings data, with validation
+func loadSettingsData() -> void:
+	if !FileAccess.file_exists(SETTINGSFILE): # if no file, save default settings
+		saveSettingsData()
+		loadSettingsData()
+	
 	else: # if file, parse json and apply to global values
-		access = FileAccess.open(FILEPATH, FileAccess.READ)
-		saveData = JSON.parse_string(access.get_as_text())
-		access.close()
-		## update global values
-		Globals.currentSettings["master_volume"] = saveData.master_volume
-		Globals.currentSettings["music_volume"] = saveData.music_volume
-		Globals.currentSettings["sfx_volume"] = saveData.sfx_volume
-		Globals.currentSettings["cue_volume"] = saveData.cue_volume
-		Globals.currentSettings["analog_deadzone"] = saveData.analog_deadzone
-		## update settings
+		var loadedData := {}
+		var file := FileAccess.open(SETTINGSFILE, FileAccess.READ)
+		var json := JSON.new()
+		var json_string = file.get_as_text()
+		var error: Error
+		file.close()
+		
+		error = json.parse(json_string)
+		if error != OK: # If there was an error loading data, create a default save file
+			saveSettingsData()
+			loadSettingsData()
+			return
+		
+		loadedData = json.data
+		
+		if !loadedData is Dictionary: # Make sure the loaded data is a dictionary
+			saveSettingsData()
+			loadSettingsData()
+			return
+		
+		for key in Globals.currentSettings.keys(): # Make sure the loaded data has all required keys
+			if !loadedData.has(key):
+				saveSettingsData()
+				loadSettingsData()
+				return
+		
+		for key in loadedData.keys():
+			if !key in Globals.currentSettings.keys(): # Make sure the loaded data does not have unexpected keys
+				saveSettingsData()
+				loadSettingsData()
+				return
+		
+			if !loadedData[key] is float: # Make sure the values loaded are floats
+				saveSettingsData()
+				loadSettingsData()
+				return
+			
+			if key in VOLUMESETTINGSKEYS: # Make sure the data fits the parameters
+				if !(loadedData[key] >= Globals.MINVOLUME && loadedData[key] <= Globals.MAXVOLUME):
+					saveSettingsData()
+					loadSettingsData()
+					return
+			if key == "analogDeadzone": # Make sure the data fits the parameters
+				if !(loadedData[key] >= Globals.MINDEADZONE && loadedData[key] <= Globals.MAXDEADZONE):
+					saveSettingsData()
+					loadSettingsData()
+					return
+		
+		# update global values
+		Globals.currentSettings.masterVolume = loadedData.masterVolume
+		Globals.currentSettings.musicVolume = loadedData.musicVolume
+		Globals.currentSettings.sfxVolume = loadedData.sfxVolume
+		Globals.currentSettings.cueVolume = loadedData.cueVolume
+		Globals.currentSettings.analogDeadzone = loadedData.analogDeadzone
+		
+		# update settings and sound
 		Globals.deadzoneUpdate()
-		SoundControl.setSoundPreferences(saveData.master_volume, saveData.music_volume, 
-		saveData.sfx_volume, saveData.cue_volume)
+		SoundControl.updateVolumeLevels()
 		SoundControl.resetMusicFade()
-		# copy high score arrays
-		Globals.highScoreboardValues = saveData.highScoreboardValues.duplicate()
-		Globals.highScoreboardNames = saveData.highScoreboardNames.duplicate()
+
+
+# Called to save High Score data
+func saveScoreData(data := {}) -> void:
+	var file := FileAccess.open(SCORESFILE, FileAccess.WRITE)
+	var saveData := {}
+	var json_string := ""
+	
+	if !data:
+		saveData = Globals.highScores.duplicate()
+	else:
+		saveData = data.duplicate()
+	
+	json_string = JSON.stringify(saveData)
+	file.store_string(json_string)
+	file.close()
+
+
+# Called to load High Score data if any exists
+func loadScoreData() -> void:
+	if !FileAccess.file_exists(SCORESFILE): # If no file, create one
+		saveScoreData()
+	
+	else: # if file, parse json and apply to global highscores variable
+		var loadedData := {}
+		var file := FileAccess.open(SCORESFILE, FileAccess.READ)
+		var json := JSON.new()
+		var json_string = file.get_as_text()
+		var error: Error
+		file.close()
+		
+		error = json.parse(json_string)
+		if error != OK: # If there was an error loading data, create an empty scores file
+			saveScoreData()
+			loadScoreData()
+			return
+		
+		loadedData = json.data
+		if !loadedData is Dictionary:
+			saveScoreData() # If the loaded data is not a dictionary, wipe it out
+			loadScoreData() # Try again to validate the data
+			return
+		
+		if !isScoreDataValid(loadedData):
+			loadScoreData() # If data was not valid, reload data to try again
+			return
+		
+		loadedData = convertFloatsToInts(loadedData) # Convert floats to ints
+		loadedData = sortDictionary(loadedData, Globals.PASSWORDS)
+		
+		for key in loadedData.keys(): # Send the validated data to Globals
+			Globals.highScores[key] = loadedData[key]
+
+
+# Called to verify loaded highScores keys are valid, erasing any invalid keys
+func isScoreDataValid(data: Dictionary) -> bool:
+	var didRemoveData := false
+	for key in data.keys():
+		if !key in Globals.PASSWORDS.keys(): # Remove invalid keys
+			data.erase(key)
+			didRemoveData = true
+			continue
+		
+		if !data[key] is Array || data[key].is_empty(): # Validate top-level array
+			data.erase(key)
+			didRemoveData = true
+			continue
+		
+		var outerArr: Array = data[key] # Get outer array
+		while outerArr.size() > 3: # Remove extraneous entries (Keeping 3 entries for each level)
+			outerArr.pop_back()
+			didRemoveData = true
+			
+		var i: int = outerArr.size() - 1
+		while i >= 0: # Iterate backwards through outer array
+			var innerArr: Variant = outerArr[i]
+			if !innerArr is Array: # Remove non-arrays from outer array
+				outerArr.remove_at(i)
+				didRemoveData = true
+				i -= 1
+				continue # Move to next index of inner array
+				
+			if innerArr.size() != 3:
+				outerArr.remove_at(i) # Validate size of inner array (3: Score, Time, Moves)
+				didRemoveData = true
+				i -= 1
+				continue # Move to next index of inner array
+			
+			var areValuesValid := true # Validate values of inner array
+			for value in innerArr:
+				if !(value is int || value is float): # Value must be int or float
+					areValuesValid = false
+					break
+				if value < 0: # Value must not be less than 0
+					areValuesValid = false
+					break
+			if !areValuesValid:
+				outerArr.remove_at(i) # Remove entries from outer array if values in inner array are not numeric
+				didRemoveData = true
+			
+			i -= 1 # Move to next index of outer array
+		
+		data[key] = outerArr
+		if outerArr.is_empty(): 
+			data.erase(key)
+			didRemoveData = true
+		
+	if didRemoveData:
+		saveScoreData(data) # If data removed, save remaining data
+		return false
+	return true
+
+
+# Called to convert float values to int values (used when loading Score data)
+func convertFloatsToInts(data: Dictionary) -> Dictionary:
+	for key in data.keys(): # Outer array
+		for arr in data[key]: # Inner array
+			for i: int in arr.size(): # [ Score, Time, Moves ]
+				if i == 0 || i == 2:
+					arr[i] = int(arr[i])
+	return data
+
+
+# Called to sort the loaded data according to the order of the reference dictionary
+func sortDictionary(loadedData: Dictionary, reference: Dictionary) -> Dictionary:
+	var sorted := {}
+	# Iterate through keys in reference
+	for key in reference.keys():
+	# Only include keys that exist in loadedData
+		if loadedData.has(key):
+			sorted[key] = loadedData[key]
+	return sorted

@@ -1,0 +1,376 @@
+[gd_scene load_steps=8 format=3 uid="uid://dqu5qf5i3yfli"]
+
+[ext_resource type="Theme" uid="uid://c5f45xbhg3i0d" path="res://Assets/UI_Resources/MenuTheme.tres" id="1_vw1c5"]
+[ext_resource type="Script" uid="uid://co4cax6tc4shd" path="res://Scripts/Core/MenuScores.gd" id="2_rjugd"]
+[ext_resource type="Texture2D" uid="uid://cqodap3oxk4xt" path="res://Assets/Images/Icons/StarGold32.png" id="2_weh7u"]
+[ext_resource type="Texture2D" uid="uid://b0ahibm8ea5us" path="res://Assets/Images/SelectorFlipH.png" id="2_xn30d"]
+[ext_resource type="Texture2D" uid="uid://c15vu0rlbtrqm" path="res://Assets/Images/Selector.png" id="3_rjugd"]
+[ext_resource type="Texture2D" uid="uid://bqlwwabmvoy0s" path="res://Assets/Images/Icons/StarSilver32.png" id="3_xfpx4"]
+[ext_resource type="Texture2D" uid="uid://crmwlwb3jox3m" path="res://Assets/Images/Icons/StarBronze32.png" id="4_xn30d"]
+
+[node name="ScoresMenu" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_vw1c5")
+script = ExtResource("2_rjugd")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Info" type="MarginContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+metadata/_edit_lock_ = true
+
+[node name="Header" type="VBoxContainer" parent="Margin/Info"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 40
+metadata/_edit_lock_ = true
+
+[node name="LevelName" type="Label" parent="Margin/Info/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_shadow_color = Color(0.639216, 0.658824, 1, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 48
+text = "Unnamed Level"
+horizontal_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="LevelCode" type="Label" parent="Margin/Info/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Password: ----"
+horizontal_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Thresholds" type="HBoxContainer" parent="Margin/Info/Header"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 64
+metadata/_edit_lock_ = true
+
+[node name="Gold" type="HBoxContainer" parent="Margin/Info/Header/Thresholds"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+metadata/_edit_lock_ = true
+
+[node name="Star" type="TextureRect" parent="Margin/Info/Header/Thresholds/Gold"]
+layout_mode = 2
+texture = ExtResource("2_weh7u")
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Margin/Info/Header/Thresholds/Gold"]
+layout_mode = 2
+text = "----"
+metadata/_edit_lock_ = true
+
+[node name="Silver" type="HBoxContainer" parent="Margin/Info/Header/Thresholds"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+metadata/_edit_lock_ = true
+
+[node name="Star" type="TextureRect" parent="Margin/Info/Header/Thresholds/Silver"]
+layout_mode = 2
+texture = ExtResource("3_xfpx4")
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Margin/Info/Header/Thresholds/Silver"]
+layout_mode = 2
+text = "----"
+metadata/_edit_lock_ = true
+
+[node name="Bronze" type="HBoxContainer" parent="Margin/Info/Header/Thresholds"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+metadata/_edit_lock_ = true
+
+[node name="Star" type="TextureRect" parent="Margin/Info/Header/Thresholds/Bronze"]
+layout_mode = 2
+texture = ExtResource("4_xn30d")
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Margin/Info/Header/Thresholds/Bronze"]
+layout_mode = 2
+text = "----"
+metadata/_edit_lock_ = true
+
+[node name="Scores" type="MarginContainer" parent="Margin/Info"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_bottom = 120
+
+[node name="ColorRect" type="ColorRect" parent="Margin/Info/Scores"]
+custom_minimum_size = Vector2(1088, 320)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0, 0, 0, 0.25098)
+
+[node name="Data" type="GridContainer" parent="Margin/Info/Scores"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 32
+columns = 5
+metadata/_edit_lock_ = true
+
+[node name="HashtagLabel" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.980392, 0.858824, 0.686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 40
+text = "#"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="ScoreLabel" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.980392, 0.858824, 0.686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 40
+text = "Score"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="MovesLabel" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.980392, 0.858824, 0.686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 40
+text = "Moves"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="TimeLabel" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.980392, 0.858824, 0.686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 40
+text = "Time"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="RatingLabel" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.980392, 0.858824, 0.686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 40
+text = "Rating"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="ScoreTxt1" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 40
+text = "1"
+metadata/_edit_lock_ = true
+
+[node name="Score1" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+text = "--"
+metadata/_edit_lock_ = true
+
+[node name="Moves1" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+text = "--"
+metadata/_edit_lock_ = true
+
+[node name="Time1" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+text = "--"
+metadata/_edit_lock_ = true
+
+[node name="Rating1" type="TextureRect" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+metadata/_edit_lock_ = true
+
+[node name="ScoreTxt2" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 40
+text = "2"
+metadata/_edit_lock_ = true
+
+[node name="Score2" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+text = "--"
+metadata/_edit_lock_ = true
+
+[node name="Moves2" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+text = "--"
+metadata/_edit_lock_ = true
+
+[node name="Time2" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+text = "--"
+metadata/_edit_lock_ = true
+
+[node name="Rating2" type="TextureRect" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+metadata/_edit_lock_ = true
+
+[node name="ScoreTxt3" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 40
+text = "3"
+metadata/_edit_lock_ = true
+
+[node name="Score3" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+text = "--"
+metadata/_edit_lock_ = true
+
+[node name="Moves3" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+text = "--"
+metadata/_edit_lock_ = true
+
+[node name="Time3" type="Label" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+text = "--"
+metadata/_edit_lock_ = true
+
+[node name="Rating3" type="TextureRect" parent="Margin/Info/Scores/Data"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+metadata/_edit_lock_ = true
+
+[node name="CloseButton" type="Button" parent="Margin"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../PlayButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../NextButton")
+focus_next = NodePath("../PrevButton")
+focus_previous = NodePath("../PlayButton")
+text = "X"
+metadata/_edit_lock_ = true
+
+[node name="PrevButton" type="Button" parent="Margin"]
+custom_minimum_size = Vector2(64, 128)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../CloseButton")
+focus_neighbor_right = NodePath("../NextButton")
+focus_neighbor_bottom = NodePath("../PlayButton")
+focus_next = NodePath("../NextButton")
+focus_previous = NodePath("../CloseButton")
+icon = ExtResource("2_xn30d")
+icon_alignment = 1
+expand_icon = true
+metadata/_edit_lock_ = true
+
+[node name="NextButton" type="Button" parent="Margin"]
+custom_minimum_size = Vector2(64, 128)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../PrevButton")
+focus_neighbor_top = NodePath("../CloseButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../PlayButton")
+focus_next = NodePath("../PlayButton")
+focus_previous = NodePath("../PrevButton")
+icon = ExtResource("3_rjugd")
+icon_alignment = 1
+expand_icon = true
+metadata/_edit_lock_ = true
+
+[node name="PlayButton" type="Button" parent="Margin"]
+custom_minimum_size = Vector2(400, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../NextButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../CloseButton")
+focus_next = NodePath("../CloseButton")
+focus_previous = NodePath("../NextButton")
+text = "Play Now!"
+metadata/_edit_lock_ = true

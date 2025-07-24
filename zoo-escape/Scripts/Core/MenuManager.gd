@@ -1,14 +1,22 @@
 extends CanvasLayer
 
+# Signals
+signal RestartGame
+signal QuitGame
+
 # Enums
 enum menuTypes {
 	NONE,
 	MAIN,
 	PASSWORD,
-	SETTINGS
+	SCORES,
+	SETTINGS,
+	CREDITS,
+	TIMEOUT
 }
 
 # Variables
+var menuActions: Dictionary[String, Callable]= {}
 var currentMenu: menuTypes = menuTypes.NONE
 var menuHeap: Array[menuTypes] = []
 
@@ -16,7 +24,10 @@ var menuHeap: Array[menuTypes] = []
 @onready var menus: Dictionary[menuTypes, Control] = {
 	menuTypes.MAIN: $MainMenu,
 	menuTypes.PASSWORD: $PasswordMenu,
+	menuTypes.SCORES: $ScoresMenu,
 	menuTypes.SETTINGS: $SettingsMenu,
+	#menuTypes.CREDITS: $CreditsMenu,
+	menuTypes.TIMEOUT: $TimeoutWindow
 }
 
 # Called when the node enters the scene tree for the first time
@@ -26,59 +37,59 @@ func _ready() -> void:
 	
 	# Connect all menu signals
 	for menu in menus.values():
-		# Connect menu signals to 'setMenu'
 		if menu.has_signal("SetMenu"):
 			menu.SetMenu.connect(setMenu)
 		
-		# Connect menu signals to 'goBack'
 		if menu.has_signal("GoBack"):
 			menu.GoBack.connect(goBack)
+		
+		if menu.has_signal("RestartGame"):
+			menu.RestartGame.connect(func(): RestartGame.emit())
+		
+		if menu.has_signal("QuitGame"):
+			menu.QuitGame.connect(func(): QuitGame.emit())
+	
+	# Map actions to menu handling logic
+	menuActions = {
+		"MenuButton": func() -> void:
+			if currentMenu != menuTypes.MAIN:
+				setMenu(menuTypes.MAIN)
+			elif Globals.currentGameData.gameRunning:
+				setMenu(menuTypes.NONE),
+		"PasswordButton": func() -> void:
+			if currentMenu != menuTypes.PASSWORD:
+				setMenu(menuTypes.PASSWORD)
+			else:
+				goBack(),
+		"SettingsButton": func() -> void:
+			if currentMenu != menuTypes.SETTINGS:
+				setMenu(menuTypes.SETTINGS)
+			else:
+				goBack(),
+		"CancelButton": func()-> void:
+			if Globals.currentGameData.gameRunning && currentMenu == menuTypes.NONE:
+				setMenu(menuTypes.MAIN)
+			elif currentMenu != menuTypes.MAIN && currentMenu != menuTypes.NONE:
+				goBack()
+	}
 	
 	# Open the MainMenu by default
 	if get_tree().current_scene == GameRoot: # This keeps the menu from appearing automatically if running a scene independently.
+		$BGM.stop()
 		setMenu(menuTypes.MAIN)
 
 
-# Called when an InputEvent is detected
 func _input(event: InputEvent) -> void:
-	# Only handle single, intentional 'press' events
-	if !event.is_pressed() || event.is_echo():
+	# Ignore non-pressed or echo events
+	if !event.is_pressed() || event.is_echo() || currentMenu == menuTypes.TIMEOUT:
 		return
 	
-	# Hide all menus, situationally
-	if event.is_action("CancelButton"):
-		get_viewport().set_input_as_handled() # Mark InputEvent as handled
-		if Globals.currentGameData["gameRunning"] && currentMenu == menuTypes.NONE:
-			setMenu(menuTypes.MAIN) # If a game is running and no menu is open, open MainMenu
-		
-		if currentMenu != menuTypes.MAIN && currentMenu != menuTypes.NONE:
-			goBack() # If a any menu other than MainMenu is open, go back in the menuHeap
-	
-	# Show/Hide the MainMenu
-	if event.is_action("MenuButton"):
-		get_viewport().set_input_as_handled() # Mark InputEvent as handled
-		if currentMenu != menuTypes.MAIN:
-			setMenu(menuTypes.MAIN) # if MainMenu is not open, open it
-		elif Globals.currentGameData["gameRunning"]:
-			setMenu(menuTypes.NONE) # If MainMenu is open and a game is running, close it
-		else:
-			setMenu(menuTypes.MAIN) # If a game is not running, show MainMenu
-	
-	# Show/Hide the PasswordMenu
-	if event.is_action("PasswordButton"):
-		get_viewport().set_input_as_handled() # Mark InputEvent as handled
-		if currentMenu != menuTypes.PASSWORD:
-			setMenu(menuTypes.PASSWORD) # If PasswordMenu is not open, open it
-		else:
-			goBack() # If PasswordMenu is open, go back in the menuHeap
-	
-	# Show/Hide the SettingsMenu
-	elif event.is_action("SettingsButton"):
-		get_viewport().set_input_as_handled() # Mark InputEvent as handled
-		if currentMenu != menuTypes.SETTINGS: # If SettingsMenu is not open, open it
-			setMenu(menuTypes.SETTINGS)
-		else:
-			goBack() # If SettingsMenu is open, go back in the menuHeap
+	# Handle menu toggle actions
+	for action: String in menuActions:
+		if event.is_action_pressed(action):
+			get_viewport().set_input_as_handled()
+			menuActions[action].call()
+			return
 
 
 # Called to switch menus
@@ -88,9 +99,11 @@ func switchMenu() -> void:
 	
 	# Open the correct menu
 	if currentMenu != menuTypes.NONE:
-		var menu = menus.get(currentMenu)
+		var menu = menus[currentMenu]
 		if menu && menu.has_method("showMenu"):
 			menu.showMenu()
+		else:
+			setMenu(menuTypes.MAIN)
 		
 	# If no menu is showing, unpause the game
 	if currentMenu == menuTypes.NONE:
@@ -141,7 +154,12 @@ func goBack() -> void:
 		currentMenu = menuHeap.back()  # Set currentMenu to the last menu in the heap
 		switchMenu()
 	else:
-		if !Globals.currentGameData["gameRunning"]:
+		if !Globals.currentGameData.gameRunning:
 			setMenu(menuTypes.MAIN)
 			return
 		setMenu(menuTypes.NONE)  # If no previous menu, close all menus
+
+
+# Called by LevelManager to update password string on TimeoutWindow when new level loads
+func updatePassword(levelCode) -> void:
+	menus[menuTypes.TIMEOUT].updatePassword(levelCode)

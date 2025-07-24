@@ -14,6 +14,7 @@ enum states {
 
 # set up signals
 func _ready() -> void:
+	$Sprite.play("idle")
 	$GroundCheck.body_entered.connect(bodyEnter)
 	$GroundCheck.body_exited.connect(bodyExit)
 

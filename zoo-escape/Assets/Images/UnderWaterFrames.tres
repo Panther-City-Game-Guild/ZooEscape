@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" load_steps=3 format=3 uid="uid://8lghrijyw7tc"]
+
+[ext_resource type="Texture2D" uid="uid://c0skykf2vxkii" path="res://Assets/Images/UnderWater.png" id="1_r8t2n"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0mdvp"]
+atlas = ExtResource("1_r8t2n")
+region = Rect2(0, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0mdvp")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]

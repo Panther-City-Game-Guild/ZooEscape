@@ -1,3 +1,4 @@
+@tool
 class_name ZESwitchArea extends Area2D
 
 # Enums
@@ -12,7 +13,7 @@ enum switchStates {
 @export var switchState := switchStates.OFF # The Switch's state; Off = 0 or On = 1.
 @export_category("Auto-Revert Settings")
 @export var autoRevert := false # Does this switch revert to the previous state automatically?  If auto-revert is enabled, an appropriate switch style is used automatically.
-@export_range(0.5, 60.0, 0.1) var autoRevertTime := 3.0 # Time elapse before autoRevert; Minimum: 0.5, Maximum: 60.0
+@export_range(0.5, 240.0, 0.1) var autoRevertTime := 3.0 # Time elapse before autoRevert; Minimum: 0.5, Maximum: 60.0
 @export_range(1,3,1) var warningSoundInterval := 3 # amount of frames passing before warning tones 
 
 # Additional Variables

@@ -1,4 +1,4 @@
-extends CharacterBody2D
+class_name Player extends CharacterBody2D
 
 const STEPNOISE := "res://Assets/Sound/DeepThump.ogg"
 const SLIPNOISE := "res://Assets/Sound/Squelch.ogg"
@@ -7,14 +7,29 @@ enum playerState {
 	IDLE,
 	INWATER,
 	ONEXIT,
-	SLIDING
+	SLIDING,
+	CORNERSLIDING
 }
 
-@onready var dirToAnimtionName := {
+@onready var dirToAnimationName := {
 	Vector2.UP: "IdleUp",
 	Vector2.RIGHT: "IdleRight",
 	Vector2.DOWN: "IdleDown",
 	Vector2.LEFT: "IdleLeft"
+}
+
+@onready var walkToAnimationName1 := {
+	Vector2.UP: "WalkUp1",
+	Vector2.RIGHT: "WalkRight1",
+	Vector2.DOWN: "WalkDown1",
+	Vector2.LEFT: "WalkLeft1"
+}
+
+@onready var walkToAnimationName2 := {
+	Vector2.UP: "WalkUp2",
+	Vector2.RIGHT: "WalkRight2",
+	Vector2.DOWN: "WalkDown2",
+	Vector2.LEFT: "WalkLeft2"
 }
 
 @export var moveSpeed := 0.3
@@ -29,6 +44,7 @@ enum playerState {
 @onready var moveTimer := 0.0
 @onready var lastMoveDir := Vector2.DOWN
 @onready var facingDir := Vector2.DOWN # this catches the last input to determine ball direction
+var stepFlip := false
 
 signal InWater
 signal PlayerMoved
@@ -36,19 +52,21 @@ signal PlayerMoved
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	$StepCue.volume_db = SoundControl.sfxLevel-stepMuffleLevel # default player footsteps to low volume
+	$StepCue.volume_db = SoundControl.sfxLevel - stepMuffleLevel # default player footsteps to low volume
 	$GroundCheck.body_entered.connect(bodyEnter)
 	$GroundCheck.body_exited.connect(bodyExit)
+	$GroundCheck.area_entered.connect(areaEnter)
 	idleTimer.timeout.connect(showResetThought)
-	$AnimatedSprite2D.play("IdleDown")
+	sprite.play("IdleDown")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if currentState == playerState.IDLE:
-		if idleTimer.is_stopped():
+		if idleTimer.is_stopped(): # is player is idle, idle bubble timer starts
 			idleTimer.start()
 			
+		# move player in direction of input
 		if Input.is_action_just_pressed("DigitalUp"):
 			movePlayer(Vector2.UP)
 		elif Input.is_action_just_pressed("DigitalRight"):
@@ -84,21 +102,57 @@ func _process(delta: float) -> void:
 	elif currentState == playerState.SLIDING:
 		moveTimer += delta
 		
+		# move player and choose slide animation when sliding
 		if moveTimer >= slideSpeed:
 			movePlayer(lastMoveDir)
 			moveTimer = 0
-	
+			slideAnimationCall()
+
+
+# for a "victory" animation
+# TODO: make a "victory" animation
+func endLevelAnimation() -> void:
+	sprite.play(dirToAnimationName[Vector2.DOWN])
+
+
+# this function determines which of two walk animations to play (flag flips each input)
+func walkStepAnimationQueue(_dir:Vector2) -> void:
+	if !stepFlip:
+		sprite.play(walkToAnimationName1[_dir])
+	else:
+		sprite.play(walkToAnimationName2[_dir])
+
+
+# called to fetch and compare the slide animation to slide direction and movement
+func slideAnimationCall() -> void:
+	if moveTimer == 0:
+		match lastMoveDir:
+			Vector2.DOWN:
+				sprite.play("SlideDown")
+			Vector2.LEFT:
+				sprite.play("SlideLeft")
+			Vector2.RIGHT:
+				sprite.play("SlideRight")
+			Vector2.UP:
+				sprite.play("SlideUp")
+			Vector2.ZERO: # return to idle if still
+				currentState = playerState.IDLE
+				sprite.play(dirToAnimationName[lastMoveDir])
+
 
 # Called to move the player
 func movePlayer(dir: Vector2) -> void:
+	stepFlip = !stepFlip # flip step flag every step for alternating animation
 	facingDir = dir # update direction of "pushing" for ball
 	var _pitch = randf_range(-0.25, 0.25)
 	$StepCue.pitch_scale = 1 + _pitch
 	$StepCue.play()
 	idleTimer.stop()
 	
-	# Change the direction the Player is facing
-	sprite.play(dirToAnimtionName[dir])
+	# Change the direction the Player is facing and determine animation update behavior
+	if currentState != playerState.SLIDING:
+		walkStepAnimationQueue(dir)
+	# update facing direction
 	ray.target_position = dir * Globals.TILESIZE
 	ray.force_raycast_update()
 	
@@ -118,7 +172,8 @@ func movePlayer(dir: Vector2) -> void:
 		lastMoveDir = dir
 		if currentState == playerState.IDLE:
 			PlayerMoved.emit()
-			
+
+
 	checkForInteract()
 
 
@@ -140,22 +195,32 @@ func bodyEnter(body: Node2D) -> void:
 		var tilePos: Vector2i = body.local_to_map($GroundCheck.global_position)
 		if body.get_cell_tile_data(tilePos).get_custom_data("Water"):
 			# if in water, visual and audio cues before level call triggers
-			SoundControl.playCue(SoundControl.fail,3.0)
+			SoundControl.resetMusicFade() # music stops on drown
+			SoundControl.playCue(SoundControl.fail, 3.0)
 			currentState = playerState.INWATER
-			$AnimatedSprite2D.play("Drown")
+			sprite.play("Drown")
 		elif body.get_cell_tile_data(tilePos).get_custom_data("Ice"):
-			if(!ray.is_colliding()):
+			if (!ray.is_colliding()):
 				# if ice, audio cues and state change
 				currentState = playerState.SLIDING
 				$StepCue.stream = load(SLIPNOISE)
 			else:
+				# retrigger idle after stopping sliding movement
 				currentState = playerState.IDLE
+				sprite.play(dirToAnimationName[lastMoveDir])
 
 
 # go back to idle when exiting area
 func bodyExit(_body: Node2D) -> void:
 	currentState = playerState.IDLE
 	$StepCue.stream = load(STEPNOISE)
+
+
+# check the ground to any area 2dAdd commentMore actions
+func areaEnter(area: Area2D) -> void:
+	# if on a ice corner prvent input by setting the state to CORNERSLIDING
+	if area.get_collision_mask_value(4):
+		currentState = playerState.CORNERSLIDING
 
 
 # sets the thought bubble to reset
@@ -188,5 +253,18 @@ func checkForInteract() -> void:
 
 # this function reloads the level after the player's drown animation
 func _on_animated_sprite_2d_animation_finished() -> void:
-	if $AnimatedSprite2D.animation == "Drown":
+	if sprite.animation == "Drown":
 		InWater.emit() # level reload call
+
+	if "Walk" in sprite.animation: # repeat walk if moving or return to idle
+		if moveTimer != 0: # return to idle from work
+			walkStepAnimationQueue(facingDir)
+		else:
+			sprite.play(dirToAnimationName[facingDir])
+
+
+
+# check to see if slide animation still running and if so, return to idle animation
+func _on_animated_sprite_2d_frame_changed() -> void:
+	if "Slide" in sprite.animation and currentState != playerState.SLIDING:
+		sprite.play(dirToAnimationName[lastMoveDir])

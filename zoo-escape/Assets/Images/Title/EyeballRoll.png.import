@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbj2grig0duoq"
-path="res://.godot/imported/ColorPalette.png-018c752c5ebe5dde7ab9d7001053d1bd.ctex"
+uid="uid://ctshhngqkb7q1"
+path="res://.godot/imported/EyeballRoll.png-6d880d32dc53acec3ab1920c0affb3d4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/ColorPalette.png"
-dest_files=["res://.godot/imported/ColorPalette.png-018c752c5ebe5dde7ab9d7001053d1bd.ctex"]
+source_file="res://Assets/Images/Title/EyeballRoll.png"
+dest_files=["res://.godot/imported/EyeballRoll.png-6d880d32dc53acec3ab1920c0affb3d4.ctex"]
 
 [params]
 

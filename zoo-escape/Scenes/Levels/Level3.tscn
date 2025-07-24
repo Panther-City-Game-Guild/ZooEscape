@@ -24,77 +24,78 @@ tile_set = ExtResource("2_t0ble")
 [node name="SteakHolder" type="Node2D" parent="."]
 
 [node name="Steak" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(280, 216)
+position = Vector2(432, 560)
 
 [node name="Steak2" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(232, 72)
+position = Vector2(944, 304)
 
 [node name="Steak3" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(184, 120)
+position = Vector2(272, 624)
 
 [node name="Steak4" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(104, 168)
+position = Vector2(1040, -80)
 
 [node name="Steak5" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(136, 312)
+position = Vector2(208, 336)
 
 [node name="Steak6" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(136, 168)
+position = Vector2(784, 624)
 
 [node name="Steak7" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(392, 8)
+position = Vector2(912, 16)
 
 [node name="Steak8" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(440, 8)
+position = Vector2(592, 16)
 
 [node name="Steak9" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(336, 8)
+position = Vector2(1040, 368)
 
 [node name="Steak10" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(472, 152)
+position = Vector2(560, 136)
 
 [node name="Steak11" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(472, 184)
+position = Vector2(368, 144)
 
 [node name="Steak12" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(328, 168)
+position = Vector2(368, 336)
 
 [node name="Steak13" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(232, 168)
+position = Vector2(560, 560)
 
 [node name="Steak14" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(216, 184)
+position = Vector2(560, 624)
 
 [node name="Steak15" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(520, 40)
+position = Vector2(592, 112)
 
 [node name="Steak16" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(392, 312)
+position = Vector2(560, 432)
 
 [node name="Steak18" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(472, -40)
+position = Vector2(432, 16)
 
 [node name="Steak19" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(184, 8)
+position = Vector2(208, 16)
 
 [node name="Steak20" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(280, 104)
+position = Vector2(944, 368)
 
 [node name="Steak21" parent="SteakHolder" instance=ExtResource("7_s3p7u")]
-position = Vector2(104, 72)
+position = Vector2(784, -80)
 
 [node name="ExitTile" parent="." instance=ExtResource("3_nvbyj")]
-position = Vector2(472, 8)
+position = Vector2(944, 16)
 nextLevelCode = "4111"
 
 [node name="Button" parent="." instance=ExtResource("4_3i7ro")]
-position = Vector2(472, 168)
+position = Vector2(944, 336)
 
 [node name="Gate" parent="Button" instance=ExtResource("5_6ggnd")]
 position = Vector2(-192, 64)
+scale = Vector2(0.5, 0.5)
 
 [node name="Box" parent="." instance=ExtResource("8_7ithr")]
-position = Vector2(280, 168)
+position = Vector2(560, 336)
 
 [node name="Player" parent="." instance=ExtResource("9_r3ubd")]
-position = Vector2(280, 152)
+position = Vector2(560, 272)

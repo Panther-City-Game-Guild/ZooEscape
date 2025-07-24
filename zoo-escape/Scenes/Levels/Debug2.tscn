@@ -22,28 +22,26 @@ tile_set = ExtResource("2_317uw")
 [node name="SteakHolder" type="Node2D" parent="."]
 
 [node name="Steak" parent="SteakHolder" instance=ExtResource("5_kbwgl")]
-position = Vector2(200, 56)
+position = Vector2(368, 112)
 
 [node name="Steak5" parent="SteakHolder" instance=ExtResource("5_kbwgl")]
-position = Vector2(184, 56)
+position = Vector2(304, 112)
 
 [node name="Steak6" parent="SteakHolder" instance=ExtResource("5_kbwgl")]
-position = Vector2(168, 56)
+position = Vector2(336, 112)
 
 [node name="Steak2" parent="SteakHolder" instance=ExtResource("5_kbwgl")]
-position = Vector2(216, 56)
+position = Vector2(400, 112)
 
 [node name="Steak3" parent="SteakHolder" instance=ExtResource("5_kbwgl")]
-position = Vector2(232, 56)
+position = Vector2(432, 112)
 
 [node name="Steak4" parent="SteakHolder" instance=ExtResource("5_kbwgl")]
-position = Vector2(152, 56)
+position = Vector2(272, 112)
 
 [node name="ExitTile" parent="." instance=ExtResource("3_bj522")]
-position = Vector2(232, 88)
+position = Vector2(464, 176)
 nextLevelCode = "9993"
 
 [node name="Player" parent="." instance=ExtResource("8_i2blw")]
-position = Vector2(56, 40)
-
-[editable path="Player"]
+position = Vector2(144, 176)
