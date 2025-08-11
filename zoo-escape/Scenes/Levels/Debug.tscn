@@ -26,73 +26,68 @@ tile_map_data = PackedByteArray("AAADAAEAAwABAAAAAAAEAAEAAwABAAAAAAAFAAEAAwABAAA
 tile_set = ExtResource("1_d2x4x")
 
 [node name="ExitTile" parent="." instance=ExtResource("8_4t86c")]
-position = Vector2(232, 88)
+position = Vector2(496, 176)
 nextLevelCode = "9992"
 
 [node name="SteakHolder" type="Node2D" parent="."]
 
 [node name="Steak" parent="SteakHolder" instance=ExtResource("5_h7q7r")]
-position = Vector2(248, 120)
-
-[node name="Steak5" parent="SteakHolder" instance=ExtResource("5_h7q7r")]
-position = Vector2(136, 56)
-
-[node name="Steak6" parent="SteakHolder" instance=ExtResource("5_h7q7r")]
-position = Vector2(136, 72)
+position = Vector2(304, 112)
 
 [node name="Steak2" parent="SteakHolder" instance=ExtResource("5_h7q7r")]
-position = Vector2(248, 136)
+position = Vector2(336, 112)
 
 [node name="Steak3" parent="SteakHolder" instance=ExtResource("5_h7q7r")]
-position = Vector2(248, 152)
+position = Vector2(368, 112)
 
 [node name="Steak4" parent="SteakHolder" instance=ExtResource("5_h7q7r")]
-position = Vector2(72, 88)
+position = Vector2(400, 112)
+
+[node name="Steak5" parent="SteakHolder" instance=ExtResource("5_h7q7r")]
+position = Vector2(496, 144)
+
+[node name="Steak6" parent="SteakHolder" instance=ExtResource("5_h7q7r")]
+position = Vector2(496, 208)
 
 [node name="Switch" parent="." instance=ExtResource("8_ygj1o")]
-position = Vector2(104, 56)
+position = Vector2(176, 80)
 autoRevert = true
 autoRevertTime = 2.5
 
 [node name="Gate" parent="Switch" instance=ExtResource("9_gasfj")]
-position = Vector2(-32, -48)
+position = Vector2(-32, -56)
 
 [node name="Gate2" parent="Switch" instance=ExtResource("9_gasfj")]
-position = Vector2(0, -48)
+position = Vector2(0, -56)
 gateState = 1
 
 [node name="Gate3" parent="Switch" instance=ExtResource("9_gasfj")]
-position = Vector2(32, -48)
-
-[node name="Button" parent="." instance=ExtResource("7_ekvyi")]
-position = Vector2(152, 152)
-
-[node name="Gate" parent="Button" groups=["ZESwitchable"] instance=ExtResource("9_gasfj")]
-position = Vector2(48, 0)
+position = Vector2(32, -56)
 
 [node name="Box" parent="." instance=ExtResource("9_lbuof")]
-position = Vector2(104, 88)
+position = Vector2(272, 304)
 
 [node name="Button2" parent="." instance=ExtResource("7_ekvyi")]
-position = Vector2(216, 72)
+position = Vector2(400, 336)
 
 [node name="ZEBall" parent="." instance=ExtResource("12_1t63g")]
-position = Vector2(72, 72)
+position = Vector2(432, 336)
 
 [node name="ZEBall2" parent="." instance=ExtResource("12_1t63g")]
-position = Vector2(104, 152)
+position = Vector2(208, 272)
 
 [node name="ZEBall3" parent="." instance=ExtResource("12_1t63g")]
-position = Vector2(120, 120)
+position = Vector2(208, 336)
 
 [node name="PatrollingEnemy" parent="." instance=ExtResource("10_2d2ca")]
-position = Vector2(152, 56)
+position = Vector2(432, 112)
+waitTime = 1.5
 
 [node name="PatrolPath" parent="PatrollingEnemy" index="0"]
-points = PackedVector2Array(0, 0, 80, 0, 80, 112, -96, 112, -96, 0, -64, 0, -64, -16, 0, -16)
+points = PackedVector2Array(0, 0, 0, 64, 32, 64, 32, 192, -192, 192, -192, 32, -160, 32, -160, 0)
 
 [node name="Player" parent="." instance=ExtResource("2_ykc06")]
-position = Vector2(56, 40)
+position = Vector2(112, 80)
 metadata/_edit_lock_ = true
 
 [editable path="PatrollingEnemy"]

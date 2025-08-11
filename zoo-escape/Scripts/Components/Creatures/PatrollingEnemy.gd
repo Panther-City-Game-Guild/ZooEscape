@@ -15,7 +15,7 @@ enum behaviors {
 enum states {
 	IDLE, # Creature is not moving (either resting at a way point or stationary)
 	WAITING, # Creature is waiting at a waypoint
-	PATROL, # Creature is actively patrolling (moving toward a waypoint)
+	PATROLLING, # Creature is actively patrolling (moving toward a waypoint)
 	APPROACH, # Creature is approaching the Player (moving toward the waypoint nearest the player)
 	CHASE # Creature is chasing the player
 }
@@ -55,6 +55,7 @@ var isPlayerNear := false # Indicates whether the Player is near Enemy waypoints
 @onready var sprite := $AnimatedSprite2D
 
 
+# Called when the node enters the scene tree for the first time
 func _ready() -> void:
 	makeWaypoints() # Make an array of waypoints
 	if showPath && makeALoop: # If path will remain in scene tree, show path as closed
@@ -88,44 +89,41 @@ func _process(delta: float) -> void:
 		# If the Enemy is set to Patrol, do that
 		behaviors.PATROL:
 			timeWaited += delta # Add time since last frame
-			if currentState == states.IDLE && !sprite.animation == "IdleDown":
-				sprite.play("IdleDown")
-			
-			if !timeWaited >= moveSpeed:
-				return # If not enough time has elapsed since the last move, exit the process early
-			else:
-				if !timeWaited >= waitTime:
-					currentState = states.IDLE
-					return # If I have not waited at my waypoint long enough, exit early
-				else:
-					currentState = states.PATROL
-					# If I have not reached my waypoint, move toward it
-					if !position == waypoints[currentWaypoint]:
-						print("Moving toward [", currentWaypoint, "]: ", waypoints[currentWaypoint])
-						timeWaited = 0
-						move()
-					
-					# If I have reached my waypoint, get a new one and move toward that
+			match currentState:
+				states.WAITING:
+					if !timeWaited >= waitTime:
+						return # If I have not waited at my waypoint long enough, exit early
 					else:
-						print("Reached destination: ", currentWaypoint)
-						timeWaited = 0
-						lastWaypoint = currentWaypoint
-						# When I reach the end of the waypoints array, where do I go?
-						if currentWaypoint >= waypoints.size() - 1:
-							# Do I go back the other direction?
-							if !makeALoop:
-								movingForward = -1
-							# Or do I make a loop?
-							else:
+						currentState = states.PATROLLING
+				states.PATROLLING:
+					if !timeWaited >= moveSpeed: # If not enough time has elapsed since the last move, exit the process early
+						return
+					else:
+						if !position == waypoints[currentWaypoint]:
+							print("Moving toward [", currentWaypoint, "]: ", waypoints[currentWaypoint])
+							timeWaited = 0
+							move()
+						# If I have reached my waypoint, get a new one and move toward that
+						else:
+							print("Reached destination [", currentWaypoint, "]: ", waypoints[currentWaypoint])
+							timeWaited = 0
+							lastWaypoint = currentWaypoint
+							# When I reach the end of the waypoints array, where do I go?
+							if currentWaypoint >= waypoints.size() - 1:
+								# Do I go back the other direction?
+								if !makeALoop:
+									movingForward = -1
+								# Or do I make a loop?
+								else:
+									movingForward = 1
+									currentWaypoint = -1 # Set currentWaypoint to -1 so it rolls over to 0 down below
+								
+							# When I reach the beginning of the waypoints array, iterate the other direction
+							if currentWaypoint <= 0:
 								movingForward = 1
-								currentWaypoint = -1 # Set currentWaypoint to -1 so it rolls over to 0 down below
 							
-						# When I reach the beginning of the waypoints array, iterate the other direction
-						if currentWaypoint <= 0:
-							movingForward = 1
-						
-						# Add movingForward to currentWaypoint to iternate forward or backward through the loop
-						currentWaypoint += movingForward
+							# Add movingForward to currentWaypoint to iternate forward or backward through the loop
+							currentWaypoint += movingForward
 
 
 func makeWaypoints() -> void:
@@ -154,6 +152,11 @@ func faceDirection() -> Vector2:
 			
 	
 	return travelDir
+
+
+
+func checkPosition() -> bool:
+	return position == waypoints[currentWaypoint]
 
 
 # Called to move the enemy

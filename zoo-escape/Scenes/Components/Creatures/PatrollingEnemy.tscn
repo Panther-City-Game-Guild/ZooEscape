@@ -4,10 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://c4r357cgq014g" path="res://Assets/Images/PeaBody.png" id="2_m1urw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5atc8"]
-size = Vector2(16, 16)
+size = Vector2(32, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4mpfb"]
-size = Vector2(14, 14)
+size = Vector2(28, 28)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8s4wm"]
 atlas = ExtResource("2_m1urw")
@@ -68,7 +68,7 @@ metadata/_edit_lock_ = true
 
 [node name="PatrolPath" type="Line2D" parent="."]
 points = PackedVector2Array(0, 0, 80, 0, 80, 80, 160, 80, 160, 160, 0, 160)
-width = 16.0
+width = 32.0
 default_color = Color(0.501961, 1, 1, 0.4)
 begin_cap_mode = 1
 end_cap_mode = 1
